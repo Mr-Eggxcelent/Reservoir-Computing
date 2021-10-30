@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{ab2ac4d9-9e19-4f48-a11a-60ddf6eaa264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ReservoirComputing">
+      <UniqueIdentifier>{2ccdda8a-0660-42ef-8a21-28ae23e8a6b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Rendering">
+      <UniqueIdentifier>{a8c70baa-a008-43f9-905d-121d2aece0ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Delauney">
+      <UniqueIdentifier>{c5aa6ac1-c5b6-442c-b0b3-f50046096bea}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\spring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\sphere.cpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\glad.c">
+      <Filter>Header Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="src\simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core\camera.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="core\shader.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filereader.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Instrumentor.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\simulation.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\spring.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utility.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="core\shapes.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sphere.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="core\window.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="core\render_text.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="core\gnuplot-iostream.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\delaunator-cpp\include\delaunator.hpp">
+      <Filter>Delauney</Filter>
+    </ClInclude>
+    <ClInclude Include="concurrency.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader\billboard.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\billboard.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\line_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\line_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\sphere_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\sphere_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\text.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader\text.vs">
+      <Filter>Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
