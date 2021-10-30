@@ -1,0 +1,3 @@
+[submodule "MassSpringSystem/vendor/delaunator-cpp"]
+	path = MassSpringSystem/vendor/delaunator-cpp
+	url = https://github.com/delfrrr/delaunator-cpp
