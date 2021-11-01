@@ -1,0 +1,479 @@
+﻿  main.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(48,40): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(20): message : see reference to class template instantiation 'Eigen::internal::traits<Eigen::Matrix<Scalar_,1,-1,1,1,-1>>' being compiled
+          with
+          [
+              Scalar_=Eigen::Index
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(100): message : see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Array<Eigen::Index,1,-1,1,1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(49): message : see reference to class template instantiation 'Eigen::PlainObjectBase<Eigen::Array<Eigen::Index,1,-1,1,1,-1>>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\ForwardDeclarations.h(121): message : see reference to class template instantiation 'Eigen::Array<Eigen::Index,1,-1,1,1,-1>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\BDCSVD.h(219): message : see reference to class template instantiation 'Eigen::BDCSVD<MatrixType_>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(48,1): warning C4201: nonstandard extension used: nameless struct/union
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(138): message : see reference to class template instantiation 'glm::qua<T,Q>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(66,34): warning C4101: 'e': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shapes.h(33,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\Instrumentor.h(126,1): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(22,38): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(23,39): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(36,52): warning C4100: 'window': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(49,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(50,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(54,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(55,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(57,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(58,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(45,41): warning C4100: 'window': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(67,40): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(65,57): warning C4100: 'xoffset': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(65,42): warning C4100: 'window': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\filereader.h(28,1): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned long', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\filereader.h(72,1): warning C4245: 'return': conversion from 'int' to 'size_t', signed/unsigned mismatch
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glad\glad.h(32): message : see previous definition of 'APIENTRY'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1671,70): warning C4458: declaration of 'in' hides class member
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xiosbase(69,32): message : see declaration of 'std::_Iosb<int>::in'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(45,27): warning C4100: 'argv': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(45,14): warning C4100: 'argc': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(67,16): warning C4244: 'argument': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(115,49): warning C4244: '=': conversion from 'Eigen::Index' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(116,61): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(117,59): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(170,95): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(170,80): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(170,65): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(315,16): warning C4244: 'argument': conversion from 'unsigned __int64' to 'unsigned int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(384,49): warning C4244: '=': conversion from 'Eigen::Index' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(385,61): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(386,59): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(439,95): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(439,80): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(439,65): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1313,1): warning C4127: conditional expression is constant
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1313,1): message : consider using 'if constexpr' statement instead
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1388): message : see reference to function template instantiation 'void gnuplotio::print_block<1,gnuplotio::IteratorRange<std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<_Ty>>>,double>,PrintMode>(std::ostream &,T &,PrintMode)' being compiled
+          with
+          [
+              _Ty=double,
+              PrintMode=gnuplotio::ModeText,
+              T=gnuplotio::IteratorRange<std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<double>>>,double>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1409): message : see reference to function template instantiation 'void gnuplotio::handle_colunwrap_tag<1,T,PrintMode>(std::ostream &,const T &,gnuplotio::ColUnwrapNo,PrintMode)' being compiled
+          with
+          [
+              T=std::vector<double,std::allocator<double>>,
+              PrintMode=gnuplotio::ModeText
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1429): message : see reference to function template instantiation 'void gnuplotio::handle_organization_tag<T,PrintMode>(std::ostream &,const T &,gnuplotio::Mode1D,PrintMode)' being compiled
+          with
+          [
+              T=std::vector<double,std::allocator<double>>,
+              PrintMode=gnuplotio::ModeText
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1442): message : see reference to function template instantiation 'void gnuplotio::handle_organization_tag<T,PrintMode>(std::ostream &,const T &,gnuplotio::ModeAuto,PrintMode)' being compiled
+          with
+          [
+              T=std::vector<double,std::allocator<double>>,
+              PrintMode=gnuplotio::ModeText
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1783): message : see reference to function template instantiation 'void gnuplotio::top_level_array_sender<T,OrganizationMode,gnuplotio::ModeText>(std::ostream &,const T &,OrganizationMode,PrintMode)' being compiled
+          with
+          [
+              T=std::vector<double,std::allocator<double>>,
+              OrganizationMode=gnuplotio::ModeAuto,
+              PrintMode=gnuplotio::ModeText
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\gnuplot-iostream.h(1852): message : see reference to function template instantiation 'gnuplotio::Gnuplot &gnuplotio::Gnuplot::send<T,gnuplotio::ModeAuto>(const T &,OrganizationMode)' being compiled
+          with
+          [
+              T=std::vector<double,std::allocator<double>>,
+              OrganizationMode=gnuplotio::ModeAuto
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\main.cpp(269): message : see reference to function template instantiation 'gnuplotio::Gnuplot &gnuplotio::Gnuplot::send<std::vector<double,std::allocator<double>>>(const T &)' being compiled
+          with
+          [
+              T=std::vector<double,std::allocator<double>>
+          ]
+  node.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(48,1): warning C4201: nonstandard extension used: nameless struct/union
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(138): message : see reference to class template instantiation 'glm::qua<T,Q>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(66,34): warning C4101: 'e': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shapes.h(33,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(48,40): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(20): message : see reference to class template instantiation 'Eigen::internal::traits<Eigen::Matrix<Scalar_,1,-1,1,1,-1>>' being compiled
+          with
+          [
+              Scalar_=Eigen::Index
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(100): message : see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Array<Eigen::Index,1,-1,1,1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(49): message : see reference to class template instantiation 'Eigen::PlainObjectBase<Eigen::Array<Eigen::Index,1,-1,1,1,-1>>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\ForwardDeclarations.h(121): message : see reference to class template instantiation 'Eigen::Array<Eigen::Index,1,-1,1,1,-1>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\BDCSVD.h(219): message : see reference to class template instantiation 'Eigen::BDCSVD<MatrixType_>' being compiled
+  simulation.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(48,40): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(20): message : see reference to class template instantiation 'Eigen::internal::traits<Eigen::Matrix<Scalar_,1,-1,1,1,-1>>' being compiled
+          with
+          [
+              Scalar_=Eigen::Index
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(100): message : see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Array<Eigen::Index,1,-1,1,1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(49): message : see reference to class template instantiation 'Eigen::PlainObjectBase<Eigen::Array<Eigen::Index,1,-1,1,1,-1>>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\ForwardDeclarations.h(121): message : see reference to class template instantiation 'Eigen::Array<Eigen::Index,1,-1,1,1,-1>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\BDCSVD.h(219): message : see reference to class template instantiation 'Eigen::BDCSVD<MatrixType_>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(48,1): warning C4201: nonstandard extension used: nameless struct/union
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(138): message : see reference to class template instantiation 'glm::qua<T,Q>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(66,34): warning C4101: 'e': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shapes.h(33,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\Instrumentor.h(126,1): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(22,38): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(23,39): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(36,52): warning C4100: 'window': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(49,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(50,26): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(54,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(55,27): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(57,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(58,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(45,41): warning C4100: 'window': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(67,40): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(65,57): warning C4100: 'xoffset': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\window.h(65,42): warning C4100: 'window': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(73,50): warning C4244: '=': conversion from 'Eigen::Index' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(160,32): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(209,32): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(133,31): warning C4100: 'bias_learning': unreferenced formal parameter
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(259,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(289,27): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'long', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(295,23): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'long', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(319,37): warning C4244: '=': conversion from 'Eigen::Index' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(321,62): warning C4244: '=': conversion from 'Eigen::Index' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(330,32): warning C4018: '<': signed/unsigned mismatch
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(354,23): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'long', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(508,47): warning C4267: '+=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(458,12): warning C4189: 'wjej': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(460,12): warning C4189: 'currentvalue': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(459,12): warning C4189: 'currenttime': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(619,52): warning C4267: '+=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(794,27): warning C4018: '<': signed/unsigned mismatch
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(796,19): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(730,12): warning C4189: 'wjej': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(733,12): warning C4189: 'average': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(735,12): warning C4189: 'Mean_squared_error': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(732,12): warning C4189: 'currentvalue': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(731,12): warning C4189: 'currenttime': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(734,12): warning C4189: 'std': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\TriangularMatrix.h(213,29): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\JacobiSVD.h(177): message : see reference to class template instantiation 'Eigen::TriangularView<const Derived,2>' being compiled
+          with
+          [
+              Derived=Eigen::Block<const Eigen::Matrix<double,-1,-1,0,-1,-1>,-1,-1,false>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\JacobiSVD.h(173): message : while compiling class template member function 'bool Eigen::internal::qr_preconditioner_impl<Eigen::Matrix<double,-1,-1,0,-1,-1>,2,1,true>::run(Eigen::JacobiSVD<Eigen::Matrix<double,-1,-1,0,-1,-1>,2> &,const MatrixType &)'
+          with
+          [
+              MatrixType=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\JacobiSVD.h(695): message : see reference to function template instantiation 'bool Eigen::internal::qr_preconditioner_impl<Eigen::Matrix<double,-1,-1,0,-1,-1>,2,1,true>::run(Eigen::JacobiSVD<Eigen::Matrix<double,-1,-1,0,-1,-1>,2> &,const MatrixType &)' being compiled
+          with
+          [
+              MatrixType=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\JacobiSVD.h(612): message : see reference to class template instantiation 'Eigen::internal::qr_preconditioner_impl<Eigen::Matrix<double,-1,-1,0,-1,-1>,2,1,true>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(418): message : see reference to class template instantiation 'Eigen::JacobiSVD<Eigen::Matrix<double,-1,-1,0,-1,-1>,2>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\TriangularMatrix.h(214,29): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\TriangularMatrix.h(215,29): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\TriangularMatrix.h(216,29): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(844,39): warning C5054: operator '==': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(952): message : see reference to class template instantiation 'Eigen::internal::diagonal_product_evaluator_base<Lhs,const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Derived>,Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Derived>>,1>,2>' being compiled
+          with
+          [
+              Lhs=Eigen::Matrix<double,-1,-1,0,-1,-1>,
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(33): message : see reference to class template instantiation 'Eigen::internal::product_evaluator<Eigen::Product<Derived,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,8,Eigen::DenseShape,Eigen::DiagonalShape,double,double>' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\XprHelper.h(374): message : see reference to class template instantiation 'Eigen::internal::evaluator<T>' being compiled
+          with
+          [
+              T=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(371): message : see reference to class template instantiation 'Eigen::internal::plain_object_eval<T,Eigen::Dense>' being compiled
+          with
+          [
+              T=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\products\GeneralMatrixMatrix.h(481): message : see reference to class template instantiation 'Eigen::internal::generic_product_impl<Lhs,const Eigen::Block<const Derived,-1,1,false>,Eigen::DenseShape,Eigen::DenseShape,7>' being compiled
+          with
+          [
+              Lhs=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,
+              Derived=Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\products\GeneralMatrixMatrix.h(447): message : see reference to function template instantiation 'void Eigen::internal::generic_product_impl<Lhs,Rhs,Eigen::DenseShape,Eigen::DenseShape,8>::scaleAndAddTo<Dst>(Dest &,const Lhs &,const Rhs &,const double &)' being compiled
+          with
+          [
+              Lhs=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,
+              Rhs=Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,
+              Dst=ActualDstTypeCleaned,
+              Dest=ActualDstTypeCleaned
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\products\GeneralMatrixMatrix.h(447): message : see reference to function template instantiation 'void Eigen::internal::generic_product_impl<Lhs,Rhs,Eigen::DenseShape,Eigen::DenseShape,8>::scaleAndAddTo<Dst>(Dest &,const Lhs &,const Rhs &,const double &)' being compiled
+          with
+          [
+              Lhs=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,
+              Rhs=Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,
+              Dst=ActualDstTypeCleaned,
+              Dest=ActualDstTypeCleaned
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(150): message : see reference to function template instantiation 'void Eigen::internal::generic_product_impl<Lhs,Rhs,Eigen::DenseShape,Eigen::DenseShape,8>::evalTo<DstXprType>(Dst &,const Lhs &,const Rhs &)' being compiled
+          with
+          [
+              Lhs=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,
+              Rhs=Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,
+              DstXprType=ActualDstTypeCleaned,
+              Dst=ActualDstTypeCleaned
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(150): message : see reference to function template instantiation 'void Eigen::internal::generic_product_impl<Lhs,Rhs,Eigen::DenseShape,Eigen::DenseShape,8>::evalTo<DstXprType>(Dst &,const Lhs &,const Rhs &)' being compiled
+          with
+          [
+              Lhs=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,
+              Rhs=Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,
+              DstXprType=ActualDstTypeCleaned,
+              Dst=ActualDstTypeCleaned
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\ProductEvaluators.h(144): message : while compiling class template member function 'void Eigen::internal::Assignment<ActualDstTypeCleaned,Src,Func,Eigen::internal::AssignmentKind<Eigen::DenseShape,Eigen::DenseShape>::Kind,void>::run(DstXprType &,const Eigen::Product<Derived,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0> &,const Eigen::internal::assign_op<double,double> &)'
+          with
+          [
+              Src=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>,
+              Func=Eigen::internal::assign_op<double,double>,
+              DstXprType=ActualDstTypeCleaned,
+              Derived=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\AssignEvaluator.h(891): message : see reference to function template instantiation 'void Eigen::internal::Assignment<ActualDstTypeCleaned,Src,Func,Eigen::internal::AssignmentKind<Eigen::DenseShape,Eigen::DenseShape>::Kind,void>::run(DstXprType &,const Eigen::Product<Derived,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0> &,const Eigen::internal::assign_op<double,double> &)' being compiled
+          with
+          [
+              Src=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>,
+              Func=Eigen::internal::assign_op<double,double>,
+              DstXprType=ActualDstTypeCleaned,
+              Derived=Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\AssignEvaluator.h(891): message : see reference to class template instantiation 'Eigen::internal::Assignment<ActualDstTypeCleaned,Src,Func,Eigen::internal::AssignmentKind<Eigen::DenseShape,Eigen::DenseShape>::Kind,void>' being compiled
+          with
+          [
+              Src=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>,
+              Func=Eigen::internal::assign_op<double,double>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(800): message : see reference to function template instantiation 'void Eigen::internal::call_assignment_no_alias<Derived,Eigen::Product<Eigen::Product<Derived,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Derived>,0>,Eigen::internal::assign_op<double,double>>(Dst &,const Src &,const Func &)' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,-1,0,-1,-1>,
+              Dst=Eigen::Matrix<double,-1,-1,0,-1,-1>,
+              Src=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>,
+              Func=Eigen::internal::assign_op<double,double>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(599): message : see reference to function template instantiation 'Derived &Eigen::PlainObjectBase<Derived>::_set_noalias<Eigen::Product<Eigen::Product<Derived,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Derived>,0>>(const Eigen::DenseBase<Eigen::Product<Eigen::Product<Derived,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Derived>,0>> &)' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(599): message : see reference to function template instantiation 'Derived &Eigen::PlainObjectBase<Derived>::_set_noalias<Eigen::Product<Eigen::Product<Derived,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Derived>,0>>(const Eigen::DenseBase<Eigen::Product<Eigen::Product<Derived,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Derived>,0>> &)' being compiled
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,-1,0,-1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(418): message : see reference to function template instantiation 'Eigen::PlainObjectBase<Eigen::Matrix<double,-1,-1,0,-1,-1>>::PlainObjectBase<Derived>(const Eigen::DenseBase<Derived> &)' being compiled
+          with
+          [
+              Derived=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(417): message : see reference to function template instantiation 'Eigen::PlainObjectBase<Eigen::Matrix<double,-1,-1,0,-1,-1>>::PlainObjectBase<Derived>(const Eigen::DenseBase<Derived> &)' being compiled
+          with
+          [
+              Derived=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(419): message : see reference to function template instantiation 'Eigen::Matrix<double,-1,-1,0,-1,-1>::Matrix<Derived>(const Eigen::EigenBase<Derived> &)' being compiled
+          with
+          [
+              Derived=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\simulation.cpp(419): message : see reference to function template instantiation 'Eigen::Matrix<double,-1,-1,0,-1,-1>::Matrix<Derived>(const Eigen::EigenBase<Derived> &)' being compiled
+          with
+          [
+              Derived=Eigen::Product<Eigen::Product<Eigen::Matrix<double,-1,-1,0,-1,-1>,Eigen::DiagonalWrapper<const Eigen::CwiseUnaryOp<Eigen::internal::scalar_inverse_op<double>,const Eigen::Matrix<double,-1,1,0,-1,1>>>,1>,Eigen::Transpose<const Eigen::Matrix<double,-1,-1,0,-1,-1>>,0>
+          ]
+  spring.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(48,1): warning C4201: nonstandard extension used: nameless struct/union
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(138): message : see reference to class template instantiation 'glm::qua<T,Q>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(66,34): warning C4101: 'e': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shapes.h(33,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(48,40): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(20): message : see reference to class template instantiation 'Eigen::internal::traits<Eigen::Matrix<Scalar_,1,-1,1,1,-1>>' being compiled
+          with
+          [
+              Scalar_=Eigen::Index
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(100): message : see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Array<Eigen::Index,1,-1,1,1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(49): message : see reference to class template instantiation 'Eigen::PlainObjectBase<Eigen::Array<Eigen::Index,1,-1,1,1,-1>>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\ForwardDeclarations.h(121): message : see reference to class template instantiation 'Eigen::Array<Eigen::Index,1,-1,1,1,-1>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\BDCSVD.h(219): message : see reference to class template instantiation 'Eigen::BDCSVD<MatrixType_>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\spring.cpp(166,78): warning C4100: 'nodes': unreferenced formal parameter
+  system.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(48,40): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(20): message : see reference to class template instantiation 'Eigen::internal::traits<Eigen::Matrix<Scalar_,1,-1,1,1,-1>>' being compiled
+          with
+          [
+              Scalar_=Eigen::Index
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(100): message : see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Array<Eigen::Index,1,-1,1,1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(49): message : see reference to class template instantiation 'Eigen::PlainObjectBase<Eigen::Array<Eigen::Index,1,-1,1,1,-1>>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\ForwardDeclarations.h(121): message : see reference to class template instantiation 'Eigen::Array<Eigen::Index,1,-1,1,1,-1>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\BDCSVD.h(219): message : see reference to class template instantiation 'Eigen::BDCSVD<MatrixType_>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(48,1): warning C4201: nonstandard extension used: nameless struct/union
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\glm\glm\detail\type_quat.hpp(138): message : see reference to class template instantiation 'glm::qua<T,Q>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(66,34): warning C4101: 'e': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shapes.h(33,1): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\Instrumentor.h(126,1): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(64,34): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(68,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(92,65): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(93,46): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(162,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(157,9): warning C4189: 'num_of_fixed_nodes': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(262,39): warning C4244: '=': conversion from '_Ty1' to 'int', possible loss of data
+          with
+          [
+              _Ty1=double
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(263,39): warning C4244: '=': conversion from '_Ty2' to 'int', possible loss of data
+          with
+          [
+              _Ty2=double
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(237,12): warning C4189: 'dist2': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(243,9): warning C4101: 'connect_node2': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(242,9): warning C4101: 'connect_node': unreferenced local variable
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(238,12): warning C4189: 'perp_dist_new': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(240,12): warning C4189: 'perp_dist_old': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(236,12): warning C4189: 'dist': local variable is initialized but not referenced
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(351,15): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(477,127): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(477,86): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(477,63): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(547,78): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(548,85): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(551,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(552,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(556,79): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(557,87): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(643,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\utility(190,1): warning C4267: 'initializing': conversion from 'size_t' to '_Ty1', possible loss of data
+          with
+          [
+              _Ty1=int
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(521): message : see reference to function template instantiation 'std::pair<int,int>::pair<size_t&,size_t,0>(_Other1,_Other2 &&) noexcept' being compiled
+          with
+          [
+              _Other1=size_t &,
+              _Other2=size_t
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\system.cpp(521): message : see reference to function template instantiation 'std::pair<int,int>::pair<size_t&,size_t,0>(_Other1,_Other2 &&) noexcept' being compiled
+          with
+          [
+              _Other1=size_t &,
+              _Other2=size_t
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\utility(190,1): warning C4267: 'initializing': conversion from 'size_t' to '_Ty2', possible loss of data
+          with
+          [
+              _Ty2=int
+          ]
+  utility.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Matrix.h(48,40): warning C5054: operator '&': deprecated between enumerations of different types
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(20): message : see reference to class template instantiation 'Eigen::internal::traits<Eigen::Matrix<Scalar_,1,-1,1,1,-1>>' being compiled
+          with
+          [
+              Scalar_=Eigen::Index
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\PlainObjectBase.h(100): message : see reference to class template instantiation 'Eigen::internal::traits<Derived>' being compiled
+          with
+          [
+              Derived=Eigen::Array<Eigen::Index,1,-1,1,1,-1>
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\Array.h(49): message : see reference to class template instantiation 'Eigen::PlainObjectBase<Eigen::Array<Eigen::Index,1,-1,1,1,-1>>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\Core\util\ForwardDeclarations.h(121): message : see reference to class template instantiation 'Eigen::Array<Eigen::Index,1,-1,1,1,-1>' being compiled
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\vendor\eigen\Eigen\src\SVD\BDCSVD.h(219): message : see reference to class template instantiation 'Eigen::BDCSVD<MatrixType_>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\utility(190,16): warning C4244: 'initializing': conversion from '_Ty1' to '_Ty1', possible loss of data
+          with
+          [
+              _Ty1=double
+          ]
+          and
+          [
+              _Ty1=int
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\utility.cpp(145): message : see reference to function template instantiation 'std::pair<int,int>::pair<_Ty1&,_Ty2&,0>(_Other1,_Other2) noexcept' being compiled
+          with
+          [
+              _Ty1=double,
+              _Ty2=double,
+              _Other1=double &,
+              _Other2=double &
+          ]
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Core\utility.cpp(145): message : see reference to function template instantiation 'std::pair<int,int>::pair<_Ty1&,_Ty2&,0>(_Other1,_Other2) noexcept' being compiled
+          with
+          [
+              _Ty1=double,
+              _Ty2=double,
+              _Other1=double &,
+              _Other2=double &
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\utility(190,1): warning C4244: 'initializing': conversion from '_Ty1' to '_Ty2', possible loss of data
+          with
+          [
+              _Ty1=double
+          ]
+          and
+          [
+              _Ty2=int
+          ]
+  sphere.cpp
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.cpp(21,24): warning C4458: declaration of 'radius' hides class member
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.h(83,11): message : see declaration of 'Sphere::radius'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.cpp(21,62): warning C4458: declaration of 'smooth' hides class member
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.h(86,10): message : see declaration of 'Sphere::smooth'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.cpp(37,30): warning C4458: declaration of 'radius' hides class member
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.h(83,11): message : see declaration of 'Sphere::radius'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.cpp(55,29): warning C4458: declaration of 'smooth' hides class member
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.h(86,10): message : see declaration of 'Sphere::smooth'
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.cpp(113,26): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\sphere.cpp(113,20): warning C4244: 'initializing': conversion from 'double' to 'const float', possible loss of data
+  Generating Code...
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(99): warning C4701: potentially uninitialized local variable 'geometry' used
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(99): warning C4701: potentially uninitialized local variable 'geometry' used
+C:\Users\natma\source\repos\MassSpringSystem\MassSpringSystem\src\Graphics\shader.h(99): warning C4701: potentially uninitialized local variable 'geometry' used
+  glad.c
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  MassSpringSystem.vcxproj -> C:\Users\natma\source\repos\MassSpringSystem\bin\Debug-x64\MassSpringSystem.exe
