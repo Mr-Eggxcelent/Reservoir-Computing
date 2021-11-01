@@ -7,3 +7,6 @@
 [submodule "MassSpringSystem/vendor/GLFW"]
 	path = MassSpringSystem/vendor/GLFW
 	url = https://github.com/glfw/glfw
+[submodule "MassSpringSystem/vendor/freetype"]
+	path = MassSpringSystem/vendor/freetype
+	url = https://github.com/freetype/freetype
