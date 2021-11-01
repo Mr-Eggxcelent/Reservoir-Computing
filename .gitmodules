@@ -4,3 +4,6 @@
 [submodule "MassSpringSystem/vendor/glm"]
 	path = MassSpringSystem/vendor/glm
 	url = https://github.com/g-truc/glm
+[submodule "MassSpringSystem/vendor/GLFW"]
+	path = MassSpringSystem/vendor/GLFW
+	url = https://github.com/glfw/glfw
