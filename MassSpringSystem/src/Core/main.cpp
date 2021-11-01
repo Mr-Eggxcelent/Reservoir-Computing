@@ -11,11 +11,10 @@
 #include <Eigen/QR>
 #include "filereader.h"
 #include<memory>
-#include "../core/camera.h"
+#include "../Graphics/camera.h"
 
 //graphing
-#include "../core/gnuplot-iostream.h"
-
+#include "../Graphics/gnuplot-iostream.h"
 
 
 using namespace Eigen;

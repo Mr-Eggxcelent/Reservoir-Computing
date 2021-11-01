@@ -36,7 +36,7 @@ public:
 
     void initBuffer()
     {
-        _shader = std::make_unique<Shader>("shader/sphere_shader.vs", "shader/sphere_shader.fs");
+        _shader = std::make_unique<Shader>("src/Shader/sphere_shader.vs", "src/Shader/sphere_shader.fs");
         // set attrib arrays using glVertexAttribPointer()
         int stride = _sphere1.getInterleavedStride();
 
@@ -136,7 +136,7 @@ public:
     //https://www.youtube.com/watch?v=5df3NvQNzUs by The Cherno
     void initBuffer()
     {
-        _shader = std::make_unique<Shader>("shader/line_shader.vs", "shader/line_shader.fs");
+        _shader = std::make_unique<Shader>("src/Shader/line_shader.vs", "src/Shader/line_shader.fs");
 
 
         glGenVertexArrays(1, &_vao);

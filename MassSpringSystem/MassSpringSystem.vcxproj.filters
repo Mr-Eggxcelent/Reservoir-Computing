@@ -27,105 +27,79 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\spring.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\system.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\utility.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="core\sphere.cpp">
-      <Filter>Header Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="vendor\glad.c">
-      <Filter>Header Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="src\simulation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="core\camera.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="core\shader.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="src\filereader.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Instrumentor.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\node.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\simulation.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\spring.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\system.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\utility.h">
-      <Filter>Header Files\ReservoirComputing</Filter>
-    </ClInclude>
-    <ClInclude Include="core\shapes.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="core\sphere.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="core\window.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="core\render_text.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="core\gnuplot-iostream.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="vendor\delaunator-cpp\include\delaunator.hpp">
       <Filter>Delauney</Filter>
     </ClInclude>
-    <ClInclude Include="concurrency.h">
+    <ClInclude Include="src\Core\concurrency.h">
       <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\filereader.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\Instrumentor.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\node.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\simulation.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\spring.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\system.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core\utility.h">
+      <Filter>Header Files\ReservoirComputing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\camera.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\gnuplot-iostream.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\render_text.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\shader.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\shapes.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\sphere.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\window.h">
+      <Filter>Header Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\billboard.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\billboard.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\line_shader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\line_shader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\sphere_shader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\sphere_shader.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\text.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader\text.vs">
-      <Filter>Shaders</Filter>
-    </None>
+    <ClCompile Include="src\Core\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\spring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\utility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\sphere.cpp">
+      <Filter>Header Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

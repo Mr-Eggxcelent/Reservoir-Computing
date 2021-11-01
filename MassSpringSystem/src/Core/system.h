@@ -6,7 +6,7 @@
 #include "spring.h"
 #include "Instrumentor.h"
 #include "utility.h"
-#include "../core/render_text.h"
+#include "../Graphics/render_text.h"
 
 using namespace Eigen;
 

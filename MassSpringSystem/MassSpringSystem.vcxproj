@@ -45,14 +45,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)MassSpringSystem\vendor\freetype;$(SolutionDir)MassSpringSystem\vendor;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)MassSpringSystem\vendor;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)MassSpringSystem\vendor\Libraries;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)MassSpringSystem\vendor\freetype;$(SolutionDir)MassSpringSystem\vendor;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)MassSpringSystem\vendor;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)MassSpringSystem\vendor\Libraries;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)-$(Platform)\</IntDir>
@@ -63,7 +63,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MassSpringSystem\vendor\eigen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MassSpringSystem\vendor\glm;$(SolutionDir)MassSpringSystem\vendor\freetype\include;$(SolutionDir)MassSpringSystem\vendor\eigen;$(SolutionDir)MassSpringSystem\vendor\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -71,7 +71,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)MassSpringSystem\vendor\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc142-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -82,7 +82,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MassSpringSystem\vendor\eigen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MassSpringSystem\vendor\glm;$(SolutionDir)MassSpringSystem\vendor\freetype\include;$(SolutionDir)MassSpringSystem\vendor\eigen;$(SolutionDir)MassSpringSystem\vendor\GLFW\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -92,46 +92,36 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)MassSpringSystem\vendor\Libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;assimp-vc142-mtd.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="core\sphere.cpp" />
-    <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\node.cpp" />
-    <ClCompile Include="src\simulation.cpp" />
-    <ClCompile Include="src\spring.cpp" />
-    <ClCompile Include="src\system.cpp" />
-    <ClCompile Include="src\utility.cpp" />
-    <ClCompile Include="vendor\glad.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="concurrency.h" />
-    <ClInclude Include="core\camera.h" />
-    <ClInclude Include="core\gnuplot-iostream.h" />
-    <ClInclude Include="core\render_text.h" />
-    <ClInclude Include="core\shader.h" />
-    <ClInclude Include="core\shapes.h" />
-    <ClInclude Include="core\sphere.h" />
-    <ClInclude Include="core\window.h" />
-    <ClInclude Include="src\filereader.h" />
-    <ClInclude Include="src\Instrumentor.h" />
-    <ClInclude Include="src\node.h" />
-    <ClInclude Include="src\simulation.h" />
-    <ClInclude Include="src\spring.h" />
-    <ClInclude Include="src\system.h" />
-    <ClInclude Include="src\utility.h" />
+    <ClInclude Include="src\Core\concurrency.h" />
+    <ClInclude Include="src\Core\filereader.h" />
+    <ClInclude Include="src\Core\Instrumentor.h" />
+    <ClInclude Include="src\Core\node.h" />
+    <ClInclude Include="src\Core\simulation.h" />
+    <ClInclude Include="src\Core\spring.h" />
+    <ClInclude Include="src\Core\system.h" />
+    <ClInclude Include="src\Core\utility.h" />
+    <ClInclude Include="src\Graphics\camera.h" />
+    <ClInclude Include="src\Graphics\gnuplot-iostream.h" />
+    <ClInclude Include="src\Graphics\render_text.h" />
+    <ClInclude Include="src\Graphics\shader.h" />
+    <ClInclude Include="src\Graphics\shapes.h" />
+    <ClInclude Include="src\Graphics\sphere.h" />
+    <ClInclude Include="src\Graphics\window.h" />
     <ClInclude Include="vendor\delaunator-cpp\include\delaunator.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader\billboard.fs" />
-    <None Include="shader\billboard.vs" />
-    <None Include="shader\line_shader.fs" />
-    <None Include="shader\line_shader.vs" />
-    <None Include="shader\sphere_shader.fs" />
-    <None Include="shader\sphere_shader.vs" />
-    <None Include="shader\text.fs" />
-    <None Include="shader\text.vs" />
+    <ClCompile Include="src\Core\main.cpp" />
+    <ClCompile Include="src\Core\node.cpp" />
+    <ClCompile Include="src\Core\simulation.cpp" />
+    <ClCompile Include="src\Core\spring.cpp" />
+    <ClCompile Include="src\Core\system.cpp" />
+    <ClCompile Include="src\Core\utility.cpp" />
+    <ClCompile Include="src\Graphics\sphere.cpp" />
+    <ClCompile Include="vendor\glad.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

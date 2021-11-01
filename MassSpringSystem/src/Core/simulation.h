@@ -7,7 +7,7 @@
 #include <vector>
 #include<memory>
 #include "system.h"
-#include "../core/window.h"
+#include "../Graphics/window.h"
 
 #include <optional>
 #include <functional>

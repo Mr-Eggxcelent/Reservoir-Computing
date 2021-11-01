@@ -49,10 +49,10 @@ public:
 
     void init_text_renderer()
     {
-        _shader = std::make_shared<Shader>("shader/text.vs", "shader/text.fs");
+        _shader = std::make_shared<Shader>("src/Shader/text.vs", "src/Shader/text.fs");
 
         // need to adjust this shader to allow it to been seen form all angles
-        _bill_shader= std::make_shared<Shader>("shader/billboard.vs", "shader/billboard.fs");
+        _bill_shader= std::make_shared<Shader>("src/Shader/billboard.vs", "src/Shader/billboard.fs");
         // FreeType
         // --------
         FT_Library ft;
@@ -64,7 +64,7 @@ public:
        }
 
       // find path to font
-      std::string font_name = "shader/arial.ttf";
+      std::string font_name = "src/Shader/arial.ttf";
       if (font_name.empty())
       {
           std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
