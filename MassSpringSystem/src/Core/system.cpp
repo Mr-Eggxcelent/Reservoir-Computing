@@ -567,52 +567,49 @@ void SpringSystem::Output_For_Plot()
 {
     PROFILE_FUNCTION();
 
-    std::string str;
-    str = "src/Output/s.csv";
-    // if(i%10 == 0) str.erase(str.length()-4);
-    std::ofstream EdgesS(str);
-    std::string str2;
-    str2 = "src/Output/t.csv";
-    std::ofstream EdgesT(str2);
+    std::string str = "src/Output/Edges.csv";
+    std::ofstream Edges(str);
     std::vector<int>::iterator NodeNums;
 
     //In Matlab, it does not accept indices of 0 for node graphs.
     //Replace EdgeList with s for consistency.
     for (unsigned int j = 0; j < _s.size() - 1; j++)
     {
-        EdgesS << _s[j].get_node_a() + 1 << ",";
-        EdgesT << _s[j].get_node_b() + 1 << ",";
+        Edges << _s[j].get_node_a() + 1 << "," << _s[j].get_node_b() + 1 << std::endl;
     }
 
-    EdgesS << _s[_s.size() - 1].get_node_a() + 1;
-    EdgesT << _s[_s.size() - 1].get_node_b() + 1;
+    Edges << _s[_s.size() - 1].get_node_a() + 1 << "," << _s[_s.size() - 1].get_node_b() + 1 << std::endl;
 
+    str = "src/Output/NodeInfo.csv";
+    std::ofstream nodesPos(str);
 
-    //  for(int i=0; i<maxtimesteps; i++)
-    // {
-    str = "src/Output/X.csv";
-    // if(i%10 == 0) str.erase(str.length()-4);
-     //str.append("X.csv");
-    std::ofstream nodesX(str);
-
-    //str2 = to_string(i*dt);
-   // if(i%10 == 0) str.erase(str.length()-4);
-    //str2.erase(str.length()-5);
-   // str2.append("Y.csv");
-    str = "src/Output/Y.csv";
-    std::ofstream nodesY(str);
-
+    //just put x,y node position and type together in systems.cpp (still to do)
     unsigned int j = 0;
     while (j < _n.size())
     {
-        nodesX << _n[j].get_position()[0];
-        if (j < _n.size() - 1) nodesX << ",";
-        nodesY << _n[j].get_position()[1];
-        if (j < _n.size() - 1) nodesY << ",";
+        if (_n[j].is_input()){
+            
+            nodesPos << _n[j].get_id()+1 <<","<<_n[j].get_position()[0] << "," << _n[j].get_position()[1] << ","<< "I"<< std::endl;
+
+        }else if (_n[j].is_feedback()){
+            
+            nodesPos << _n[j].get_id()+1 <<","<<_n[j].get_position()[0] << "," << _n[j].get_position()[1] << "," << "FB" << std::endl;
+
+        }else if (_n[j].is_buckling_node()){
+            
+            nodesPos << _n[j].get_id()+1 <<","<< _n[j].get_position()[0] << "," << _n[j].get_position()[1] << "," << "B" << std::endl;
+
+        }else if (_n[j].is_fixed() && !_n[j].is_buckling_node()){
+            
+            nodesPos << _n[j].get_id()+1 <<","<< _n[j].get_position()[0] << "," << _n[j].get_position()[1] << "," << "FX" << std::endl;
+
+        }else{
+            nodesPos << _n[j].get_id()+1 <<","<< _n[j].get_position()[0] << "," << _n[j].get_position()[1] << "," << "N" << std::endl;
+        }
+
         j++;
     }
 
-    // }
 
 }
 

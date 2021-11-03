@@ -163,7 +163,7 @@ void no_feedback_generator()
     std::mutex m;
 
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
-
+    bool valid_output = false;
 
     auto lambda_simulation = [&]() {
         for (int i = 0; i < number_of_simulations; i++) {
@@ -194,6 +194,8 @@ void no_feedback_generator()
                     Mean_Sq_three = MSE_three;
                     std::cout << "The best MSE at the moment is: " << Mean_Sq_three << "\n";
                     sim.output_Output_Signal();
+
+                    valid_output = true;
                 }
 
 
@@ -218,89 +220,89 @@ void no_feedback_generator()
     std::cout << "The best MSE for 2ndOrder : " << Mean_Sq_three << "\n";
 
 
+  
+    if (!isnan(total_MSE) && !isnan(total_MSE_two) && !isnan(total_MSE_three) && valid_output)
     {
-        if (!isnan(total_MSE) || !isnan(total_MSE_two) || !isnan(total_MSE_three))
-        {
-            ////Plotting Routine goes here
-            ////Thanks to pnumerics youtube https://www.youtube.com/channel/UCR6RmA40b4dg4oQw_NoSx6Q
-            Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
+        ////Plotting Routine goes here
+        ////Thanks to pnumerics youtube https://www.youtube.com/channel/UCR6RmA40b4dg4oQw_NoSx6Q
+        Gnuplot gp("\"C:\\Program Files\\gnuplot\\bin\\gnuplot.exe\"");
 
-            std::vector<double>  target;
-            std::vector<double>  output;
+        std::vector<double>  target;
+        std::vector<double>  output;
 
-            std::vector<double>  targetTwo;
-            std::vector<double>  outputTwo;
+        std::vector<double>  targetTwo;
+        std::vector<double>  outputTwo;
 
-            std::vector<double>  targetThree;
-            std::vector<double>  outputThree;
+        std::vector<double>  targetThree;
+        std::vector<double>  outputThree;
 
-            std::vector<double>  outputMerged;
+        std::vector<double>  outputMerged;
 
-            FileReader target_signal("src/Output/targetsignal.csv", target);
-            target_signal.file_read();
-            FileReader output_signal("src/Output/outputsignal.csv", output);
-            output_signal.file_read();
+        FileReader target_signal("src/Output/targetsignal.csv", target);
+        target_signal.file_read();
+        FileReader output_signal("src/Output/outputsignal.csv", output);
+        output_signal.file_read();
 
-            FileReader target_signal_two("src/Output/targetsignal_two.csv", targetTwo);
-            target_signal_two.file_read();
-            FileReader output_signal_two("src/Output/outputsignal_two.csv", outputTwo);
-            output_signal_two.file_read();
+        FileReader target_signal_two("src/Output/targetsignal_two.csv", targetTwo);
+        target_signal_two.file_read();
+        FileReader output_signal_two("src/Output/outputsignal_two.csv", outputTwo);
+        output_signal_two.file_read();
 
-            FileReader target_signal_three("src/Output/targetsignal_three.csv", targetThree);
-            target_signal_three.file_read();
-            FileReader output_signal_three("src/Output/outputsignal_three.csv", outputThree);
-            output_signal_three.file_read();
+        FileReader target_signal_three("src/Output/targetsignal_three.csv", targetThree);
+        target_signal_three.file_read();
+        FileReader output_signal_three("src/Output/outputsignal_three.csv", outputThree);
+        output_signal_three.file_read();
 
-            FileReader merged_signal("src/Output/merged_output.csv", outputMerged);
-            merged_signal.file_read();
+        FileReader merged_signal("src/Output/merged_output.csv", outputMerged);
+        merged_signal.file_read();
 
 
-            gp << "set multiplot layout 4,1\n";
-            gp << "set xlabel 'time [s]'\n";
-            gp << "set ylabel 'amplitude'\n";
-            gp << "set autoscale\n";
-            gp << "set grid\n";
+        gp << "set multiplot layout 4,1\n";
+        gp << "set xlabel 'time [s]'\n";
+        gp << "set ylabel 'amplitude'\n";
+        gp << "set autoscale\n";
+        gp << "set grid\n";
 
-            gp << "set title 'Volterra'\n";
-            gp << "unset key\n";
-            gp << "plot '-' with lines linestyle 1,"
-                << "'-' with lines linestyle 3 title 'VolterraOutput'\n";
+        gp << "set title 'Volterra'\n";
+        gp << "unset key\n";
+        gp << "plot '-' with lines linestyle 1,"
+            << "'-' with lines linestyle 3 title 'VolterraOutput'\n";
 
-            gp.send(target);
-            gp.send(output);
+        gp.send(target);
+        gp.send(output);
 
-            gp << "set title 'NARMA'\n";
-            gp << "unset key\n";
-            gp << "plot '-' with lines linestyle 1,"
-                << "'-' with lines linestyle 2 title 'NARMAOutput'\n";
+        gp << "set title 'NARMA'\n";
+        gp << "unset key\n";
+        gp << "plot '-' with lines linestyle 1,"
+            << "'-' with lines linestyle 2 title 'NARMAOutput'\n";
 
-            gp.send(targetTwo);
-            gp.send(outputTwo);
+        gp.send(targetTwo);
+        gp.send(outputTwo);
 
 
-            gp << "set title '2ndOrder'\n";
-            gp << "unset key\n";
-            gp << "plot '-' with lines linestyle 1,"
-                << "'-' with lines linestyle 2 title '2ndOrderOutput'\n";
+        gp << "set title '2ndOrder'\n";
+        gp << "unset key\n";
+        gp << "plot '-' with lines linestyle 1,"
+            << "'-' with lines linestyle 2 title '2ndOrderOutput'\n";
 
-            gp.send(targetThree);
-            gp.send(outputThree);
+        gp.send(targetThree);
+        gp.send(outputThree);
 
-            gp << "set title 'Merged'\n";
-            gp << "unset key\n";
-            gp << "plot '-' with lines linestyle 4 \n";
+        gp << "set title 'Merged'\n";
+        gp << "unset key\n";
+        gp << "plot '-' with lines linestyle 4 \n";
 
-            gp.send(outputMerged);
+        gp.send(outputMerged);
 
-            gp << "unset multiplot\n";
+        gp << "unset multiplot\n";
 
-            std::cin.get();
-        }
-        else
-        {
-            std::cout << "ERROR: Simulation has not finished or has encountered an error";
-        }
+        std::cin.get();
     }
+    else
+    {
+        std::cout << "ERROR: Simulation has either not finished, encountered an error or the MSE is unsatisfactory \n";
+    }
+    
 
 
 }
@@ -430,7 +432,7 @@ void feedback_generator()
     std::mutex m;
 
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
-
+    bool valid_output = false;
 
     //future make it multihreaded
     auto lambda_simulation = [&]() {
@@ -455,8 +457,8 @@ void feedback_generator()
                 total_MSE_two += MSE_two;
                 total_MSE_three += MSE_three;
 
-                if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three)
-                {
+                //if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three)
+                //{
                     Mean_Sq = MSE;
                     std::cout << "The best MSE at the moment of Van der Pol is: " << Mean_Sq << "\n";
                     Mean_Sq_two = MSE_two;
@@ -465,8 +467,8 @@ void feedback_generator()
                     std::cout << "The best MSE at the moment of Lokta-Volterra is: " << Mean_Sq_three << "\n";
 
                     sim.output_Output_Signal();
-
-                }
+                    valid_output = true;
+               // }
             }
         }
     };
@@ -489,7 +491,7 @@ void feedback_generator()
 
 
 
-    if (!isnan(total_MSE) || !isnan(total_MSE_two) || !isnan(total_MSE_three))
+    if (!isnan(total_MSE) && !isnan(total_MSE_two) && !isnan(total_MSE_three) && valid_output)
     {
         ////Plotting Routine goes here
         ////Thanks to pnumerics youtube https://www.youtube.com/channel/UCR6RmA40b4dg4oQw_NoSx6Q
@@ -605,7 +607,7 @@ void feedback_generator()
     }
     else
     {
-        std::cout << "ERROR: Simulation has not finished or has encountered an error";
+        std::cout << "ERROR: Simulation has either not finished, encountered an error or the MSE is unsatisfactory \n";
     }
 
 

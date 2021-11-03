@@ -172,17 +172,25 @@ void Node::init_render()
 
 void Node::draw(glm::mat4& projection, glm::mat4& view)
 {
-    if (is_fixed() == true)
+    if (is_fixed() && !is_buckling_node())
     {
         _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
     }
-    else if (this->is_input() == true )
+    else if (is_input())
     {
         _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
     }
+    else if(is_buckling_node())
+    {
+        _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+    }
+    else if (is_feedback() || (is_input() && is_feedback()))
+    {
+        _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(1.0f, 0.0f, 1.0f, 1.0f));
+    }
     else
     {
-        _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+        _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
 

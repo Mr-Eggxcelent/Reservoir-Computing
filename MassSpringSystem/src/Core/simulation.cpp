@@ -26,7 +26,7 @@
 #include <iomanip>
 #include<thread>
 
-#define DEBUG_DRAW 1
+#define DEBUG_DRAW 0
 
 
 void initGL();
@@ -169,25 +169,6 @@ void Simulation::execute(bool bias_learning)
             glClearColor(0, 0, 0, 0);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-            if (test == true) {
-                _state = SpringSystem::_STATE::UP;
-                for (unsigned int k = 0; k < 10000; k++)
-                {
-                    for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
-                    {
-                        _mass_spring->calculate_forces(j, _dt);
-                    }
-                    for (auto& l : _mass_spring->_n)
-                    {
-                        _mass_spring->buckle_system(l, _dt, _state, false);
-                        //Change the node position, velocity and acceleration in response.
-                        l.update(_dt);
-                        l.reset_forces();
-                    }
-                }
-                test = false;
-            }
-           
             LearningMatrixCreation(i, 0, _Target[0], _LearningMatrix[0], true);
 
 
@@ -820,28 +801,19 @@ void Simulation::output_Output_Signal()
     }
 
   
-    std::ofstream outFile("src/Output/Results/bestMSEEdge.txt");
-    std::ofstream outFile_2("src/Output/Results/bestMSENode.txt");
-    std::ifstream EdgesS("src/Output/s.csv");
-    std::ifstream EdgesT("src/Output/t.csv");
-    std::ifstream nodesX("src/Output/X.csv");
-    std::ifstream nodesY("src/Output/Y.csv");
+    std::ofstream outFile("src/Output/Results/bestMSEEdge.csv");
+    std::ofstream outFile_2("src/Output/Results/bestMSENode.csv");
+    std::ifstream Edges("src/Output/Edges.csv");
+    std::ifstream nodesInfo("src/Output/NodeInfo.csv");
+   
 
-    std::string line;
-    std::string line_2;
-  
-
-    if (outFile && EdgesS && EdgesT && nodesX && nodesY)
+    if (outFile && Edges && nodesInfo)
     {
-        while (std::getline(EdgesS, line,',') && std::getline(EdgesT, line_2,','))
-        {
-            outFile << line << "," << line_2 <<std::endl;
-        }
+        outFile << "from" << "," << "to" << std::endl;
+        outFile << Edges.rdbuf();
  
-        while (std::getline(nodesX, line, ',') && std::getline(nodesY, line_2,','))
-        {
-            outFile_2 << line << "," << line_2 <<std::endl;  
-        }
+        outFile_2 << "Node" << "," << "x_pos" << "," << "y_pos" << "," << "type" << std::endl;
+        outFile_2 << nodesInfo.rdbuf();
     }
 }
 

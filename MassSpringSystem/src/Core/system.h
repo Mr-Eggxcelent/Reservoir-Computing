@@ -107,9 +107,9 @@ private:
 
 public:
     std::vector<Node> _n;        // List of all nodes
-    enum class _STATE {ORIGINAL=0,DOWN=1,UP=2,DEFAULT=3};
-   // enum class _STATE { ORIGINAL, UP, DOWN, DEFAULT };
-    //enum class _STATE { UP=0, ORIGINAL=1, DOWN=2, DEFAULT=3 };
+    //enum class _STATE {ORIGINAL=0,DOWN=1,UP=2,DEFAULT=3};
+    enum class _STATE { ORIGINAL=0, UP=1, DOWN=2, DEFAULT=3 };
+     //enum class _STATE { UP=0, ORIGINAL=1, DOWN=2, DEFAULT=3 };
     _STATE _last_state;
 
 public:
