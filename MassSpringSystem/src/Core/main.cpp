@@ -428,7 +428,7 @@ void feedback_generator()
     double total_MSE_three = 0;
 
     std::vector<double>function_output;
-    int number_of_simulations =1;
+    int number_of_simulations = 1;
     std::mutex m;
 
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
@@ -457,8 +457,8 @@ void feedback_generator()
                 total_MSE_two += MSE_two;
                 total_MSE_three += MSE_three;
 
-                //if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three)
-                //{
+                if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three)
+                {
                     Mean_Sq = MSE;
                     std::cout << "The best MSE at the moment of Van der Pol is: " << Mean_Sq << "\n";
                     Mean_Sq_two = MSE_two;
@@ -468,7 +468,7 @@ void feedback_generator()
 
                     sim.output_Output_Signal();
                     valid_output = true;
-               // }
+                }
             }
         }
     };

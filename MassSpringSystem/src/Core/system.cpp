@@ -381,7 +381,7 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
 
         switch (state)
         {
-        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle(5.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position/2), dt); l.set_fixed(); }
                                             _render.render_text("ORIGINAL", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                              break;
         case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle(7.0f, dt); l.set_fixed(); }
@@ -390,6 +390,7 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
         case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle(3.0f, dt); l.set_fixed(); }
                                          _render.render_text("DOWN", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                          break;
+
         }
 
     }
@@ -397,7 +398,7 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
 
         switch (state)
         {
-        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle(5.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2), dt); l.set_fixed(); }
                                              break;
         case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle(7.0f, dt); l.set_fixed(); }
                                        break;

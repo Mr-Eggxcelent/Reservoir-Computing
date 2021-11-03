@@ -74,12 +74,12 @@ double Node::approach(double flGoal, double flCurrent, double dt)
 
     if (difference > dt)
     {
-        return flCurrent += dt;
+        return flCurrent + dt;
     }
 
-    if (difference < dt)
+    if (difference < -dt)
     {
-        return flCurrent -= dt;
+        return flCurrent - dt;
     }
 
     return flGoal;
@@ -91,13 +91,14 @@ void Node::buckle(double target_pos, double dt)
     double delta_y = target_pos - get_position()[1];
     double goal_dist = sqrt(delta_y * delta_y);
 
-    if (goal_dist >0.25) {
+    //maybe use when near machine epsilon distance
+    /*if (goal_dist > 0.0000025) {*/
 
         _velocity[1] = approach(delta_y, _velocity[1], dt * 100);
         _position[1] = _position[1] + dt * _velocity[1];
         _velocity[1] = _velocity[1] + dt;
 
-    }
+    //}
    
 }
 
