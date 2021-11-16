@@ -26,15 +26,11 @@
 #include <iomanip>
 #include<thread>
 
-#define DEBUG_DRAW 0
-
-
+#define DEBUG_DRAW 1
 void initGL();
 
 using namespace Eigen;
 
-//make into a singleton
-//spring init and execute speed up
 
 unsigned int WIDTH = 1000;
 unsigned int HEIGHT = 1000;
@@ -145,75 +141,37 @@ void Simulation::execute(bool bias_learning)
 
     _windowHandle.initWindow();
     initGL();
-
     _mass_spring->init_draw();
-    bool finished = false;
     unsigned int i = 0;
 
-    bool test = true;
-    while (!glfwWindowShouldClose(_windowHandle.getHandle()) && finished == false)
-    {
-        _state = SpringSystem::_STATE::ORIGINAL;
-        while (i < _maxtimesteps && _skip == false && !glfwWindowShouldClose(_windowHandle.getHandle())) {
-            // per-frame time logic
-           // --------------------
-            float currentFrame = glfwGetTime();
-            _deltaTime = currentFrame - _lastFrame;
-            _lastFrame = currentFrame;
-
-            processInput();
-
-            glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), ((float)_windowHandle.getWidth()) / ((float)_windowHandle.getHeight()), 0.1f, 100.0f);
-            glm::mat4 view = _camera.GetViewMatrix();
-
-            glClearColor(0, 0, 0, 0);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-            LearningMatrixCreation(i, 0, _Target[0], _LearningMatrix[0], true);
-
-
-            _mass_spring->render(projection, view);
-
-            i++;
-
-            glfwSwapBuffers(_windowHandle.getHandle());
-            glfwPollEvents();
-        }
-
-        i = 0;
-        _state = SpringSystem::_STATE::UP;
-
-
-        while (i < _maxtimesteps && _skip_two == false && !glfwWindowShouldClose(_windowHandle.getHandle())) {
-            // per-frame time logic
-           // --------------------
-            float currentFrame = glfwGetTime();
-            _deltaTime = currentFrame - _lastFrame;
-            _lastFrame = currentFrame;
-
-            processInput();
-
-            glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), ((float)_windowHandle.getWidth()) / ((float)_windowHandle.getHeight()), 0.1f, 100.0f);
-            glm::mat4 view = _camera.GetViewMatrix();
-
-            glClearColor(0, 0, 0, 0);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-
-            LearningMatrixCreation(i, _data.order_of_equations, _Target[1], _LearningMatrix[1], true);
-
-            _mass_spring->render(projection, view);
-
-            i++;
-
-            glfwSwapBuffers(_windowHandle.getHandle());
-            glfwPollEvents();
-        }
-
-        finished = true;
+   
+    _state = SpringSystem::_STATE::ORIGINAL;
+    while (i < _maxtimesteps && !glfwWindowShouldClose(_windowHandle.getHandle())) {
+        // per-frame time logic
+       // --------------------
+        float currentFrame = glfwGetTime();
+        _deltaTime = currentFrame - _lastFrame;
+        _lastFrame = currentFrame;
+   
+        processInput();
+   
+        glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), ((float)_windowHandle.getWidth()) / ((float)_windowHandle.getHeight()), 0.1f, 100.0f);
+        glm::mat4 view = _camera.GetViewMatrix();
+   
+        glClearColor(0, 0, 0, 0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        
+        LearningMatrixCreation(i, 0, _Target[0], _LearningMatrix[0], true);
+   
+   
+        _mass_spring->render(projection, view);
+   
+        i++;
+   
+        glfwSwapBuffers(_windowHandle.getHandle());
+        glfwPollEvents();
     }
-
-
+    
     clearResources();
 #else
 
@@ -240,7 +198,7 @@ void Simulation::openLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        for (unsigned int k = 0; k < 40000; k++)
+        for (unsigned int k = 0; k < 20000; k++)
         {
             for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
             {
@@ -255,7 +213,13 @@ void Simulation::openLoop()
             }
         }
 
-       //_state = static_cast<SpringSystem::_STATE>(i);
+        switch (_state) {
+        case SpringSystem::_STATE::UP: _mass_spring->Output_For_Plot("up");
+            break;
+        case SpringSystem::_STATE::DOWN:_mass_spring->Output_For_Plot("down");
+            break;
+        }
+
        for (unsigned int j = 0; j < _maxtimesteps; j++)
        {
            LearningMatrixCreation(j, (_data.order_of_equations * i), _Target[i], _LearningMatrix[i], false);
@@ -311,7 +275,7 @@ void Simulation::closedLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        for (unsigned int k = 0; k < 40000; k++)
+        for (unsigned int k = 0; k < 20000; k++)
         {
             for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
             {
@@ -326,7 +290,6 @@ void Simulation::closedLoop()
             }
         }
 
-        //_state = static_cast<SpringSystem::_STATE>(i);
         for (unsigned int j = 0; j < _Test_Feedback.rows(); j++)
         {
             TestMatrixCreation(j, (_data.order_of_equations * i), _TestMatrix[i], false);
@@ -444,8 +407,11 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
     std::ofstream merged_target("src/Output/merged_target.csv");  merged_target.precision(15);
 
     unsigned int stride = 0;
-
-  
+    
+    if (_Output.size()< (_learning_time_test*_number_of_equations)) {
+        throw "Matrix is not filled";
+    }
+   
     for (unsigned int i = 0; i < _maxtimesteps; i++)
     {
         if (i >= (_wash_out_time + _learning_time))
@@ -548,6 +514,12 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
         {
             _MSE.push_back(Utility::MSE(_Output_Signal[i], _Target_Signal_Vec[i]));
         }
+
+
+       std::cout << "Volterra: The mean squared error of the output signal versus the target signal is: " << _MSE[0] << "\n";
+       std::cout << "NARMA: The mean squared error of the output signal versus the target signal is: " << _MSE[1] << "\n";
+       std::cout << "2nd Order: The mean squared error of the output signal versus the target signal is: " << _MSE[2] << "\n";
+    
 
         return std::optional<std::vector<double>>(_MSE);
 
@@ -653,8 +625,14 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
 
     for (int i = 0; i < _Output_Signal.size(); i++)
     {
-            subVecOutput[i] = slice(_Test_Output_Signal[i],20000,30000);
-            subVecFeedback[i] = slice(_Feedback_Signal[i],20000,30000);
+   
+        if (_Test_Output_Signal[i].size() < _learning_time_test)
+        {
+            throw "Slicing has failed";
+        }
+
+        subVecOutput[i] = slice(_Test_Output_Signal[i],_learning_time_test-10000, _learning_time_test);
+        subVecFeedback[i] = slice(_Feedback_Signal[i], _learning_time_test-10000, _learning_time_test);
 
     }
 
@@ -663,7 +641,6 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
     {
         _MSE.push_back(Utility::MSE(subVecOutput[i], subVecFeedback[i]));
     }
-
 
     std::cout << "Van der Pol Signal 1: The mean squared error of the output signal versus the target signal is: " << _MSE[0] << "\n";
     std::cout << "Van der Pol Signal 2: The mean squared error of the output signal versus the target signal is: " << _MSE[1] << "\n";
@@ -802,18 +779,31 @@ void Simulation::output_Output_Signal()
 
   
     std::ofstream outFile("src/Output/Results/bestMSEEdge.csv");
-    std::ofstream outFile_2("src/Output/Results/bestMSENode.csv");
+
+    std::ofstream outFile_1("src/Output/Results/bestMSENode_orig.csv");
+    std::ofstream outFile_2("src/Output/Results/bestMSENode_up.csv");
+    std::ofstream outFile_3("src/Output/Results/bestMSENode_down.csv");
+
     std::ifstream Edges("src/Output/Edges.csv");
-    std::ifstream nodesInfo("src/Output/NodeInfo.csv");
+
+    std::ifstream nodesInfo_orig("src/Output/NodeInfo_original.csv");
+    std::ifstream nodesInfo_up("src/Output/NodeInfo_up.csv");
+    std::ifstream nodesInfo_down("src/Output/NodeInfo_down.csv");
    
 
-    if (outFile && Edges && nodesInfo)
+    if (outFile && Edges && nodesInfo_orig)
     {
         outFile << "from" << "," << "to" << std::endl;
         outFile << Edges.rdbuf();
  
+        outFile_1 << "Node" << "," << "x_pos" << "," << "y_pos" << "," << "type" << std::endl;
+        outFile_1 << nodesInfo_orig.rdbuf();
+
         outFile_2 << "Node" << "," << "x_pos" << "," << "y_pos" << "," << "type" << std::endl;
-        outFile_2 << nodesInfo.rdbuf();
+        outFile_2 << nodesInfo_up.rdbuf();
+
+        outFile_3 << "Node" << "," << "x_pos" << "," << "y_pos" << "," << "type" << std::endl;
+        outFile_3 << nodesInfo_down.rdbuf();
     }
 }
 
@@ -831,13 +821,7 @@ void Simulation::processInput()
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_A) == GLFW_PRESS)
         _camera.ProcessKeyboard(LEFT, _deltaTime);
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_D) == GLFW_PRESS)
-        _camera.ProcessKeyboard(RIGHT, _deltaTime);
-
-    if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_C) == GLFW_PRESS)
-        _skip = true;
-    if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_V) == GLFW_PRESS)
-        _skip_two = true;
-     
+        _camera.ProcessKeyboard(RIGHT, _deltaTime);     
 
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_1) == GLFW_PRESS)
         _state=SpringSystem::_STATE::ORIGINAL;

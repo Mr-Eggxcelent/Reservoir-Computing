@@ -12,7 +12,7 @@
 #include <string>
 #include <iomanip>
 #include<map>
-#include "../vendor/delaunator-cpp/include/delaunator.hpp"
+#include <delaunator.hpp>
 
 using namespace Eigen;
 
@@ -31,7 +31,7 @@ SpringSystem::SpringSystem(InitialDataValues& data, Camera& camera,unsigned int&
     Initialize_Nodes();
     Delaunay_Triangulation_and_Spring_Creation();
     Initialize_Springs();
-    Output_For_Plot();
+    Output_For_Plot("original");
 
 }
 
@@ -384,10 +384,10 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
         case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position/2), dt); l.set_fixed(); }
                                             _render.render_text("ORIGINAL", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                              break;
-        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle(7.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)+ 2.0f, dt); l.set_fixed(); }
                                        _render.render_text("UP", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                        break;
-        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle(3.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)-2.0f, dt); l.set_fixed(); }
                                          _render.render_text("DOWN", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                          break;
 
@@ -400,9 +400,9 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
         {
         case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2), dt); l.set_fixed(); }
                                              break;
-        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle(7.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)+2.0f, dt); l.set_fixed(); }
                                        break;
-        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle(3.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)-2.0f, dt); l.set_fixed(); }
                                          break;
         }
 
@@ -564,7 +564,7 @@ void SpringSystem::Get_Triangles(std::vector<double>&coords)
 }
 
 
-void SpringSystem::Output_For_Plot()
+void SpringSystem::Output_For_Plot(std::string system_pos)
 {
     PROFILE_FUNCTION();
 
@@ -581,7 +581,7 @@ void SpringSystem::Output_For_Plot()
 
     Edges << _s[_s.size() - 1].get_node_a() + 1 << "," << _s[_s.size() - 1].get_node_b() + 1 << std::endl;
 
-    str = "src/Output/NodeInfo.csv";
+    str = "src/Output/NodeInfo_"+system_pos+".csv";
     std::ofstream nodesPos(str);
 
     //just put x,y node position and type together in systems.cpp (still to do)

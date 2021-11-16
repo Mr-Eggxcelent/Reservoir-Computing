@@ -164,7 +164,7 @@ public:
     //Get the triangles from the Delaunay Triangulation.
     void Get_Triangles(std::vector<double>&coords);
 
-    void Output_For_Plot();
+    void Output_For_Plot(std::string system_pos);
 
     //Expression of log 10 uniform for spring and damping coefficients
     double Spring_And_Damping_Coefficient_1(double initial, double finalvalue);

@@ -117,21 +117,21 @@ t = np.linspace(0,total_time,int(tot_timestep))
 ##np.savetxt("vanderpol.csv", np.transpose(X_trunc), fmt ="%s", delimiter=",")
 
 ##Lokta Volterra
-X0= np.array([5,5])
-X_1, infodict = integrate.odeint(lokta_volterra, X0, t, full_output=True)
-
-#get rid of initial phase
-discard=init_phase/time_step+1
-X_trunc_1 = X_1[int(init_phase/time_step+1):,:]
-
-plt.xlabel('timesteps []');
-plt.ylabel ('[ ]');
-plt.title('state variables x_1 and x_2')
-##plt.plot(t[int(init_phase/time_step+1):],X_trunc_1[:,0])
-##plt.plot(t[int(init_phase/time_step+1):],X_trunc_1[:,1])
-plt.plot(X_trunc_1[:,0],X_trunc_1[:,1])
-plt.show()
-np.savetxt("lokta_volterra.csv", X_trunc_1, fmt ="%s", delimiter=",")
+##X0= np.array([5,5])
+##X_1, infodict = integrate.odeint(lokta_volterra, X0, t, full_output=True)
+##
+###get rid of initial phase
+##discard=init_phase/time_step+1
+##X_trunc_1 = X_1[int(init_phase/time_step+1):,:]
+##
+##plt.xlabel('timesteps []');
+##plt.ylabel ('[ ]');
+##plt.title('state variables x_1 and x_2')
+####plt.plot(t[int(init_phase/time_step+1):],X_trunc_1[:,0])
+####plt.plot(t[int(init_phase/time_step+1):],X_trunc_1[:,1])
+##plt.plot(X_trunc_1[:,0],X_trunc_1[:,1])
+##plt.show()
+##np.savetxt("lokta_volterra.csv", X_trunc_1, fmt ="%s", delimiter=",")
 
 ##morris_lecar
 ##X0= np.array([-25.050458314,0.3])
@@ -169,29 +169,29 @@ np.savetxt("lokta_volterra.csv", X_trunc_1, fmt ="%s", delimiter=",")
 ##np.savetxt("lissajous.csv",np.transpose(X_trunc), fmt ="%s", delimiter=",")
 
 ##### 2nd order
-##X= np.zeros(t.size) 
-##f1 = 2.11; 
-##f2 = 3.73;
-##f3 = 4.33;
-##u=np.zeros(t.size)
-##u = 0.64*(np.sin(2*math.pi*f1*t)*np.sin(2*math.pi*f2*t)*np.sin(2*math.pi*f3*t));
-##
-##
-##for i in range(2,t.size):
-##    X[i] = second_order_system((X[i-1]),X[i-2],u[i-1]);
-##
-##
-### get rid of initial phase
-##discard=init_phase/time_step+1
-##X_trunc_2 = X[int(init_phase/time_step+1):]
-##
-##plt.xlabel('timesteps []');
-##plt.ylabel ('[ ]');
-##plt.title('state variables x_1 and x_2')
-##plt.plot(t[int(init_phase/time_step+1):],X_trunc_2[:])
-##plt.show()
-##
-##np.savetxt("2ndOrder.csv", X_trunc_2, fmt ="%s", delimiter=",")
-##
+X= np.zeros(t.size) 
+f1 = 2.11; 
+f2 = 3.73;
+f3 = 4.33;
+u=np.zeros(t.size)
+u = 0.1*(np.sin(2*math.pi*f1*t)*np.sin(2*math.pi*f2*t)*np.sin(2*math.pi*f3*t));
+
+
+for i in range(2,t.size):
+    X[i] = second_order_system((X[i-1]),X[i-2],u[i-1]);
+
+
+# get rid of initial phase
+discard=init_phase/time_step+1
+X_trunc_2 = X[int(init_phase/time_step+1):]
+
+plt.xlabel('timesteps []');
+plt.ylabel ('[ ]');
+plt.title('state variables x_1 and x_2')
+plt.plot(t[int(init_phase/time_step+1):],X_trunc_2[:])
+plt.show()
+
+np.savetxt("2ndOrder.csv", X_trunc_2, fmt ="%s", delimiter=",")
+
 
 print("DONE")

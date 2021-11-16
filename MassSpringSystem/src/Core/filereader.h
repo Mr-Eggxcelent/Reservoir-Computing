@@ -13,7 +13,7 @@ public:
 	{
 	}
 
-	void file_read(int column=1)
+	void file_read(int column)
 	{
 		std::ifstream file_input((_file_name).c_str()); file_input.precision(15);
 		std::string tmp;

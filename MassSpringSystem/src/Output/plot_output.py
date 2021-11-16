@@ -23,9 +23,9 @@ target_signal_3 = pd.read_csv('Results/targetsignal_three_washout.csv',header=No
 merged = pd.read_csv('merged_test_output.csv',header=None)
 feedback= pd.read_csv('merged_feedback.csv',header=None)
 
-data_x = np.linspace(0, 1,25000)
-merged_x = np.linspace(0, 1,135000)
-target_x = np.linspace(0, 1,25000)          
+data_x = np.linspace(0, 1,20000)
+merged_x = np.linspace(0, 1,120000)
+target_x = np.linspace(0, 1,20000)          
                                         
 
 fig, axs = plt.subplots(5)

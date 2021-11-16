@@ -47,8 +47,8 @@ int main(int argc, char** argv)
 
     auto begin = std::chrono::high_resolution_clock::now();
 
-    //no_feedback_generator();
-   feedback_generator();
+    no_feedback_generator();
+   //feedback_generator();
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms \n";
@@ -73,17 +73,15 @@ void no_feedback_generator()
     
     std::cout << "-- Start ---------------------------------------- \n";
 
-    //ifstream file_Input ( "/Users/hh14185/Leverhulme_Trust_Proposal_spider_web/Xcode/Nonlinear-Mass-Spring-System-BR/input.csv" );
-
     auto read_lambda = [](std::string file_name, std::vector<double>& vec_signal,int column = 1) {
         FileReader input_signal(file_name, vec_signal);
         input_signal.file_read(column);
     };
 
-    std::thread input_thread(read_lambda, "src/Data/inputsignal.csv", std::ref(input));
-    std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra));
-    std::thread NARMA_thread(read_lambda, "src/Data/NARMA.csv", std::ref(narma));
+    std::thread input_thread(read_lambda, "src/Data/inputsignal.csv", std::ref(input),1);
+    std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra),2);
     std::thread second_order_thread(read_lambda, "src/Data/2ndOrder.csv", std::ref(second_order),0);
+    std::thread NARMA_thread(read_lambda, "src/Data/NARMA.csv", std::ref(narma),1);
 
     volterra_thread.join();
     second_order_thread.join();
@@ -95,8 +93,8 @@ void no_feedback_generator()
     
   
     Target_Signals.col(0)  = Eigen::Map<Eigen::VectorXd>(volterra.data(), volterra.size());
-    Target_Signals.col(1)  = Eigen::Map<Eigen::VectorXd>(narma.data(), narma.size());
-    Target_Signals.col(2)  = Eigen::Map<Eigen::VectorXd>(second_order.data(), second_order.size());
+    Target_Signals.col(1)  = Eigen::Map<Eigen::VectorXd>(second_order.data(), second_order.size());
+    Target_Signals.col(2)  = Eigen::Map<Eigen::VectorXd>(narma.data(), narma.size());
     Input_Signals .col(0)  = Eigen::Map<Eigen::VectorXd>(input.data(), input.size());
 
     std::map <std::string, double>var_map;
@@ -159,7 +157,7 @@ void no_feedback_generator()
 
 
     std::vector<double> function_output;
-    int number_of_simulations = 10;
+    int number_of_simulations = 1;
     std::mutex m;
 
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
@@ -171,10 +169,15 @@ void no_feedback_generator()
             {
                 std::scoped_lock<std::mutex> lock(m);
                 /*std::optional<std::vector<double>>opt_learning_matrix = sim.output_LearningMatrix_and_MeanSquaredError();
-
                 if (opt_learning_matrix)
                 {*/
-                function_output = std::move(sim.output_LearningMatrix_and_MeanSquaredError().value());
+                try {
+                    function_output = std::move(sim.output_LearningMatrix_and_MeanSquaredError().value());
+                }
+                catch (const char* msg) {
+                    std::cerr << msg << std::endl;
+                    return 0;
+                }
                 //  }
 
                 MSE = std::move(function_output[0]);
@@ -239,22 +242,22 @@ void no_feedback_generator()
         std::vector<double>  outputMerged;
 
         FileReader target_signal("src/Output/targetsignal.csv", target);
-        target_signal.file_read();
+        target_signal.file_read(0);
         FileReader output_signal("src/Output/outputsignal.csv", output);
-        output_signal.file_read();
+        output_signal.file_read(0);
 
         FileReader target_signal_two("src/Output/targetsignal_two.csv", targetTwo);
-        target_signal_two.file_read();
+        target_signal_two.file_read(0);
         FileReader output_signal_two("src/Output/outputsignal_two.csv", outputTwo);
-        output_signal_two.file_read();
+        output_signal_two.file_read(0);
 
         FileReader target_signal_three("src/Output/targetsignal_three.csv", targetThree);
-        target_signal_three.file_read();
+        target_signal_three.file_read(0);
         FileReader output_signal_three("src/Output/outputsignal_three.csv", outputThree);
-        output_signal_three.file_read();
+        output_signal_three.file_read(0);
 
         FileReader merged_signal("src/Output/merged_output.csv", outputMerged);
-        merged_signal.file_read();
+        merged_signal.file_read(0);
 
 
         gp << "set multiplot layout 4,1\n";
@@ -271,7 +274,7 @@ void no_feedback_generator()
         gp.send(target);
         gp.send(output);
 
-        gp << "set title 'NARMA'\n";
+        gp << "set title '2ndOrder'\n";
         gp << "unset key\n";
         gp << "plot '-' with lines linestyle 1,"
             << "'-' with lines linestyle 2 title 'NARMAOutput'\n";
@@ -280,7 +283,7 @@ void no_feedback_generator()
         gp.send(outputTwo);
 
 
-        gp << "set title '2ndOrder'\n";
+        gp << "set title 'NARMA'\n";
         gp << "unset key\n";
         gp << "plot '-' with lines linestyle 1,"
             << "'-' with lines linestyle 2 title '2ndOrderOutput'\n";
@@ -330,7 +333,6 @@ void feedback_generator()
 
     std::cout << "-- Start ---------------------------------------- \n";
 
-    //ifstream file_Input ( "/Users/hh14185/Leverhulme_Trust_Proposal_spider_web/Xcode/Nonlinear-Mass-Spring-System-BR/input.csv" );
 
     auto read_lambda = [](std::string file_name, std::vector<double>& vec_signal, int column = 1) {
         FileReader input_signal(file_name, vec_signal);
@@ -440,9 +442,15 @@ void feedback_generator()
         for (int i = 0; i < number_of_simulations; i++) {
             Simulation sim(data, Input_Signals, Target_Signals, wash_out_time, learning_time, learning_time_test, camera, true);
             {
-                std::scoped_lock<std::mutex> lock(m);
-                auto function_output = std::move(sim.output_TestMatrix_and_MeanSquaredError());
 
+                std::scoped_lock<std::mutex> lock(m);
+                std::vector<double> function_output;
+                try {
+                    function_output = std::move(sim.output_TestMatrix_and_MeanSquaredError());
+                }catch (const char* msg) {
+                    std::cerr << msg << std::endl;
+                    return 0;
+                }
                 /*  std::optional<std::vector<double>>opt_learning_matrix =  sim.output_LearningMatrix_and_MeanSquaredError();
                   if (opt_learning_matrix)
                   {*/
@@ -470,9 +478,9 @@ void feedback_generator()
                     valid_output = true;
                 }
             }
+         
         }
     };
-
 
     std::thread test_thread(lambda_simulation);
     test_thread.join();
@@ -505,6 +513,7 @@ void feedback_generator()
         std::vector<double>  outputTwo;
         std::vector<double>  outputTwo_col2;
 
+        std::vector<double>  targetThree;
         std::vector<double>  outputThree;
         std::vector<double>  outputThree_col2;
 
@@ -517,19 +526,21 @@ void feedback_generator()
         std::vector<double>  outputMerged_Test;
 
         FileReader target_signal("src/Output/targetsignal.csv", target);
-        target_signal.file_read();
+        target_signal.file_read(0);
         FileReader output_signal("src/Output/Results/outputsignal_washout.csv", output);
         output_signal.file_read(0);
         FileReader output_signal_col2("src/Output/Results/outputsignal_washout.csv", output_col2);
         output_signal_col2.file_read(1);
 
         FileReader target_signal_two("src/Output/targetsignal_two.csv", targetTwo);
-        target_signal_two.file_read();
+        target_signal_two.file_read(0);
         FileReader output_signal_two("src/Output/Results/outputsignal_two_washout.csv", outputTwo);
         output_signal_two.file_read(0);
         FileReader output_signal_two_col2("src/Output/Results/outputsignal_two_washout.csv", outputTwo_col2);
         output_signal_two_col2.file_read(1);
 
+        FileReader target_signal_three("src/Output/targetsignal_three.csv", targetThree);
+        target_signal_three.file_read(0);
         FileReader output_signal_three("src/Output/Results/outputsignal_three_washout.csv", outputThree);
         output_signal_three.file_read(0);
         FileReader output_signal_three_col2("src/Output/Results/outputsignal_three_washout.csv", outputThree_col2);
@@ -546,9 +557,9 @@ void feedback_generator()
         merged_target_col2.file_read(1);
 
         FileReader merged_test_signal("src/Output/merged_test_output.csv", outputMerged_Test);
-        merged_test_signal.file_read();
+        merged_test_signal.file_read(0);
         FileReader merged_feedback("src/Output/merged_feedback.csv", feedbackMerged);
-        merged_feedback.file_read();
+        merged_feedback.file_read(0);
 
 
         gp << "set multiplot layout 5,1\n";

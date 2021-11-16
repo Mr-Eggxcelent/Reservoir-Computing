@@ -1,7 +1,7 @@
-wash_out_time 20000
+wash_out_time 30000
 learning_time 100000
 learning_time_test 5000
-N 20
+N 12
 ux 0
 uy 0
 number_of_equations 3

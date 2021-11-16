@@ -64,8 +64,6 @@ private:
 
     unsigned int _maxtimesteps;
 
-    bool _skip = false;
-    bool _skip_two = false;
     bool _feedback_state;
 
     //This is for the chaos test;

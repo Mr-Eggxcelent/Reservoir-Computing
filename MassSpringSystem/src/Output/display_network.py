@@ -9,7 +9,7 @@ import matplotlib.lines as mlines
 edges=pd.read_csv('Results/bestMSEEdge.csv',sep=',')
 G=nx.from_pandas_edgelist(edges,'from','to')
 
-nodes = pd.read_csv('Results/bestMSENode.csv', sep=',')
+nodes = pd.read_csv('Results/bestMSENode_down.csv', sep=',')
 data  = nodes.set_index('Node').to_dict('index').items()
 G.add_nodes_from(data)
 
@@ -65,10 +65,12 @@ FG = G.subgraph(shape_fixed)
 nx.draw_networkx_nodes(OG,pos,node_color=[colour_map[node[1]['type']]
                       for node in OG.nodes(data=True)],
                       node_shape='o',
+                      node_size=120,
                       edgecolors='black')
 nx.draw_networkx_nodes(FG,pos,node_color=[colour_map[node[1]['type']]
                       for node in FG.nodes(data=True)],
                       node_shape='s',
+                      node_size=120,
                       edgecolors='black')
 nx.draw_networkx_edges(G,pos)
 plt.legend(handles=[input_node, feedback_node, buckling_node,fixed_node,internal_node]) 
