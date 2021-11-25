@@ -47,8 +47,8 @@ int main(int argc, char** argv)
 
     auto begin = std::chrono::high_resolution_clock::now();
 
-    no_feedback_generator();
-   //feedback_generator();
+    //no_feedback_generator();
+    feedback_generator();
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms \n";
@@ -320,14 +320,14 @@ void feedback_generator()
     srand(rdtsc());
 
 
-    std::vector<double>vanderpol;
-    std::vector<double>vanderpol_two;
+    std::vector<double>signal_1;
+    std::vector<double>signal_1_two;
 
-    std::vector<double>quad;
-    std::vector<double>quad_two;
+    std::vector<double>signal_2;
+    std::vector<double>signal_2_two;
 
-    std::vector<double>lokta_volterra;
-    std::vector<double>lokta_volterra_two;
+    std::vector<double>signal_3;
+    std::vector<double>signal_3_two;
 
     std::vector<double>input;
 
@@ -342,32 +342,32 @@ void feedback_generator()
     std::thread input_thread(read_lambda, "src/Data/inputsignal.csv", std::ref(input));
     input_thread.join();
 
-    std::thread vanderpol_thread(read_lambda, "src/Data/vanderpol.csv", std::ref(vanderpol),0);
-    std::thread quad_thread(read_lambda, "src/Data/quad.csv", std::ref(quad),0);
-    std::thread lokta_thread(read_lambda,"src/Data/lokta_volterra.csv",std::ref(lokta_volterra),0);
-    vanderpol_thread.join();
-    quad_thread.join();
-    lokta_thread.join();
-    std::thread vanderpol_thread_2(read_lambda, "src/Data/vanderpol.csv", std::ref(vanderpol_two),1);
-    std::thread quad_thread_2(read_lambda, "src/Data/quad.csv", std::ref(quad_two),1);
-    std::thread lokta_thread_2(read_lambda, "src/Data/lokta_volterra.csv", std::ref(lokta_volterra_two), 1);
-    vanderpol_thread_2.join();
-    quad_thread_2.join();
-    lokta_thread_2.join();
+    std::thread signal_1_thread(read_lambda, "src/Data/vanderpol.csv", std::ref(signal_1),0);
+    std::thread signal_2_thread(read_lambda, "src/Data/quad.csv", std::ref(signal_2),0);
+    std::thread signal_3_thread(read_lambda,"src/Data/lissajous.csv",std::ref(signal_3),0);
+    signal_1_thread.join();
+    signal_2_thread.join();
+    signal_3_thread.join();
+    std::thread signal_1_thread_2(read_lambda, "src/Data/vanderpol.csv", std::ref(signal_1_two),1);
+    std::thread signal_2_thread_2(read_lambda, "src/Data/quad.csv", std::ref(signal_2_two),1);
+    std::thread signal_3_thread_2(read_lambda, "src/Data/lissajous.csv", std::ref(signal_3_two), 1);
+    signal_1_thread_2.join();
+    signal_2_thread_2.join();
+    signal_3_thread_2.join();
 
 
-    MatrixXd Target_Signals(vanderpol.size(), 6);
+    MatrixXd Target_Signals(signal_1.size(), 6);
     MatrixXd Input_Signals(input.size(), 1);
 
 
-    Target_Signals.col(0) = Eigen::Map<Eigen::VectorXd>(vanderpol.data(), vanderpol.size());
-    Target_Signals.col(1) = Eigen::Map<Eigen::VectorXd>(vanderpol_two.data(), vanderpol_two.size());
+    Target_Signals.col(0) = Eigen::Map<Eigen::VectorXd>(signal_1.data(), signal_1.size());
+    Target_Signals.col(1) = Eigen::Map<Eigen::VectorXd>(signal_1_two.data(), signal_1_two.size());
 
-    Target_Signals.col(2) = Eigen::Map<Eigen::VectorXd>(quad.data(), quad.size());
-    Target_Signals.col(3) = Eigen::Map<Eigen::VectorXd>(quad_two.data(), quad_two.size());
+    Target_Signals.col(2) = Eigen::Map<Eigen::VectorXd>(signal_2.data(), signal_2.size());
+    Target_Signals.col(3) = Eigen::Map<Eigen::VectorXd>(signal_2_two.data(), signal_2_two.size());
 
-    Target_Signals.col(4) = Eigen::Map<Eigen::VectorXd>(lokta_volterra.data(), lokta_volterra.size());
-    Target_Signals.col(5) = Eigen::Map<Eigen::VectorXd>(lokta_volterra_two.data(), lokta_volterra_two.size());
+    Target_Signals.col(4) = Eigen::Map<Eigen::VectorXd>(signal_3.data(), signal_3.size());
+    Target_Signals.col(5) = Eigen::Map<Eigen::VectorXd>(signal_3_two.data(), signal_3_two.size());
 
     Input_Signals.col(0) = Eigen::Map<Eigen::VectorXd>(input.data(), input.size());
 
@@ -472,7 +472,7 @@ void feedback_generator()
                     Mean_Sq_two = MSE_two;
                     std::cout << "The best MSE at the moment of Quad is: " << Mean_Sq_two << "\n";
                     Mean_Sq_three = MSE_three;
-                    std::cout << "The best MSE at the moment of Lokta-Volterra is: " << Mean_Sq_three << "\n";
+                    std::cout << "The best MSE at the moment of Lissajous is: " << Mean_Sq_three << "\n";
 
                     sim.output_Output_Signal();
                     valid_output = true;
@@ -494,8 +494,8 @@ void feedback_generator()
     std::cout << "The best MSE for Quad : " << Mean_Sq_two << "\n";
 
     total_MSE_three = total_MSE_three / number_of_simulations;
-    std::cout << "The average MSE for Lokta-Volterra: " << total_MSE_three << "\n";
-    std::cout << "The best MSE for Lokta-Volterra : " << Mean_Sq_three << "\n";
+    std::cout << "The average MSE for Lissajous: " << total_MSE_three << "\n";
+    std::cout << "The best MSE for Lissajous : " << Mean_Sq_three << "\n";
 
 
 
@@ -584,10 +584,10 @@ void feedback_generator()
         gp.send(outputTwo);
         gp.send(outputTwo_col2);
 
-        gp << "set title 'LoktaVolterra'\n";
+        gp << "set title 'Lissajous'\n";
         gp << "unset key\n";
         gp << "plot '-' with lines linestyle 2,"
-            << "'-' with lines linestyle 3 title 'LoktaVolterra'\n";
+            << "'-' with lines linestyle 3 title 'Lissajous'\n";
 
         gp.send(outputThree);
         gp.send(outputThree_col2);

@@ -26,7 +26,7 @@
 #include <iomanip>
 #include<thread>
 
-#define DEBUG_DRAW 1
+#define DEBUG_DRAW 0
 void initGL();
 
 using namespace Eigen;
@@ -198,7 +198,7 @@ void Simulation::openLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        for (unsigned int k = 0; k < 20000; k++)
+        for (unsigned int k = 0; k < 30000; k++)
         {
             for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
             {
@@ -275,7 +275,7 @@ void Simulation::closedLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        for (unsigned int k = 0; k < 20000; k++)
+        for (unsigned int k = 0; k < 30000; k++)
         {
             for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
             {
@@ -646,8 +646,8 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
     std::cout << "Van der Pol Signal 2: The mean squared error of the output signal versus the target signal is: " << _MSE[1] << "\n";
     std::cout << "Quad Signal 1: The mean squared error of the output signal versus the target signal is: " << _MSE[2] << "\n";
     std::cout << "Quad Signal 2: The mean squared error of the output signal versus the target signal is: " << _MSE[3] << "\n";
-    std::cout << "Lokta-Volterra Signal 1: The mean squared error of the output signal versus the target signal is: " << _MSE[4] << "\n";
-    std::cout << "Lokta-Volterra Signal 2: The mean squared error of the output signal versus the target signal is: " << _MSE[5] << "\n";
+    std::cout << "Lissajous Signal 1: The mean squared error of the output signal versus the target signal is: " << _MSE[4] << "\n";
+    std::cout << "Lissajous Signal 2: The mean squared error of the output signal versus the target signal is: " << _MSE[5] << "\n";
 
 
 

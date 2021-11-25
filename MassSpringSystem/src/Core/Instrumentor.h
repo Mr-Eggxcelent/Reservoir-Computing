@@ -1,4 +1,4 @@
-///written by TheCherno (Yan Chernikov) edited by davechurchill
+//written by TheCherno (Yan Chernikov) edited by davechurchill
 //https://gist.github.com/TheCherno/31f135eea6ee729ab5f26a6908eb3a5e
 #pragma once
 

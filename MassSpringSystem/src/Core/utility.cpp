@@ -160,7 +160,7 @@ namespace Utility {
     double White_Noise_Generator(bool feedback) {
 
         if (feedback) {
-            std::normal_distribution<double> distr(0, 0.000001);
+            std::normal_distribution<double> distr(0, 0.0000001);
             return distr(generator);
         }
         else {

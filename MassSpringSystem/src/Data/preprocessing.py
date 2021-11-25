@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 ##scaler_3 = preprocessing.StandardScaler().fit(df_3)
 ##X_scaled_3 = scaler_3.transform(df_3)
 
-df_4 = pandas.read_csv('lokta_volterra.csv')
+df_4 = pandas.read_csv('vanderpol.csv')
 scaler_4 = preprocessing.StandardScaler().fit(df_4)
 X_scaled_4 = scaler_4.transform(df_4)
 
@@ -35,7 +35,7 @@ plt.figure(figsize=(6.8, 4.2))
 
 plt.plot(numbers_4, X_scaled_4[:,0],'r')
 plt.plot(numbers_4, df_4.iloc[:, 0],'b')
-np.savetxt("lokta_volterra.csv", X_scaled_4, fmt ="%s", delimiter=",")
+np.savetxt("vanderpol.csv", X_scaled_4, fmt ="%s", delimiter=",")
 
 plt.show()
 

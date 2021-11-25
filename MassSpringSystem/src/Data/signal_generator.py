@@ -7,10 +7,11 @@ import math
 
 
 def lissajous (t=0):
-    a=2/3
-    b=0
-    x=np.sin(t)
-    y=np.sin(a*t+b)
+    a=1
+    b=2
+    phase=np.pi/2
+    x=np.sin(a*t+phase)
+    y=np.sin(b*t)
     return np.array((x, y))
 
 
@@ -97,24 +98,24 @@ t = np.linspace(0,total_time,int(tot_timestep))
 
 
 
-##### Vanderpol
-##X= np.zeros((2,t.size))
-##X[:,0] = np.array([3,3]); 
-##idx = 0;
-### simulate van der Pol equations
-##for i in range(t.size-1):
-##    idx = idx+1;
-##    X[:,idx] = ode_van_der_Pol_sd((X[:,idx-1]),0.8,time_step,0.0);
-##X_trunc = X[:,int(init_phase/time_step+1):]
-##
-##plt.xlabel('timesteps []');
-##plt.ylabel ('[ ]');
-##plt.title('state variables x_1 and x_2')
-####plt.plot(t[int(init_phase/time_step+1):int(init_phase/time_step+1)+5000],X_trunc[0,:5000])
-####plt.plot(t[int(init_phase/time_step+1):int(init_phase/time_step+1)+5000],X_trunc[1,:5000])
+### Vanderpol
+X= np.zeros((2,t.size))
+X[:,0] = np.array([3,3]); 
+idx = 0;
+# simulate van der Pol equations
+for i in range(t.size-1):
+    idx = idx+1;
+    X[:,idx] = ode_van_der_Pol_sd((X[:,idx-1]),0.8,time_step,0.0);
+X_trunc = X[:,int(init_phase/time_step+1):]
+
+plt.xlabel('timesteps []');
+plt.ylabel ('[ ]');
+plt.title('state variables x_1 and x_2')
+plt.plot(t[int(init_phase/time_step+1):int(init_phase/time_step+1)+9000],X_trunc[0,:9000])
+plt.plot(t[int(init_phase/time_step+1):int(init_phase/time_step+1)+9000],X_trunc[1,:9000])
 ##plt.plot(X_trunc[0,:],X_trunc[1,:])
-##plt.show()
-##np.savetxt("vanderpol.csv", np.transpose(X_trunc), fmt ="%s", delimiter=",")
+plt.show()
+np.savetxt("vanderpol.csv", np.transpose(X_trunc), fmt ="%s", delimiter=",")
 
 ##Lokta Volterra
 ##X0= np.array([5,5])
@@ -168,30 +169,30 @@ t = np.linspace(0,total_time,int(tot_timestep))
 ##
 ##np.savetxt("lissajous.csv",np.transpose(X_trunc), fmt ="%s", delimiter=",")
 
-##### 2nd order
-X= np.zeros(t.size) 
-f1 = 2.11; 
-f2 = 3.73;
-f3 = 4.33;
-u=np.zeros(t.size)
-u = 0.1*(np.sin(2*math.pi*f1*t)*np.sin(2*math.pi*f2*t)*np.sin(2*math.pi*f3*t));
-
-
-for i in range(2,t.size):
-    X[i] = second_order_system((X[i-1]),X[i-2],u[i-1]);
-
-
-# get rid of initial phase
-discard=init_phase/time_step+1
-X_trunc_2 = X[int(init_phase/time_step+1):]
-
-plt.xlabel('timesteps []');
-plt.ylabel ('[ ]');
-plt.title('state variables x_1 and x_2')
-plt.plot(t[int(init_phase/time_step+1):],X_trunc_2[:])
-plt.show()
-
-np.savetxt("2ndOrder.csv", X_trunc_2, fmt ="%s", delimiter=",")
+####### 2nd order
+##X= np.zeros(t.size) 
+##f1 = 2.11; 
+##f2 = 3.73;
+##f3 = 4.33;
+##u=np.zeros(t.size)
+##u = 0.1*(np.sin(2*math.pi*f1*t)*np.sin(2*math.pi*f2*t)*np.sin(2*math.pi*f3*t));
+##
+##
+##for i in range(2,t.size):
+##    X[i] = second_order_system((X[i-1]),X[i-2],u[i-1]);
+##
+##
+### get rid of initial phase
+##discard=init_phase/time_step+1
+##X_trunc_2 = X[int(init_phase/time_step+1):]
+##
+##plt.xlabel('timesteps []');
+##plt.ylabel ('[ ]');
+##plt.title('state variables x_1 and x_2')
+##plt.plot(t[int(init_phase/time_step+1):],X_trunc_2[:])
+##plt.show()
+##
+##np.savetxt("2ndOrder.csv", X_trunc_2, fmt ="%s", delimiter=",")
 
 
 print("DONE")
