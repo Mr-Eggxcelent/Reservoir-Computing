@@ -198,7 +198,7 @@ void Simulation::openLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        for (unsigned int k = 0; k < 30000; k++)
+        for (unsigned int k = 0; k < _wash_out_time; k++)
         {
             for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
             {
@@ -275,20 +275,20 @@ void Simulation::closedLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        for (unsigned int k = 0; k < 30000; k++)
-        {
-            for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
-            {
-                _mass_spring->calculate_forces(j, _dt);
-            }
-            for (auto& l : _mass_spring->_n)
-            {
-                _mass_spring->buckle_system(l, _dt, _state, false);
-                //Change the node position, velocity and acceleration in response.
-                l.update(_dt);
-                l.reset_forces();
-            }
-        }
+        //for (unsigned int k = 0; k < 30000; k++)
+        //{
+        //    for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
+        //    {
+        //        _mass_spring->calculate_forces(j, _dt);
+        //    }
+        //    for (auto& l : _mass_spring->_n)
+        //    {
+        //        _mass_spring->buckle_system(l, _dt, _state, false);
+        //        //Change the node position, velocity and acceleration in response.
+        //        l.update(_dt);
+        //        l.reset_forces();
+        //    }
+        //}
 
         for (unsigned int j = 0; j < _Test_Feedback.rows(); j++)
         {
@@ -396,7 +396,7 @@ void Simulation::Populate_Learning_Weights(VectorXd& L)
 // Btw. any graphical output (even to the terminal) slows the process down a lot
 // However, you could have every 1000 points and update message to show the use the simualtion is still going
 // Btw. it is good to have a functionality to switch off any of these things by the user
-std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSquaredError()
+std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSquaredError(bool& success)
 {
 
     double wjej = 0;
@@ -489,6 +489,18 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
             merged_target << _TargetMerged[0][i] << "," << _TargetMerged[1][i];
             merged_target << "\n";
         }
+
+
+        for (int i = 0; i < _Output_Signal.size(); i++)
+        {
+            double temp_MSE =Utility::MSE(_Output_Signal[i], _Target_Signal_Vec[i]);
+            if (temp_MSE > 1000)
+            {
+                success = false;
+                break;
+            }
+        }
+
 
         return std::nullopt;
 
@@ -623,6 +635,7 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
 
     };
 
+    //Slicing is done just to ensure that we are not taking the MSE when there still might be some disturbance from the buckling
     for (int i = 0; i < _Output_Signal.size(); i++)
     {
    
@@ -719,7 +732,7 @@ void Simulation::output_Output_Signal()
             targetsignal_three << _Feedback_Signal[4][i] << "," << _Feedback_Signal[5][i];
             targetsignal_three << "\n";
 
-            if (i >= 20000)
+            if (i >= _wash_out_time)
             {
                 outputsignal_washout << _Test_Output_Signal[0][i] << "," << _Test_Output_Signal[1][i];
                 outputsignal_washout << "\n";
