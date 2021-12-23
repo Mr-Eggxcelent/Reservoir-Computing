@@ -24,7 +24,7 @@ struct InitialDataValues
 
     double input_connectivity_percentage;  // [0,1] percentage of nodes that receive input
     double feedback_connectivity_percentage;  // [0,1] percentage of nodes that receive input
-
+    double buckling_percentage;
     // lower and upper range for input weights
     double min_input_weight;
     double max_input_weight;

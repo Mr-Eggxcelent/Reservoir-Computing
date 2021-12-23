@@ -207,7 +207,7 @@ void Simulation::openLoop()
             for (auto& l : _mass_spring->_n)
             {
              _mass_spring->buckle_system(l, _dt, _state, false);
-                //Change the node position, velocity and acceleration in response.
+             //Change the node position, velocity and acceleration in response.
              l.update(_dt);
              l.reset_forces();
             }
@@ -403,9 +403,6 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
     double currenttime = 0;
     double currentvalue = 0;
 
-    std::ofstream merged_output("src/Output/merged_output.csv");  merged_output.precision(15);
-    std::ofstream merged_target("src/Output/merged_target.csv");  merged_target.precision(15);
-
     unsigned int stride = 0;
     
     if (_Output.size()< (_learning_time_test*_number_of_equations)) {
@@ -481,15 +478,6 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        for (int i = 0; i < _OutputMerged[0].size(); i++)
-        {
-            merged_output << _OutputMerged[0][i] << "," << _OutputMerged[1][i];
-            merged_output << "\n";
-
-            merged_target << _TargetMerged[0][i] << "," << _TargetMerged[1][i];
-            merged_target << "\n";
-        }
-
 
         for (int i = 0; i < _Output_Signal.size(); i++)
         {
@@ -513,15 +501,6 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
         }
 
 
-        for (int i = 0; i < _OutputMerged[0].size(); i++)
-        {
-            merged_output << _OutputMerged[0][i];
-            merged_output << "\n";
-
-            merged_target << _TargetMerged[0][i];
-            merged_target << "\n";
-        }
-
         for (int i = 0; i < _Output_Signal.size(); i++)
         {
             _MSE.push_back(Utility::MSE(_Output_Signal[i], _Target_Signal_Vec[i]));
@@ -529,8 +508,8 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
 
 
        std::cout << "Volterra: The mean squared error of the output signal versus the target signal is: " << _MSE[0] << "\n";
-       std::cout << "NARMA: The mean squared error of the output signal versus the target signal is: " << _MSE[1] << "\n";
-       std::cout << "2nd Order: The mean squared error of the output signal versus the target signal is: " << _MSE[2] << "\n";
+       std::cout << "2nd Order: The mean squared error of the output signal versus the target signal is: " << _MSE[1] << "\n";
+       std::cout << "NARMA: The mean squared error of the output signal versus the target signal is: " << _MSE[2] << "\n";
     
 
         return std::optional<std::vector<double>>(_MSE);
@@ -546,12 +525,13 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
 {
     unsigned int stride = 0;
     std::vector<std::vector<double>>subVecOutput(_Test_Output_Signal.size());
-    std::vector<std::vector<double>>subVecFeedback(_Test_Output_Signal.size());
-    std::ofstream merged_test_output("src/Output/merged_test_output.csv");  merged_test_output.precision(15);
-    std::ofstream feedback_signal("src/Output/merged_feedback.csv");  feedback_signal.precision(15);
+    std::vector<std::vector<double>>subVecTarget(_Test_Output_Signal.size());
+    std::ofstream merged_test_output("src/Output/Results/merged_test_output.csv");  merged_test_output.precision(15);
+    std::ofstream feedback_signal("src/Output/Results/merged_feedback.csv");  feedback_signal.precision(15);
 
 
-
+    //The Feedback signal vector is not very important we are most interested in the direct comparison between the actual target and the test output
+    // Either way we save the feedback for possible use
     for (unsigned int i = 0; i < _Test_Feedback.rows(); i++)
     {
             for (int j = 0; j < _Test_Feedback.cols(); j++) {
@@ -635,6 +615,7 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
 
     };
 
+    
     //Slicing is done just to ensure that we are not taking the MSE when there still might be some disturbance from the buckling
     for (int i = 0; i < _Output_Signal.size(); i++)
     {
@@ -644,15 +625,15 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
             throw "Slicing has failed";
         }
 
-        subVecOutput[i] = slice(_Test_Output_Signal[i],_learning_time_test-10000, _learning_time_test);
-        subVecFeedback[i] = slice(_Feedback_Signal[i], _learning_time_test-10000, _learning_time_test);
+        subVecOutput[i] = slice(_Test_Output_Signal[i],_learning_time_test-15000, _learning_time_test);
+        subVecTarget[i] = slice(_Target_Signal_Vec[i], _learning_time_test-15000, _learning_time_test);
 
     }
 
 
     for (int i = 0; i < _Output_Signal.size(); i++)
     {
-        _MSE.push_back(Utility::MSE(subVecOutput[i], subVecFeedback[i]));
+        _MSE.push_back(Utility::MSE(subVecOutput[i], subVecTarget[i]));
     }
 
     std::cout << "Van der Pol Signal 1: The mean squared error of the output signal versus the target signal is: " << _MSE[0] << "\n";
@@ -669,32 +650,30 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
 
 void Simulation::output_Output_Signal()
 {
-    
-    std::ofstream output("src/Output/outputsignal.csv"); output.precision(15);
-    std::ofstream output_two("src/Output/outputsignal_two.csv"); output_two.precision(15);
 
     std::ofstream learningweights("src/Output/learningweights.csv"); learningweights.precision(15);
 
-    std::ofstream targetsignal("src/Output/targetsignal.csv");  targetsignal.precision(15);
-    std::ofstream targetsignal_two("src/Output/targetsignal_two.csv");  targetsignal_two.precision(15);
-    std::ofstream targetsignal_three("src/Output/targetsignal_three.csv");  targetsignal_three.precision(15);
-
-    
-    std::ofstream outputsignal("src/Output/outputsignal.csv");  outputsignal.precision(15);
-    std::ofstream outputsignal_two("src/Output/outputsignal_two.csv");  outputsignal_two.precision(15);
-    std::ofstream outputsignal_three("src/Output/outputsignal_three.csv");  outputsignal_three.precision(15);
-
+    std::ofstream targetsignal("src/Output/Results/targetsignal.csv");  targetsignal.precision(15);
+    std::ofstream targetsignal_two("src/Output/Results/targetsignal_two.csv");  targetsignal_two.precision(15);
+    std::ofstream targetsignal_three("src/Output/Results/targetsignal_three.csv");  targetsignal_three.precision(15);
 
     std::ofstream targetsignal_washout("src/Output/Results/targetsignal_washout.csv");  targetsignal_washout.precision(15);
     std::ofstream targetsignal_two_washout("src/Output/Results/targetsignal_two_washout.csv");  targetsignal_two_washout.precision(15);
     std::ofstream targetsignal_three_washout("src/Output/Results/targetsignal_three_washout.csv");  targetsignal_three_washout.precision(15);
+
+    
+    std::ofstream outputsignal("src/Output/Results/outputsignal.csv");  outputsignal.precision(15);
+    std::ofstream outputsignal_two("src/Output/Results/outputsignal_two.csv");  outputsignal_two.precision(15);
+    std::ofstream outputsignal_three("src/Output/Results/outputsignal_three.csv");  outputsignal_three.precision(15);
 
 
     std::ofstream outputsignal_washout("src/Output/Results/outputsignal_washout.csv");  outputsignal_washout.precision(15);
     std::ofstream outputsignal_two_washout("src/Output/Results/outputsignal_two_washout.csv");  outputsignal_two_washout.precision(15);
     std::ofstream outputsignal_three_washout("src/Output/Results/outputsignal_three_washout.csv");  outputsignal_three_washout.precision(15);
 
-    std::ofstream inputsignalcheck("src/Output/inputsignalcheck.csv");  inputsignalcheck.precision(15);
+
+    std::ofstream merged_output("src/Output/Results/merged_output.csv");  merged_output.precision(15);
+    std::ofstream merged_target("src/Output/Results/merged_target.csv");  merged_target.precision(15);
 
     std::ofstream chaoscheck(_str);
 
@@ -707,6 +686,16 @@ void Simulation::output_Output_Signal()
 
 
     if (_feedback_state == true) {
+
+        for (int i = 0; i < _OutputMerged[0].size(); i++)
+        {
+            merged_output << _OutputMerged[0][i] << "," << _OutputMerged[1][i];
+            merged_output << "\n";
+
+            merged_target << _TargetMerged[0][i] << "," << _TargetMerged[1][i];
+            merged_target << "\n";
+        }
+
 
         for (unsigned int i = 0; i < _learning_time_test; i++)
         {
@@ -760,6 +749,15 @@ void Simulation::output_Output_Signal()
 
 
     } else{
+
+        for (int i = 0; i < _OutputMerged[0].size(); i++)
+        {
+            merged_output << _OutputMerged[0][i];
+            merged_output << "\n";
+
+            merged_target << _TargetMerged[0][i];
+            merged_target << "\n";
+        }
 
 
         for (int i = 0; i < _maxtimesteps; i++)

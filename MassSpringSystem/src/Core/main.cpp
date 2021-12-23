@@ -47,8 +47,8 @@ int main(int argc, char** argv)
 
     auto begin = std::chrono::high_resolution_clock::now();
 
-    //no_feedback_generator();
-    feedback_generator();
+    no_feedback_generator();
+    //feedback_generator();
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms \n";
@@ -79,7 +79,7 @@ void no_feedback_generator()
     };
 
     std::thread input_thread(read_lambda, "src/Data/inputsignal.csv", std::ref(input),1);
-    std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra),2);
+    std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra),0);
     std::thread second_order_thread(read_lambda, "src/Data/2ndOrder.csv", std::ref(second_order),0);
     std::thread NARMA_thread(read_lambda, "src/Data/NARMA.csv", std::ref(narma),1);
 
@@ -142,10 +142,11 @@ void no_feedback_generator()
     data.t0 = wash_out_time * data.dt;
     data.tmax = (wash_out_time + learning_time + learning_time_test) * data.dt;
 
+    data.buckling_percentage = var_map["buckling_percentage"];
 
-    double Mean_Sq = 1000;
-    double Mean_Sq_two = 1000;
-    double Mean_Sq_three = 1000;
+    double Mean_Sq = 2;
+    double Mean_Sq_two = 2;
+    double Mean_Sq_three = 2;
 
     double MSE = 0;
     double MSE_two = 0;
@@ -156,9 +157,13 @@ void no_feedback_generator()
     double total_MSE_three = 0;
 
 
+    std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
     std::vector<double> function_output;
-    int number_of_simulations = 1;
+    int number_of_simulations = 10;
+    std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
     std::mutex m;
+
+
 
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
     bool valid_output = false;
@@ -167,12 +172,17 @@ void no_feedback_generator()
         for (int i = 0; i < number_of_simulations; i++) {
             Simulation sim(data, Input_Signals, Target_Signals, wash_out_time, learning_time, learning_time_test, camera, false);
             {
+
+                std::cout << i << std::endl;
                 std::scoped_lock<std::mutex> lock(m);
+                
+                //Success does nothing for the non feedback case, since we dont need a closed loop phase
+                bool success = true;
                 /*std::optional<std::vector<double>>opt_learning_matrix = sim.output_LearningMatrix_and_MeanSquaredError();
                 if (opt_learning_matrix)
                 {*/
                 try {
-                    function_output = std::move(sim.output_LearningMatrix_and_MeanSquaredError().value());
+                    function_output = std::move(sim.output_LearningMatrix_and_MeanSquaredError(success).value());
                 }
                 catch (const char* msg) {
                     std::cerr << msg << std::endl;
@@ -188,7 +198,13 @@ void no_feedback_generator()
                 total_MSE_two += MSE_two;
                 total_MSE_three += MSE_three;
 
-                if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three)
+                for (int j = 0; j < function_output.size(); j++)
+                {
+                    MSE_storage[i][j] = function_output[j];
+                }
+
+
+                if (((Mean_Sq+ Mean_Sq_two+ Mean_Sq_three)/3) > ((MSE+MSE_two+MSE_three)/3))
                 {
                     Mean_Sq = MSE;
                     std::cout << "The best MSE at the moment is: " << Mean_Sq << "\n";
@@ -214,17 +230,26 @@ void no_feedback_generator()
     std::cout << "The average MSE for Volterra: " << total_MSE << "\n";
     std::cout << "The best MSE for Volterra : " << Mean_Sq << "\n";
 
+
     total_MSE_two = total_MSE_two / number_of_simulations;
-    std::cout << "The average MSE for NARMA: " << total_MSE_two << "\n";
-    std::cout << "The best MSE for NARMA : " << Mean_Sq_two << "\n";
+    std::cout << "The average MSE for 2ndOrder: " << total_MSE_two << "\n";
+    std::cout << "The best MSE for 2ndOrder : " << Mean_Sq_two << "\n";
 
-    total_MSE_three = total_MSE_three/ number_of_simulations;
-    std::cout << "The average MSE for 2ndOrder: " << total_MSE_three << "\n";
-    std::cout << "The best MSE for 2ndOrder : " << Mean_Sq_three << "\n";
+    total_MSE_three = total_MSE_three / number_of_simulations;
+    std::cout << "The average MSE for NARMA: " << total_MSE_three << "\n";
+    std::cout << "The best MSE for NARMA : " << Mean_Sq_three << "\n";
 
+    for (int i = 0; i < number_of_simulations; i++)
+    {
+        for (int j = 0; j < MSE_storage[0].size(); j++)
+        {
+            MSE_Results << MSE_storage[i][j];
+            (j < MSE_storage[0].size() - 1) ? MSE_Results << "," : MSE_Results << "\n";
+        }
+    }
 
   
-    if (!isnan(total_MSE) && !isnan(total_MSE_two) && !isnan(total_MSE_three) && valid_output)
+    if (!isnan(Mean_Sq) && !isnan(Mean_Sq_two) && !isnan(Mean_Sq_three) && valid_output)
     {
         ////Plotting Routine goes here
         ////Thanks to pnumerics youtube https://www.youtube.com/channel/UCR6RmA40b4dg4oQw_NoSx6Q
@@ -241,22 +266,22 @@ void no_feedback_generator()
 
         std::vector<double>  outputMerged;
 
-        FileReader target_signal("src/Output/targetsignal.csv", target);
+        FileReader target_signal("src/Output/Results/targetsignal.csv", target);
         target_signal.file_read(0);
-        FileReader output_signal("src/Output/outputsignal.csv", output);
+        FileReader output_signal("src/Output/Results/outputsignal.csv", output);
         output_signal.file_read(0);
 
-        FileReader target_signal_two("src/Output/targetsignal_two.csv", targetTwo);
+        FileReader target_signal_two("src/Output/Results/targetsignal_two.csv", targetTwo);
         target_signal_two.file_read(0);
-        FileReader output_signal_two("src/Output/outputsignal_two.csv", outputTwo);
+        FileReader output_signal_two("src/Output/Results/outputsignal_two.csv", outputTwo);
         output_signal_two.file_read(0);
 
-        FileReader target_signal_three("src/Output/targetsignal_three.csv", targetThree);
+        FileReader target_signal_three("src/Output/Results/targetsignal_three.csv", targetThree);
         target_signal_three.file_read(0);
-        FileReader output_signal_three("src/Output/outputsignal_three.csv", outputThree);
+        FileReader output_signal_three("src/Output/Results/outputsignal_three.csv", outputThree);
         output_signal_three.file_read(0);
 
-        FileReader merged_signal("src/Output/merged_output.csv", outputMerged);
+        FileReader merged_signal("src/Output/Results/merged_output.csv", outputMerged);
         merged_signal.file_read(0);
 
 
@@ -277,7 +302,7 @@ void no_feedback_generator()
         gp << "set title '2ndOrder'\n";
         gp << "unset key\n";
         gp << "plot '-' with lines linestyle 1,"
-            << "'-' with lines linestyle 2 title 'NARMAOutput'\n";
+            << "'-' with lines linestyle 2 title '2ndOrder'\n";
 
         gp.send(targetTwo);
         gp.send(outputTwo);
@@ -286,7 +311,7 @@ void no_feedback_generator()
         gp << "set title 'NARMA'\n";
         gp << "unset key\n";
         gp << "plot '-' with lines linestyle 1,"
-            << "'-' with lines linestyle 2 title '2ndOrderOutput'\n";
+            << "'-' with lines linestyle 2 title 'NARMA'\n";
 
         gp.send(targetThree);
         gp.send(outputThree);
@@ -306,7 +331,6 @@ void no_feedback_generator()
         std::cout << "ERROR: Simulation has either not finished, encountered an error or the MSE is unsatisfactory \n";
     }
     
-
 
 }
 
@@ -417,11 +441,11 @@ void feedback_generator()
     data.dt = var_map["dt"];
     data.t0 = wash_out_time * data.dt;
     data.tmax = (wash_out_time + learning_time + learning_time_test) * data.dt;
-
-    //std::pair<double, double>Mean_Sq;
-    double Mean_Sq = 1000;
-    double Mean_Sq_two = 1000;
-    double Mean_Sq_three = 1000;
+    data.buckling_percentage = var_map["buckling_percentage"];
+   
+    double Mean_Sq = 1;
+    double Mean_Sq_two = 1;
+    double Mean_Sq_three = 1;
     double MSE = 0;
     double MSE_two = 0;
     double MSE_three= 0;
@@ -429,8 +453,11 @@ void feedback_generator()
     double total_MSE_two = 0;
     double total_MSE_three = 0;
 
+    
+    std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
     std::vector<double>function_output;
     int number_of_simulations = 1;
+    std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
     std::mutex m;
 
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
@@ -440,32 +467,46 @@ void feedback_generator()
     auto lambda_simulation = [&]() {
 
         for (int i = 0; i < number_of_simulations; i++) {
+
+            std::cout << "Simulation Number: "<<i << std::endl;
             Simulation sim(data, Input_Signals, Target_Signals, wash_out_time, learning_time, learning_time_test, camera, true);
             {
 
                 std::scoped_lock<std::mutex> lock(m);
                 std::vector<double> function_output;
+                bool success = true;
+
+                /*  std::optional<std::vector<double>>opt_learning_matrix =  sim.output_LearningMatrix_and_MeanSquaredError();
+                 if (opt_learning_matrix)
+                 {*/
+
+                sim.output_LearningMatrix_and_MeanSquaredError(success);
+                 //}
+
                 try {
                     function_output = std::move(sim.output_TestMatrix_and_MeanSquaredError());
-                }catch (const char* msg) {
+                }
+                catch (const char* msg) {
                     std::cerr << msg << std::endl;
                     return 0;
                 }
-                /*  std::optional<std::vector<double>>opt_learning_matrix =  sim.output_LearningMatrix_and_MeanSquaredError();
-                  if (opt_learning_matrix)
-                  {*/
-                sim.output_LearningMatrix_and_MeanSquaredError();
-                //}
-
-                MSE = function_output[0];
-                MSE_two = function_output[2];
-                MSE_three = function_output[4];
+               
+                MSE = (function_output[0] + function_output[1])/2;
+                MSE_two = (function_output[2] + function_output[3])/2;
+                MSE_three = (function_output[4] + function_output[5])/2;
 
                 total_MSE += MSE;
                 total_MSE_two += MSE_two;
                 total_MSE_three += MSE_three;
+                
+                for (int j = 0; j < function_output.size(); j++)
+                {
+                    MSE_storage[i][j] = function_output[j];
+                }
 
-                if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three)
+                //if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three && success)
+          
+                if (((Mean_Sq+ Mean_Sq_two + Mean_Sq_three)/3)>((MSE + MSE_two + MSE_three) / 3) && success)
                 {
                     Mean_Sq = MSE;
                     std::cout << "The best MSE at the moment of Van der Pol is: " << Mean_Sq << "\n";
@@ -477,6 +518,7 @@ void feedback_generator()
                     sim.output_Output_Signal();
                     valid_output = true;
                 }
+
             }
          
         }
@@ -497,9 +539,17 @@ void feedback_generator()
     std::cout << "The average MSE for Lissajous: " << total_MSE_three << "\n";
     std::cout << "The best MSE for Lissajous : " << Mean_Sq_three << "\n";
 
+    for (int i = 0; i < number_of_simulations; i++)
+    {
+        for (int j = 0; j < MSE_storage[0].size(); j++)
+        {
+            MSE_Results << MSE_storage[i][j];
+            (j < MSE_storage[0].size() - 1) ? MSE_Results << "," : MSE_Results << "\n";
+        }
+    }
 
 
-    if (!isnan(total_MSE) && !isnan(total_MSE_two) && !isnan(total_MSE_three) && valid_output)
+    if (!isnan(Mean_Sq) && !isnan(Mean_Sq_two) && !isnan(Mean_Sq_three) && valid_output)
     {
         ////Plotting Routine goes here
         ////Thanks to pnumerics youtube https://www.youtube.com/channel/UCR6RmA40b4dg4oQw_NoSx6Q
@@ -525,40 +575,40 @@ void feedback_generator()
         std::vector<double>  feedbackMerged;
         std::vector<double>  outputMerged_Test;
 
-        FileReader target_signal("src/Output/targetsignal.csv", target);
+        FileReader target_signal("src/Output/Results/targetsignal.csv", target);
         target_signal.file_read(0);
         FileReader output_signal("src/Output/Results/outputsignal_washout.csv", output);
         output_signal.file_read(0);
         FileReader output_signal_col2("src/Output/Results/outputsignal_washout.csv", output_col2);
         output_signal_col2.file_read(1);
 
-        FileReader target_signal_two("src/Output/targetsignal_two.csv", targetTwo);
+        FileReader target_signal_two("src/Output/Results/targetsignal_two.csv", targetTwo);
         target_signal_two.file_read(0);
         FileReader output_signal_two("src/Output/Results/outputsignal_two_washout.csv", outputTwo);
         output_signal_two.file_read(0);
         FileReader output_signal_two_col2("src/Output/Results/outputsignal_two_washout.csv", outputTwo_col2);
         output_signal_two_col2.file_read(1);
 
-        FileReader target_signal_three("src/Output/targetsignal_three.csv", targetThree);
+        FileReader target_signal_three("src/Output/Results/targetsignal_three.csv", targetThree);
         target_signal_three.file_read(0);
         FileReader output_signal_three("src/Output/Results/outputsignal_three_washout.csv", outputThree);
         output_signal_three.file_read(0);
         FileReader output_signal_three_col2("src/Output/Results/outputsignal_three_washout.csv", outputThree_col2);
         output_signal_three_col2.file_read(1);
 
-        FileReader merged_signal("src/Output/merged_output.csv", outputMerged);
+        FileReader merged_signal("src/Output/Results/merged_output.csv", outputMerged);
         merged_signal.file_read(0);
-        FileReader merged_target("src/Output/merged_target.csv", targetMerged);
+        FileReader merged_target("src/Output/Results/merged_target.csv", targetMerged);
         merged_target.file_read(0);
 
-        FileReader merged_signal_col2("src/Output/merged_output.csv", outputMerged_col2);
+        FileReader merged_signal_col2("src/Output/Results/merged_output.csv", outputMerged_col2);
         merged_signal_col2.file_read(1);
-        FileReader merged_target_col2("src/Output/merged_target.csv", targetMerged_col2);
+        FileReader merged_target_col2("src/Output/Results/merged_target.csv", targetMerged_col2);
         merged_target_col2.file_read(1);
 
-        FileReader merged_test_signal("src/Output/merged_test_output.csv", outputMerged_Test);
+        FileReader merged_test_signal("src/Output/Results/merged_test_output.csv", outputMerged_Test);
         merged_test_signal.file_read(0);
-        FileReader merged_feedback("src/Output/merged_feedback.csv", feedbackMerged);
+        FileReader merged_feedback("src/Output/Results/merged_feedback.csv", feedbackMerged);
         merged_feedback.file_read(0);
 
 

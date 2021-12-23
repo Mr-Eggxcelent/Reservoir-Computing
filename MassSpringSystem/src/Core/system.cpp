@@ -61,14 +61,14 @@ void SpringSystem::Initialize_Nodes()
     int c=0;
 
     std::vector<int>store_line;
-    float nodes_that_buckle = 0.3;
+    float buckling_percentage = 0.01*_data.buckling_percentage;
     float div = 0;
     float temp = 0;
 
     for (int i = 0; i < _N; i++)
     {
 
-        if (i < (_N - (_N * nodes_that_buckle)))
+        if (i < (_N - (_N * buckling_percentage)))
         {
             x = Utility::Uniform(_data.min_x_position, _data.max_x_position);
 
@@ -89,7 +89,7 @@ void SpringSystem::Initialize_Nodes()
         }
         else
         {
-            div = (_data.max_x_position - _data.min_x_position) / (_N * nodes_that_buckle);
+            div = (_data.max_x_position - _data.min_x_position) / (_N * buckling_percentage);
             temp+= _data.min_x_position + div;
             x = temp;
 
@@ -106,7 +106,7 @@ void SpringSystem::Initialize_Nodes()
                 k = i;
             }
 
-            if ( i== ((_N * (1-nodes_that_buckle)) + ((_N * nodes_that_buckle)/2))-1 )
+            if ( i== ((_N * (1- buckling_percentage)) + ((_N * buckling_percentage)/2))-1 )
             {
                 c = i;
             }
@@ -382,13 +382,13 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
         switch (state)
         {
         case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position/2), dt); l.set_fixed(); }
-                                            _render.render_text("ORIGINAL", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
+                                            _render.render_text("ORIGINAL", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                              break;
         case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)+ 2.0f, dt); l.set_fixed(); }
-                                       _render.render_text("UP", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
+                                       _render.render_text("UP", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                        break;
         case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)-2.0f, dt); l.set_fixed(); }
-                                         _render.render_text("DOWN", 25.0f, 200.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
+                                         _render.render_text("DOWN", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                          break;
 
         }
@@ -499,12 +499,12 @@ void SpringSystem::clearResources()
 void SpringSystem::print_info()
 {
     std::string details;
-    float y_location = 0.25f;
+    float y_location = 15.0f;
 
     for (int i = 0; i < _n.size(); i++)
     {
         details = "Node " + std::to_string(_n[i].get_id()) + ": " + std::to_string(_n[i].get_position()[1]);
-        _render.render_text(details, 25.0f, y_location, 0.25f, glm::vec3(0.5, 0.8f, 0.2f));
+        _render.render_text(details, 5.0f, y_location, 0.25f, glm::vec3(0.5, 0.8f, 0.2f));
         y_location = y_location + 20;
     }
 

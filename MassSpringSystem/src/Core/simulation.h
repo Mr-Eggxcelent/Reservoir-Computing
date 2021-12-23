@@ -156,7 +156,7 @@ public:
     void Moore_Penrose_Pseudoinverse(MatrixXd& L);
 
     //Return Output Signal after learning phase and the mean squared error.
-    std::optional<std::vector<double>> output_LearningMatrix_and_MeanSquaredError();
+    std::optional<std::vector<double>> output_LearningMatrix_and_MeanSquaredError(bool& success);
     //Test Output
     std::vector<double> output_TestMatrix_and_MeanSquaredError();
 

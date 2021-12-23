@@ -88,13 +88,15 @@ double Node::approach(double flGoal, double flCurrent, double dt)
 
 void Node::buckle(double target_pos, double dt)
 {
+    //tried with 100
+    float step = dt * 500;
     double delta_y = target_pos - get_position()[1];
     double goal_dist = sqrt(delta_y * delta_y);
 
     //maybe use when near machine epsilon distance
     /*if (goal_dist > 0.0000025) {*/
 
-        _velocity[1] = approach(delta_y, _velocity[1], dt * 100);
+        _velocity[1] = approach(delta_y, _velocity[1], step);
         _position[1] = _position[1] + dt * _velocity[1];
         _velocity[1] = _velocity[1] + dt;
 
@@ -183,7 +185,7 @@ void Node::draw(glm::mat4& projection, glm::mat4& view)
     }
     else if(is_buckling_node())
     {
-        _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+        _sphere.draw(projection, view, glm::vec3(get_position()[0], get_position()[1], get_position()[2]), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     }
     else if (is_feedback() || (is_input() && is_feedback()))
     {
