@@ -9,7 +9,7 @@ import matplotlib.lines as mlines
 edges=pd.read_csv('Results/bestMSEEdge.csv',sep=',')
 G=nx.from_pandas_edgelist(edges,'from','to')
 
-nodes = pd.read_csv('Results/bestMSENode_down.csv', sep=',')
+nodes = pd.read_csv('Results/bestMSENode_orig.csv', sep=',')
 data  = nodes.set_index('Node').to_dict('index').items()
 G.add_nodes_from(data)
 
@@ -45,21 +45,21 @@ for key, value in shape_dict.items():
         
 #https://stackoverflow.com/questions/47391702/matplotlib-making-a-colored-markers-legend-from-scratch
 #tmdavison
-input_node = mlines.Line2D([], [], color='tab:green', marker='o', linestyle='None',
+input_node = mlines.Line2D([], [], color='#5fd35f', marker='o', linestyle='None',
                           markersize=10, label='input node')
-feedback_node = mlines.Line2D([], [], color='plum', marker='o', linestyle='None',
+feedback_node = mlines.Line2D([], [], color='#cd87de', marker='o', linestyle='None',
                           markersize=10, label='feedback node')
-buckling_node = mlines.Line2D([], [], color='yellow', marker='o', linestyle='None',
+buckling_node = mlines.Line2D([], [], color='#5f8dd3', marker='o', linestyle='None',
                           markersize=10, label='buckling node')
 fixed_node = mlines.Line2D([], [], color='red', marker='s', linestyle='None',
                           markersize=10, label='fixed')
-internal_node= mlines.Line2D([], [], color='lightgrey', marker='o', linestyle='None',
-                          markersize=10, label='internal node')
+internal_node= mlines.Line2D([], [], color='white', marker='o', linestyle='None',
+                          markersize=10, label='internal node',markeredgecolor='black')
 
 ################################################################################################################
 #https://stackoverflow.com/questions/44801216/is-it-possible-to-mix-different-shaped-nodes-in-a-networkx-graph    
 #https://groups.google.com/g/networkx-discuss/c/SinGFATZLaw
-colour_map={'I':'tab:green','FB':'plum','B':'yellow','FX':'red','N':'lightgrey'}  
+colour_map={'I':'#5fd35f','FB':'#cd87de','B':'#5f8dd3','FX':'red','N':'white'}  
 OG = G.subgraph(shape_other)
 FG = G.subgraph(shape_fixed)
 nx.draw_networkx_nodes(OG,pos,node_color=[colour_map[node[1]['type']]
