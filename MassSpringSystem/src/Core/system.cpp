@@ -337,10 +337,8 @@ void SpringSystem::calculate_forces(unsigned int& j, double& dt)
 
     _F= _s[j].get_force();
 
-    _n[_nodea].apply_force(-_F);
-    _n[_nodeb].apply_force(_F);
-
-
+    _n[_nodea].apply_spring_force(-_F);
+    _n[_nodeb].apply_spring_force(_F);
 
 
 }
@@ -419,21 +417,23 @@ void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,Matr
         if (_feedback_state) {
             //Input force to input nodes
             if (l.is_feedback() == true) {
-                l.apply_force(Eigen::Vector3d(l.get_w_input() * feedback_signal(i, i_2+_assign_signal[node_index]), 0, 0));
+                l.apply_feedback_force(Eigen::Vector3d(l.get_w_feedback() * feedback_signal(i, i_2+_assign_signal[node_index]), 0, 0));
             }
           
         }else {
             //Input force to input nodes assume just single 
             if (l.is_input() == true) {
-                l.apply_force(Eigen::Vector3d(l.get_w_input() * input_signal(i,0), 0, 0));
+                l.apply_input_force(Eigen::Vector3d(l.get_w_input() * input_signal(i,0), 0, 0));
             }
         }
-
+    
         //Change the node position, velocity and acceleration in response.
         l.update(dt);
 
-        buckle_system(l,dt,state,display);
-        
+
+        buckle_system(l, dt, state, display);
+
+
         //At the end of the loop, each node has no force acting on it.
         l.reset_forces();
 

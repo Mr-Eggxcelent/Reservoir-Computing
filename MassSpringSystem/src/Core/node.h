@@ -22,13 +22,20 @@ class Node
 	Eigen::Vector3d _position;
 	// Velocity
 	Eigen::Vector3d _velocity;
-	// Acceleration
+	// Acceleration 
 	Eigen::Vector3d _acceleration = Eigen::Vector3d::Zero();
+
+
+	// Force applied to the Node
+	Eigen::Vector3d _force = Eigen::Vector3d::Zero();
+	// Spring force applied to the Node
+	Eigen::Vector3d _spring_force = Eigen::Vector3d::Zero();
 	// Input force applied to the Node
 	Eigen::Vector3d _input_force = Eigen::Vector3d::Zero();
 	// Feedback force applied to the Node
 	Eigen::Vector3d _feedback_force = Eigen::Vector3d::Zero();
-	
+	// Buckling force applied to the Node
+	Eigen::Vector3d _buckling_force = Eigen::Vector3d::Zero();
 
 	// The velocity of the nodes initially it is zero.
 	// int connections;  // TODO: Still needed
@@ -42,13 +49,13 @@ class Node
 	bool _fixed_node = false;
 	double _w_input = 0;
 	double _w_feedback = 0;
-	
 
+	bool moving;
 	//A bool check to determine whether a node has been updated or not.
 	bool _update_check = 0;
 	
 	SphereRender _sphere;
-
+	
 
 public:
 
@@ -64,9 +71,11 @@ public:
 
 	//This is the function that incrementally changes the nodes position in the next timestep;
 	// maybe instead of "change" use "update"
-	void apply_force(const Eigen::Vector3d& F);
+	void apply_spring_force(const Eigen::Vector3d& F);
+	void apply_input_force(const Eigen::Vector3d& F);
+	void apply_feedback_force(const Eigen::Vector3d& F);
+	void apply_buckling_force(const Eigen::Vector3d& F);
 
-	double approach(double flGoal, double flCurrent, double dt);
 	void buckle(double target_pos, double dt);
 	void update(double dt);
 

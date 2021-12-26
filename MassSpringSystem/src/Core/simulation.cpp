@@ -26,7 +26,7 @@
 #include <iomanip>
 #include<thread>
 
-#define DEBUG_DRAW 0
+#define DEBUG_DRAW 1
 void initGL();
 
 using namespace Eigen;
@@ -206,9 +206,9 @@ void Simulation::openLoop()
             }
             for (auto& l : _mass_spring->_n)
             {
-             _mass_spring->buckle_system(l, _dt, _state, false);
              //Change the node position, velocity and acceleration in response.
              l.update(_dt);
+             _mass_spring->buckle_system(l, _dt, _state, false);
              l.reset_forces();
             }
         }
@@ -275,20 +275,6 @@ void Simulation::closedLoop()
     for (unsigned int i = 0; i < _number_of_equations; i++)
     {
         _state = static_cast<SpringSystem::_STATE>(i);
-        //for (unsigned int k = 0; k < 30000; k++)
-        //{
-        //    for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
-        //    {
-        //        _mass_spring->calculate_forces(j, _dt);
-        //    }
-        //    for (auto& l : _mass_spring->_n)
-        //    {
-        //        _mass_spring->buckle_system(l, _dt, _state, false);
-        //        //Change the node position, velocity and acceleration in response.
-        //        l.update(_dt);
-        //        l.reset_forces();
-        //    }
-        //}
 
         for (unsigned int j = 0; j < _Test_Feedback.rows(); j++)
         {

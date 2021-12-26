@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////Volterra and NARMA////////////////////////////////////////////////
+/////////////////////////////////////////Volterra,NARMA,2ndOrder////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void no_feedback_generator()
 {
@@ -78,7 +78,7 @@ void no_feedback_generator()
         input_signal.file_read(column);
     };
 
-    std::thread input_thread(read_lambda, "src/Data/inputsignal.csv", std::ref(input),1);
+    std::thread input_thread(read_lambda, "src/Data/input.csv", std::ref(input),0);
     std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra),0);
     std::thread second_order_thread(read_lambda, "src/Data/2ndOrder.csv", std::ref(second_order),0);
     std::thread NARMA_thread(read_lambda, "src/Data/NARMA.csv", std::ref(narma),1);
@@ -159,7 +159,7 @@ void no_feedback_generator()
 
     std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
     std::vector<double> function_output;
-    int number_of_simulations = 10;
+    int number_of_simulations = 100;
     std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
     std::mutex m;
 
@@ -335,7 +335,7 @@ void no_feedback_generator()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////Quad and Vanderpol////////////////////////////////////////////////
+/////////////////////////////////////////Quad,Vanderpol and Lissajous//////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void feedback_generator()
 {

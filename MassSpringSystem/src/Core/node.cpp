@@ -57,66 +57,93 @@ void Node::init_Feedback_Node(double ux, double uy, double wfb)
 }
 
 
-//This is the function that incrementally changes the Node position in the next timestep;
-void Node::apply_force(const Eigen::Vector3d& F)
+
+void Node::apply_spring_force(const Eigen::Vector3d& F)
 {
-    if (_fixed_node == false)
+    if (_fixed_node == false && _buckling_node == false) {
+        _spring_force += F;
+    }
+}
+
+
+//This is the function that incrementally changes the Node position in the next timestep;
+void Node::apply_input_force(const Eigen::Vector3d& F)
+{
+    //Must check the conditions
+    if (_fixed_node == false && _buckling_node==false && _input_node == true)
     {
         _input_force += F;
     }
+
 }
 
-//Thanks to Jorge Rodriguez tutorial  https://www.youtube.com/watch?v=qJq7I2DLGzI
-double Node::approach(double flGoal, double flCurrent, double dt)
+
+//This is the function that incrementally changes the Node position in the next timestep for feedback
+void Node::apply_feedback_force(const Eigen::Vector3d& F)
 {
-    //temporary empty
-    double difference = flGoal - flCurrent;
-
-    if (difference > dt)
+    if (_fixed_node == false && _buckling_node == false && _feedback_node == true)
     {
-        return flCurrent + dt;
+        _feedback_force += F;
     }
-
-    if (difference < -dt)
-    {
-        return flCurrent - dt;
-    }
-
-    return flGoal;
 
 }
 
+//This is the function that incrementally changes the Node position in the next timestep for buckling
+//currently not needed since this buckling is artificial 
+void Node::apply_buckling_force(const Eigen::Vector3d& F)
+{
+    if (_buckling_node==true)
+    {
+        _buckling_force= F;
+    }
+}
+
+
+//Non-Physics based approach to buckling
 void Node::buckle(double target_pos, double dt)
 {
-    //tried with 100
-    float step = dt * 500;
-    double delta_y = target_pos - get_position()[1];
-    double goal_dist = sqrt(delta_y * delta_y);
+    // Your Variables
+    double speed = 1000;
 
-    //maybe use when near machine epsilon distance
-    /*if (goal_dist > 0.0000025) {*/
+    // On starting movement David Gouveia https://gamedev.stackexchange.com/questions/23447/moving-from-ax-y-to-bx1-y1-with-constant-speed
+    double distance = sqrt(pow(target_pos - _initial_position[1], 2));
+    if (distance != 0) {
+        double directionY = (target_pos - _initial_position[1]) / distance;
+        moving = true;
 
-        _velocity[1] = approach(delta_y, _velocity[1], step);
-        _position[1] = _position[1] + dt * _velocity[1];
-        _velocity[1] = _velocity[1] + dt;
+        // On update
+        if (moving == true )
+        {
+            _velocity[1] = directionY * speed * dt;
+            _position[1] += dt * _velocity[1];
+            if (sqrt(pow(_position[1] - _initial_position[1], 2)) >= distance)
+            {
+                _initial_position[1] = target_pos;
+                _position[1] = target_pos;
+                _velocity[1] = 0;
+                moving = false;
+            }
+        }
+      
+    }
 
-    //}
-   
+
 }
 
 
 void Node::update(double dt)
 {
-    if (_fixed_node == false)
-    {
-        //Standard Euler integration - maybe add Runge Kutta later
-        _acceleration = _input_force / _mass;
-        
-        _velocity += dt * _acceleration;
 
-        _position += dt * _velocity;
-
+    if (!is_buckling_node()) {
+        _force = _spring_force + _input_force + _feedback_force + _buckling_force;
     }
+   _acceleration = _force / _mass;
+   
+   _velocity += dt * _acceleration;
+
+   _position += dt * _velocity;
+
+    
 
 }
 
@@ -128,8 +155,12 @@ void Node::reset_positions()
 }
 
 void Node::reset_forces()
-{
+{ 
+    _force= Eigen::Vector3d::Zero();
+    _spring_force = Eigen::Vector3d::Zero();
     _input_force = Eigen::Vector3d::Zero();
+    _feedback_force = Eigen::Vector3d::Zero();
+    _buckling_force = Eigen::Vector3d::Zero();
 }
 
 
@@ -143,8 +174,8 @@ void Node::reset()
 void Node::reset_state()
 {
     _velocity = Eigen::Vector3d::Zero();
-    _acceleration = Eigen::Vector3d::Zero();
-
+    _acceleration= Eigen::Vector3d::Zero();
+    
 }
 
 void Node::set_fixed()
