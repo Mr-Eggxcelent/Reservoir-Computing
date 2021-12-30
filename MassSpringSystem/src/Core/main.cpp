@@ -47,8 +47,10 @@ int main(int argc, char** argv)
 
     auto begin = std::chrono::high_resolution_clock::now();
 
+    //Uncomment the one you want to run
     no_feedback_generator();
     //feedback_generator();
+
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
     std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms \n";
@@ -64,14 +66,13 @@ void no_feedback_generator()
 {
 
     InitialDataValues data;
-    srand(rdtsc());
 
     std::vector<double>volterra;
     std::vector<double>second_order;
     std::vector<double>narma;
     std::vector<double>input;
     
-    std::cout << "-- Start ---------------------------------------- \n";
+    std::cout << "-- Start ------------------------------------------------------ \n";
 
     auto read_lambda = [](std::string file_name, std::vector<double>& vec_signal,int column = 1) {
         FileReader input_signal(file_name, vec_signal);
@@ -81,7 +82,7 @@ void no_feedback_generator()
     std::thread input_thread(read_lambda, "src/Data/input.csv", std::ref(input),0);
     std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra),0);
     std::thread second_order_thread(read_lambda, "src/Data/2ndOrder.csv", std::ref(second_order),0);
-    std::thread NARMA_thread(read_lambda, "src/Data/NARMA.csv", std::ref(narma),1);
+    std::thread NARMA_thread(read_lambda, "src/Data/NARMA.csv", std::ref(narma),0);
 
     volterra_thread.join();
     second_order_thread.join();
@@ -168,6 +169,7 @@ void no_feedback_generator()
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
     bool valid_output = false;
 
+    // function has been written in this form to allow the addition of multithreading in the future
     auto lambda_simulation = [&]() {
         for (int i = 0; i < number_of_simulations; i++) {
             Simulation sim(data, Input_Signals, Target_Signals, wash_out_time, learning_time, learning_time_test, camera, false);
@@ -341,8 +343,6 @@ void feedback_generator()
 {
 
     InitialDataValues data;
-    srand(rdtsc());
-
 
     std::vector<double>signal_1;
     std::vector<double>signal_1_two;
@@ -505,7 +505,6 @@ void feedback_generator()
                 }
 
                 //if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three && success)
-          
                 if (((Mean_Sq+ Mean_Sq_two + Mean_Sq_three)/3)>((MSE + MSE_two + MSE_three) / 3) && success)
                 {
                     Mean_Sq = MSE;
@@ -671,9 +670,6 @@ void feedback_generator()
         std::cout << "ERROR: Simulation has either not finished, encountered an error or the MSE is unsatisfactory \n";
     }
 
-
-   
-
 }
 
 
@@ -696,8 +692,6 @@ void readParameter(std::map <std::string, double>& var_map,std::string name)
             splitter >> value;
             splitter.clear();
             var_map[key] = value;
-
-
         }
 
     }

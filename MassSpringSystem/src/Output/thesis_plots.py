@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
-
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -28,6 +21,8 @@ target_1=pd.read_csv('../Data/vanderpol.csv',header=None)
 target_2=pd.read_csv('../Data/quad.csv',header=None)
 target_3=pd.read_csv('../Data/lissajous.csv',header=None)
 
+#Change values of according to size of arrays
+#Or use len(df.index) or df.shape[0] where df is the dataframe of choice
 data_x = np.linspace(0, 15,15000)
 merged_x = np.linspace(0, 150,150000)
 merged_x_openloop = np.linspace(0, 150,150000)
@@ -55,6 +50,7 @@ signal1_col2_MSE=mean_squared_error(target_1[1][165000:180000], signal_1[1][5000
 
 ##fig, axs = plt.subplots(1)
 ##fig.suptitle('Quadratic')
+
 ##axs.plot(data_x, signal_2[0][5000:20000],'--b',label='$x_1$')
 ##axs.plot(data_x, signal_2[1][5000:20000],'--g',label='$x_2$')
 ##axs.plot(data_x, target_2[0][165000:180000],'b',label='$x_1$ target')
@@ -73,6 +69,7 @@ signal2_col2_MSE=mean_squared_error(target_2[1][165000:180000], signal_2[1][5000
 
 ##fig, axs = plt.subplots(1)
 ##fig.suptitle('Lissajous Figure')
+
 ##axs.plot(data_x, signal_3[0][5000:20000],'--b',label='$x_1$')
 ##axs.plot(data_x, signal_3[1][5000:20000],'--g',label='$x_2$')
 ##axs.plot(data_x, target_3[0][165000:180000],'b',label='$x_1$ target')
@@ -88,13 +85,15 @@ signal3_MSE=mean_squared_error(target_3[0][165000:180000], signal_3[0][5000:2000
 signal3_col2_MSE=mean_squared_error(target_3[1][165000:180000], signal_3[1][5000:20000])
 
 
-fig, axs = plt.subplots(1)
-axs.plot(merged_x, merged[0],'b',label='$x_1$')
-axs.plot(merged_x, merged[1],'g',label='$x_2$')
-axs.set_xlabel('time(s)')
-leg=axs.legend(loc="lower right");
+#Merged Signals
+##fig, axs = plt.subplots(1)
+##axs.plot(merged_x, merged[0],'b',label='$x_1$')
+##axs.plot(merged_x, merged[1],'g',label='$x_2$')
+##axs.set_xlabel('time(s)')
+##leg=axs.legend(loc="lower right");
 
 
+##Time evolution of state variables
 ##fig, axs = plt.subplots(1)
 ##axs.plot(data_test, target_2[0][160000:180000],'b',label='$x_1$ target')
 ##axs.plot(data_test, target_2[1][160000:180000],'g',label='$x_2$ target')
@@ -124,6 +123,7 @@ leg=axs.legend(loc="lower right");
 ##axs.set_xlabel('time(s)')
 
 
+#Time evolution of limit cycle system
 ##fig, axs = plt.subplots(1)
 ##axs.plot(target_2[0][160000:180000], target_2[1][160000:180000],'b',label='$x_1$ target')
 ##points_cycle = np.array([signal_2[0], signal_2[1]]).T.reshape(-1,1,2)
@@ -140,5 +140,4 @@ leg=axs.legend(loc="lower right");
 
 
 print("Van der Pol:%.8f \t %.8f \n Quadratic:%.8f \t %.8f \n Lissajous:%.8f \t %.8f " %(signal1_MSE,signal1_col2_MSE,signal2_MSE,signal2_col2_MSE,signal3_MSE,signal3_col2_MSE))
-
 plt.show()

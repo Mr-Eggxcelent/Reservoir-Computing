@@ -11,8 +11,10 @@
 #include <type_traits>
 #include <numeric>   
 
+//Will be completed when I have time, currently not in use. Should allow the simulation to run in batches. Need to fix the variadic template.
 //Thread safe queue from C++ Concurrency in Action by Anthony Williams
 //https://www.manning.com/books/c-plus-plus-concurrency-in-action-second-edition
+
 
 template<typename T>
 class threadsafe_queue
@@ -225,7 +227,7 @@ public:
 };
 
 
-//https://github.com/Toeplitz/threadpool example from here
+//https://github.com/Toeplitz/threadpool example has been taken from here
 int main()
 {
 

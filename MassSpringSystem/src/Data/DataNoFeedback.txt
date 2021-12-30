@@ -6,7 +6,7 @@ ux 0
 uy 0
 number_of_equations 3
 order_of_equations 1
-input_connectivity_percentage 20
+input_connectivity_percentage 32
 min_input_weight -1
 max_input_weight 1
 min_x_position 0

@@ -89,7 +89,7 @@ void Node::apply_feedback_force(const Eigen::Vector3d& F)
 }
 
 //This is the function that incrementally changes the Node position in the next timestep for buckling
-//currently not needed since this buckling is artificial 
+//currently not needed since this buckling is controlled directly by velocity 
 void Node::apply_buckling_force(const Eigen::Vector3d& F)
 {
     if (_buckling_node==true)
@@ -105,7 +105,7 @@ void Node::buckle(double target_pos, double dt)
     // Your Variables
     double speed = 1000;
 
-    // On starting movement David Gouveia https://gamedev.stackexchange.com/questions/23447/moving-from-ax-y-to-bx1-y1-with-constant-speed
+    //Movement by David Gouveia https://gamedev.stackexchange.com/questions/23447/moving-from-ax-y-to-bx1-y1-with-constant-speed
     double distance = sqrt(pow(target_pos - _initial_position[1], 2));
     if (distance != 0) {
         double directionY = (target_pos - _initial_position[1]) / distance;

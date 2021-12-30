@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+#This is for testing the results gained from the feedback network
+#will not work for the non feedback configuration
 
 # Load data
 signal_1 = pd.read_csv('Results/outputsignal_washout.csv',header=None)
@@ -20,12 +22,13 @@ target_signal_2 = pd.read_csv('Results/targetsignal_two_washout.csv',header=None
 signal_3 = pd.read_csv('Results/outputsignal_three_washout.csv',header=None)
 target_signal_3 = pd.read_csv('Results/targetsignal_three_washout.csv',header=None)
 
-merged = pd.read_csv('merged_test_output.csv',header=None)
-feedback= pd.read_csv('merged_feedback.csv',header=None)
+merged = pd.read_csv('Results/outputsignal_washout.csv',header=None)
+feedback= pd.read_csv('Results/targetsignal_washout.csv',header=None)
 
-data_x = np.linspace(0, 1,20000)
-merged_x = np.linspace(0, 1,120000)
-target_x = np.linspace(0, 1,20000)          
+##Ensure sizes match
+data_x = np.linspace(0, 2,signal_1.shape[0])
+merged_x = np.linspace(0, 2,merged.shape[0])
+target_x = np.linspace(0, 2,target_signal_1.shape[0])          
                                         
 
 fig, axs = plt.subplots(5)
@@ -35,6 +38,8 @@ axs[0].plot(merged_x, merged[0],'-r',label='Test Output')
 axs[0].plot(merged_x, feedback[0],'--r',label='Closed Loop Feedback')
 axs[0].plot(merged_x, merged[1],'-g',label='Test Output Second Eq')
 axs[0].plot(merged_x, feedback[1],'--y',label='Closed Loop Feedback Second Eq')
+axs[0].plot(merged_x, merged[2],'-g',label='Test Output Three Eq')
+axs[0].plot(merged_x, feedback[2],'--y',label='Closed Loop Feedback Third Eq')
 leg=axs[0].legend();
 
 axs[1].plot(data_x, signal_1[0],'-y',label='x_1')

@@ -866,30 +866,3 @@ void initGL()
 }
 
 
-//Some functions not used
-   /*
-    VectorXd col = _Target_Signal.col(0);
-    _target.resize(_Target_Signal.cols(), std::vector<double>(col.size()));
-
-    for (int i = 0; i < _Target_Signal.cols(); i++)
-    {
-        VectorXd col_temp = _Target_Signal.col(i);
-        VectorXd::Map(&_target[i][0], col_temp.size()) = col_temp;
-    }*/
-
-    /*saveData("matrix.csv", MergedLearningMatrix);
-     saveData("matrix_2.csv", MergedLearningMatrix2);
-     saveData("matrix_3.csv", MergedLearningMatrix3);
-     saveData("targetSignal.csv", mergedTargetSignal2);*/
-
-     //change this block of code-temp
-//_feedback_signal.resize(_target_array_width);
-//
-//int test_indices = 0;
-//for (int i = 0; i < _feedback_signal.size(); i++)
-//{
-//    _feedback_signal[i] = _Target_Signal.block(0, test_indices, _Target_Signal.rows(), _target_array_width);
-//    test_indices += 2;
-//}
-//
-

@@ -4,12 +4,17 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 import matplotlib.lines as mlines
 
+#This script constructs the mass-spring network. Links to references I used are in the comments above each line of code.
+
 #https://stackoverflow.com/questions/48242837/can-networkx-read-nodes-and-edges-from-different-files
 #Answer by unutbu
-edges=pd.read_csv('Results/bestMSEEdge.csv',sep=',')
+edge_file="Results/Record_3NF/bestMSEEdge.csv"
+node_file="Results/Record_3NF/bestMSENode_up.csv"
+
+edges=pd.read_csv(edge_file,sep=',')
 G=nx.from_pandas_edgelist(edges,'from','to')
 
-nodes = pd.read_csv('Results/bestMSENode_orig.csv', sep=',')
+nodes = pd.read_csv(node_file, sep=',')
 data  = nodes.set_index('Node').to_dict('index').items()
 G.add_nodes_from(data)
 
@@ -42,7 +47,6 @@ for key, value in shape_dict.items():
 #    ax.plot([0],[0],
 #            color= legend_map[label],
 #            label=label)
-        
 #https://stackoverflow.com/questions/47391702/matplotlib-making-a-colored-markers-legend-from-scratch
 #tmdavison
 input_node = mlines.Line2D([], [], color='#5fd35f', marker='o', linestyle='None',

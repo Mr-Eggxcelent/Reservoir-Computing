@@ -34,13 +34,11 @@ namespace  Utility
     //Randomy chosen log to the base 10 uniform number between initial and final values.
     double Log_10_Uniform(double initial, double finalvalue);
 
-
     //X component of vector from one point to another
     double X_Comp(double vectorsum, double theta);
 
     //Y component of vector from one point to another.
     double Y_Comp(double vectorsum, double theta);
-
 
     double Rand_In_Range_Exp(double& var_min, double& var_max);
 
