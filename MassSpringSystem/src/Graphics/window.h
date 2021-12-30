@@ -89,7 +89,7 @@ public:
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-        _window = glfwCreateWindow(m_Data._Width, m_Data._Height, "LearnOpenGL", NULL, NULL);
+        _window = glfwCreateWindow(m_Data._Width, m_Data._Height, "Reservoir Computing", NULL, NULL);
 
 
         // glfw window creation
