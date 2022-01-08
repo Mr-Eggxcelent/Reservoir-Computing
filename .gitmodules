@@ -10,3 +10,6 @@
 [submodule "MassSpringSystem/vendor/freetype"]
 	path = MassSpringSystem/vendor/freetype
 	url = https://github.com/freetype/freetype
+[submodule "MassSpringSystem/vendor/glad"]
+	path = MassSpringSystem/vendor/glad
+	url = https://github.com/Dav1dde/glad
