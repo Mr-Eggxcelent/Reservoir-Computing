@@ -48,7 +48,7 @@ namespace  Utility
     //Remove duplicates from two dimensional vector
     void Remove_Duplicates(std::vector<std::pair<double,double>>& x); 
 
-    double White_Noise_Generator(bool feedback);
+    double White_Noise_Generator(bool feedback, double sigma= 0.000001);
 }
 
 

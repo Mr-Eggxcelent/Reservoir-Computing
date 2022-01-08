@@ -3,13 +3,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import matplotlib.lines as mlines
+import matplotlib as mpl
 
+mpl.rcParams['font.family'] = 'Avenir'
+plt.rcParams['font.size'] = 18
+plt.rcParams['axes.linewidth'] = 2
 #This script constructs the mass-spring network. Links to references I used are in the comments above each line of code.
 
 #https://stackoverflow.com/questions/48242837/can-networkx-read-nodes-and-edges-from-different-files
 #Answer by unutbu
-edge_file="Results/Record_3NF/bestMSEEdge.csv"
-node_file="Results/Record_3NF/bestMSENode_up.csv"
+edge_file="Results/quad_limit_cycles/bestMSEEdge.csv"
+node_file="Results/quad_limit_cycles/bestMSENode_down.csv"
 
 edges=pd.read_csv(edge_file,sep=',')
 G=nx.from_pandas_edgelist(edges,'from','to')
@@ -66,6 +70,8 @@ internal_node= mlines.Line2D([], [], color='white', marker='o', linestyle='None'
 colour_map={'I':'#5fd35f','FB':'#cd87de','B':'#5f8dd3','FX':'red','N':'white'}  
 OG = G.subgraph(shape_other)
 FG = G.subgraph(shape_fixed)
+plt.figure(figsize=(6.4, 4.8)) 
+
 nx.draw_networkx_nodes(OG,pos,node_color=[colour_map[node[1]['type']]
                       for node in OG.nodes(data=True)],
                       node_shape='o',
@@ -77,7 +83,7 @@ nx.draw_networkx_nodes(FG,pos,node_color=[colour_map[node[1]['type']]
                       node_size=120,
                       edgecolors='black')
 nx.draw_networkx_edges(G,pos)
-plt.legend(handles=[input_node, feedback_node, buckling_node,fixed_node,internal_node]) 
+plt.legend(handles=[input_node,buckling_node,feedback_node,fixed_node,internal_node],loc="lower right") 
 plt.show() 
 
 

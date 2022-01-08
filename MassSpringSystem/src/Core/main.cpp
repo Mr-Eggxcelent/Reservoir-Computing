@@ -48,8 +48,8 @@ int main(int argc, char** argv)
     auto begin = std::chrono::high_resolution_clock::now();
 
     //Uncomment the one you want to run
-    no_feedback_generator();
-    //feedback_generator();
+    //no_feedback_generator();
+    feedback_generator();
 
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
@@ -101,12 +101,12 @@ void no_feedback_generator()
     std::map <std::string, double>var_map;
     readParameter(var_map, "src/Data/DataNoFeedback.txt");
 
-    double wash_out_time = var_map["wash_out_time"];
-    double learning_time = var_map["learning_time"];
-    double learning_time_test = var_map["learning_time_test"];
+
+    data.wash_out_time = var_map["wash_out_time"];
+    data.learning_time = var_map["learning_time"];
+    data.testing_time = var_map["testing_time"];
 
     // Setting parameters for simulation
-    // This should be possible to read in from a text file
     data.N = static_cast<int>(var_map["N"]);
     data.ux = var_map["ux"];
     data.uy = var_map["uy"];
@@ -140,8 +140,8 @@ void no_feedback_generator()
     data.max_d1 = var_map["max_d1"];
 
     data.dt = var_map["dt"];
-    data.t0 = wash_out_time * data.dt;
-    data.tmax = (wash_out_time + learning_time + learning_time_test) * data.dt;
+    data.t0 = data.wash_out_time * data.dt;
+    data.tmax = (data.wash_out_time + data.learning_time + data.testing_time) * data.dt;
 
     data.buckling_percentage = var_map["buckling_percentage"];
 
@@ -160,7 +160,7 @@ void no_feedback_generator()
 
     std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
     std::vector<double> function_output;
-    int number_of_simulations = 100;
+    int number_of_simulations = 10;
     std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
     std::mutex m;
 
@@ -169,10 +169,10 @@ void no_feedback_generator()
     Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
     bool valid_output = false;
 
-    // function has been written in this form to allow the addition of multithreading in the future
+    //function has been written in this form to allow the addition of multithreading in the future
     auto lambda_simulation = [&]() {
         for (int i = 0; i < number_of_simulations; i++) {
-            Simulation sim(data, Input_Signals, Target_Signals, wash_out_time, learning_time, learning_time_test, camera, false);
+            Simulation sim(data, Input_Signals, Target_Signals, camera, false);
             {
 
                 std::cout << i << std::endl;
@@ -250,7 +250,7 @@ void no_feedback_generator()
         }
     }
 
-  
+    //Comment this out if you dont have gnuplot installed
     if (!isnan(Mean_Sq) && !isnan(Mean_Sq_two) && !isnan(Mean_Sq_three) && valid_output)
     {
         ////Plotting Routine goes here
@@ -363,18 +363,18 @@ void feedback_generator()
         input_signal.file_read(column);
     };
 
-    std::thread input_thread(read_lambda, "src/Data/inputsignal.csv", std::ref(input));
+    std::thread input_thread(read_lambda, "src/Data/input.csv", std::ref(input));//uneeded in the feedback case but should be made optional
     input_thread.join();
 
     std::thread signal_1_thread(read_lambda, "src/Data/vanderpol.csv", std::ref(signal_1),0);
     std::thread signal_2_thread(read_lambda, "src/Data/quad.csv", std::ref(signal_2),0);
-    std::thread signal_3_thread(read_lambda,"src/Data/lissajous.csv",std::ref(signal_3),0);
+    std::thread signal_3_thread(read_lambda,"src/Data/lokta_volterra.csv",std::ref(signal_3),0);
     signal_1_thread.join();
     signal_2_thread.join();
     signal_3_thread.join();
     std::thread signal_1_thread_2(read_lambda, "src/Data/vanderpol.csv", std::ref(signal_1_two),1);
     std::thread signal_2_thread_2(read_lambda, "src/Data/quad.csv", std::ref(signal_2_two),1);
-    std::thread signal_3_thread_2(read_lambda, "src/Data/lissajous.csv", std::ref(signal_3_two), 1);
+    std::thread signal_3_thread_2(read_lambda, "src/Data/lokta_volterra.csv", std::ref(signal_3_two), 1);
     signal_1_thread_2.join();
     signal_2_thread_2.join();
     signal_3_thread_2.join();
@@ -399,12 +399,12 @@ void feedback_generator()
     std::map <std::string, double>var_map;
     readParameter(var_map, "src/Data/DataFeedback.txt");
 
-    double wash_out_time = var_map["wash_out_time"];
-    double learning_time = var_map["learning_time"];
-    double learning_time_test = var_map["learning_time_test"];
+
+    data.wash_out_time = var_map["wash_out_time"];
+    data.learning_time = var_map["learning_time"];
+    data.testing_time = var_map["testing_time"];
 
     // Setting parameters for simulation
-    // This should be possible to read in from a text file
     data.N = static_cast<int>(var_map["N"]);
     data.ux = var_map["ux"];
     data.uy = var_map["uy"];
@@ -439,8 +439,8 @@ void feedback_generator()
     data.max_d1 = var_map["max_d1"];
 
     data.dt = var_map["dt"];
-    data.t0 = wash_out_time * data.dt;
-    data.tmax = (wash_out_time + learning_time + learning_time_test) * data.dt;
+    data.t0 = data.wash_out_time * data.dt;
+    data.tmax = (data.wash_out_time + data.learning_time + data.testing_time) * data.dt;
     data.buckling_percentage = var_map["buckling_percentage"];
    
     double Mean_Sq = 1;
@@ -456,7 +456,7 @@ void feedback_generator()
     
     std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
     std::vector<double>function_output;
-    int number_of_simulations = 1;
+    int number_of_simulations = 10;
     std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
     std::mutex m;
 
@@ -469,7 +469,7 @@ void feedback_generator()
         for (int i = 0; i < number_of_simulations; i++) {
 
             std::cout << "Simulation Number: "<<i << std::endl;
-            Simulation sim(data, Input_Signals, Target_Signals, wash_out_time, learning_time, learning_time_test, camera, true);
+            Simulation sim(data, Input_Signals, Target_Signals, camera, true);
             {
 
                 std::scoped_lock<std::mutex> lock(m);
@@ -504,7 +504,6 @@ void feedback_generator()
                     MSE_storage[i][j] = function_output[j];
                 }
 
-                //if (Mean_Sq > MSE && Mean_Sq_two > MSE_two && Mean_Sq_three > MSE_three && success)
                 if (((Mean_Sq+ Mean_Sq_two + Mean_Sq_three)/3)>((MSE + MSE_two + MSE_three) / 3) && success)
                 {
                     Mean_Sq = MSE;
@@ -547,7 +546,7 @@ void feedback_generator()
         }
     }
 
-
+    //Comment this out if you dont have gnuplot installed
     if (!isnan(Mean_Sq) && !isnan(Mean_Sq_two) && !isnan(Mean_Sq_three) && valid_output)
     {
         ////Plotting Routine goes here

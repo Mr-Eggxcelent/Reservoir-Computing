@@ -60,7 +60,7 @@ private:
     //These time variables are for the washout, learning phase and test data for the weights calcualated in learning phase.
     unsigned int _wash_out_time;
     unsigned int _learning_time;
-    unsigned int _learning_time_test;
+    unsigned int _testing_time;
 
     unsigned int _maxtimesteps;
 
@@ -135,7 +135,7 @@ public:
 
     //Default constructor
     //Simulation(InitialDataValues& data, std::vector<double>& Input_Signal, std::vector<std::vector<double>>& Target_Signals, int wash_out_time, int learning_time, int learning_time_test,Camera& camera); 
-    Simulation(InitialDataValues data, MatrixXd Input_Signal, MatrixXd Target_Signals, int wash_out_time, int learning_time, int learning_time_test, Camera camera, bool feedback);
+    Simulation(InitialDataValues data, MatrixXd Input_Signal, MatrixXd Target_Signals, Camera camera, bool feedback);
     ~Simulation();
 
     //This is for the csv files to test if there is chaos.
@@ -145,6 +145,7 @@ public:
     void execute(bool bias_learning);
 
     void openLoop();
+    void control_feedback();
     void closedLoop();
 
     void LearningMatrixCreation(unsigned int& index, int index_2, std::array<MatrixXd, 3>& TS, std::array<MatrixXd, 3>& LM, bool draw);

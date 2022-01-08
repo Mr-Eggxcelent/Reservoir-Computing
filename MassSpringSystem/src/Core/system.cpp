@@ -20,11 +20,23 @@ using namespace Eigen;
 //x=position[0]
 //y=position[1]
 SpringSystem::SpringSystem(InitialDataValues& data, Camera& camera,unsigned int& Width, unsigned int& Height,bool feedback_state)
-    :_data(data),_render(camera, Width, Height),_N(data.N),_feedback_state(feedback_state)
+    :_data(data),_render(camera, Width, Height),_N(data.N),_feedback_state(feedback_state), _varying_epsilon_S1(_data.testing_time),
+    _varying_epsilon_S2(_data.testing_time), _varying_epsilon_S3(_data.testing_time)
 {
     // read out all the data from the data structure
     _num_input_nodes = 0.01 * (_data.input_connectivity_percentage) * _N;
     _num_feedback_nodes = 0.01 * (_data.feedback_connectivity_percentage) * _N;
+
+    //offset is currently 0.75
+    //needed to test input
+    std::fill(_varying_epsilon_S1.begin(), _varying_epsilon_S1.begin() + _offset, 5);
+    std::fill(_varying_epsilon_S1.begin() + _offset, _varying_epsilon_S1.end(), 1);
+
+    std::fill(_varying_epsilon_S2.begin(), _varying_epsilon_S2.begin() + _offset, 1);
+    std::fill(_varying_epsilon_S2.begin() + _offset, _varying_epsilon_S2.end(), 5);
+
+    std::fill(_varying_epsilon_S3.begin(), _varying_epsilon_S3.begin() + _offset, 1);
+    std::fill(_varying_epsilon_S3.begin() + _offset, _varying_epsilon_S3.end(), 0.2);
 
 
     //Initialize_Nodes();
@@ -408,7 +420,46 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
 
 }
 
-void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool display)
+void SpringSystem::epsilon_input(const unsigned int& i, const int& i_2, std::vector<Node>::iterator::value_type& l,bool& learning)
+{
+    if (l.is_input() == true && learning==true) {
+
+         if (i_2 == 0) {       
+          l.apply_input_force(Eigen::Vector3d(l.get_w_input() * 1, 0, 0));
+         }
+         else if (i_2 == 2)
+         {
+           l.apply_input_force(Eigen::Vector3d(l.get_w_input() * 5, 0, 0));
+
+         }
+         else if (i_2 == 4)
+         {
+              l.apply_input_force(Eigen::Vector3d(l.get_w_input() * 0.2, 0, 0));
+
+         }
+    }else if(l.is_input() == true && learning == false){
+            
+        if (i_2 == 0) {
+     
+            l.apply_input_force(Eigen::Vector3d(l.get_w_input() * _varying_epsilon_S1[i], 0, 0));
+        }
+        else if (i_2 == 2)
+        {
+            l.apply_input_force(Eigen::Vector3d(l.get_w_input() * _varying_epsilon_S2[i], 0, 0));
+
+        }
+        else if (i_2 == 4)
+        {
+            l.apply_input_force(Eigen::Vector3d(l.get_w_input() * _varying_epsilon_S3[i], 0, 0));
+
+        }
+    }
+
+
+}
+
+
+void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool learning, bool display)
 {
     for (auto& l : _n)
     {
@@ -417,9 +468,12 @@ void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,Matr
         if (_feedback_state) {
             //Input force to input nodes
             if (l.is_feedback() == true) {
-                l.apply_feedback_force(Eigen::Vector3d(l.get_w_feedback() * feedback_signal(i, i_2+_assign_signal[node_index]), 0, 0));
+                l.apply_feedback_force(Eigen::Vector3d(l.get_w_feedback() * feedback_signal(i, i_2 + _assign_signal[node_index]), 0, 0));
             }
-          
+            
+          //Uncomment if you want to test the input
+         // epsilon_input(i,i_2,l,learning);
+
         }else {
             //Input force to input nodes assume just single 
             if (l.is_input() == true) {
@@ -430,9 +484,7 @@ void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,Matr
         //Change the node position, velocity and acceleration in response.
         l.update(dt);
 
-
         buckle_system(l, dt, state, display);
-
 
         //At the end of the loop, each node has no force acting on it.
         l.reset_forces();

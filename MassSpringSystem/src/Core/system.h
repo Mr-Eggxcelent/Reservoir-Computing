@@ -13,6 +13,11 @@ using namespace Eigen;
 
 struct InitialDataValues
 {
+
+    unsigned int wash_out_time;
+    unsigned int learning_time;
+    unsigned int testing_time;
+
     int     N;   // number of Nodes
     double ux;   // First input values in x direction  TODO: Really needed?
     double uy;   // First input values in y direction
@@ -103,7 +108,10 @@ private:
     double _Fx = 0;
     double _Fy = 0;
 
-  
+    std::vector<float>_varying_epsilon_S1;
+    std::vector<float>_varying_epsilon_S2;
+    std::vector<float>_varying_epsilon_S3;
+    int _offset = _data.testing_time * 0.70;
 
 public:
     std::vector<Node> _n;        // List of all nodes
@@ -137,10 +145,11 @@ public:
 
     void buckle_system(std::vector<Node>::iterator::value_type& l, double& dt, _STATE& state, bool display);
 
+    void epsilon_input(const unsigned int& i, const int& i_2, std::vector<Node>::iterator::value_type& l, bool& learning);
     //system
     /*template <typename Derived>
     const EigenBase<Derived>& feedback_signal*/
-    void update_reset_system(const unsigned int& i,const int& i_2, MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool display = false);
+    void update_reset_system(const unsigned int& i,const int& i_2, MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool learning,bool display = false);
 
     //Init the buffers before drawing
     void init_draw();

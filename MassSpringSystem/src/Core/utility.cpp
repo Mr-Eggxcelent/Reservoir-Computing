@@ -157,10 +157,10 @@ namespace Utility {
         }
     }
 
-    double White_Noise_Generator(bool feedback) {
+    double White_Noise_Generator(bool feedback,double sigma) {
 
         if (feedback) {
-            std::normal_distribution<double> distr(0, 0.000001);
+            std::normal_distribution<double> distr(0, sigma);
             return distr(generator);
         }
         else {

@@ -94,7 +94,7 @@ void Node::apply_buckling_force(const Eigen::Vector3d& F)
 {
     if (_buckling_node==true)
     {
-        _buckling_force= F;
+        _buckling_force = F;
     }
 }
 

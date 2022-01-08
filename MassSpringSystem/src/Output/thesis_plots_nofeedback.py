@@ -5,10 +5,20 @@ Spyder Editor
 This is a temporary script file.
 """
 
+#Refer to Naveen Venkatesan article on publication quality plotting
+##https://towardsdatascience.com/an-introduction-to-making-scientific-publication-plots-with-python-ea19dfa7f51e
+
+
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import pandas as pd
 import numpy as np
+from pylab import cm
 from sklearn.metrics import mean_squared_error
+
+mpl.rc('legend',**{'fontsize':12})
+plt.rcParams['font.size'] = 18
+plt.rcParams['axes.linewidth'] = 2
 
 
 # Load data
@@ -25,43 +35,35 @@ data_x = np.linspace(0, 5,signal_1.shape[0])
 target_x = np.linspace(0, 5,5000)          
                                         
 
-fig, axs = plt.subplots(1)
-fig.suptitle('Volterra')
-axs.plot(data_x, signal_1,'--r',label='MC output')
-axs.set_xlabel('time(s)')
-axs.plot(target_x, target_1[130000:135000],'-b',label='target')
-leg=axs.legend(loc="lower right");
-
-signal1_MSE=mean_squared_error(target_1[0][130000:135000], signal_1[0])
-
-
-fig, axs = plt.subplots(1)
-fig.suptitle('2ndOrder')
-axs.plot(data_x, signal_2,'--r',label='MC output')
-axs.set_xlabel('time(s)')
-axs.plot(target_x, target_2[130000:135000],'-b',label='target')
-leg=axs.legend(loc="lower right");
-
-signal2_MSE=mean_squared_error( target_2[0][130000:135000], signal_2[0])
-
-
-fig, axs = plt.subplots(1)
-fig.suptitle('NARMA')
-axs.plot(data_x, signal_3,'--r',label='MC output')
-axs.plot(target_x, target_3[130000:135000],'-b',label='target')
-axs.set_xlabel('time(s)')
-leg=axs.legend(loc="lower right");
-
-signal3_MSE=mean_squared_error(target_3[0][130000:135000], signal_3[0])
+def plot_signal(signal,target,x_limit_min,x_limit_max,y_limit_min,y_limit_max):
+    
+    fig = plt.figure(figsize=(5, 3))
+    axs = fig.add_axes([0, 0, 1, 1])
+    
+    axs.xaxis.set_tick_params(which='major', size=10, width=2, direction='in', top='on')
+    axs.xaxis.set_tick_params(which='minor', size=7, width=2, direction='in', top='on')
+    axs.yaxis.set_tick_params(which='major', size=10, width=2, direction='in', right='on')
+    axs.yaxis.set_tick_params(which='minor', size=7, width=2, direction='in', right='on')
+      
+    axs.plot(target_x, target[130000:135000],'-b',label='target')
+    axs.plot(data_x, signal,'--r',label='MC output')
+     
+    axs.set_xlim(x_limit_min, x_limit_max)
+    axs.set_ylim(y_limit_min, y_limit_max)
+    axs.set_xlabel('time(s)')
+    axs.legend(loc="lower right");
+    plt.show()
+      
+    signal_MSE=mean_squared_error(target[0][130000:135000], signal[0])
+    return signal_MSE
 
 
-fig, axs = plt.subplots(1)
-axs.plot(data_x, input_signal[130000:135000],'-b')
-axs.set_xlabel('time(s)')
-##leg=axs.legend(loc="lower right");
+def main():
+    MSE=plot_signal(signal_2,target_2,0,5,-5,5)
+    print("Signal MSE:%.8f"%(MSE))
+    
+    
+if __name__ == "__main__":
+    main()
 
 
-print("Volterra:%.8f \n 2ndOrder:%.8f \n NARMA:%.8f " %(signal1_MSE,signal2_MSE,signal3_MSE))
-
-
-plt.show()

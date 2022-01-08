@@ -26,7 +26,8 @@
 #include <iomanip>
 #include<thread>
 
-#define DEBUG_DRAW 1
+#define DEBUG_DRAW 0
+#define PERTURBATION 1
 void initGL();
 
 using namespace Eigen;
@@ -50,8 +51,7 @@ void saveData(std::string fileName, MatrixXd&  matrix)
     }
 }
 
-Simulation::Simulation(InitialDataValues data, MatrixXd IS, MatrixXd TS, int wash_out_time,
-    int learning_time, int learning_time_test, Camera camera, bool feedback)
+Simulation::Simulation(InitialDataValues data, MatrixXd IS, MatrixXd TS, Camera camera, bool feedback)
     : _windowHandle(camera, WIDTH, HEIGHT), _camera(camera), _Target_Signal(TS), _Input_Signal(IS)
     , _mass_spring(std::make_unique<SpringSystem>(data, camera, WIDTH, HEIGHT,feedback)), _feedback_state(feedback),_data(data)
 {
@@ -60,12 +60,12 @@ Simulation::Simulation(InitialDataValues data, MatrixXd IS, MatrixXd TS, int was
     _tmax = data.tmax;
     _dt = data.dt;
 
-    _wash_out_time = wash_out_time;
-    _learning_time = learning_time;
-    _learning_time_test = learning_time_test;
+    _wash_out_time = data.wash_out_time;
+    _learning_time = data.learning_time;
+    _testing_time = data.testing_time;
 
     //Total time
-    _maxtimesteps = wash_out_time + learning_time + learning_time_test;
+    _maxtimesteps = data.wash_out_time + data.learning_time + data.testing_time;
     _number_of_equations = _Target_Signal.cols() / data.order_of_equations;
 
     
@@ -73,25 +73,25 @@ Simulation::Simulation(InitialDataValues data, MatrixXd IS, MatrixXd TS, int was
 
         _LearningMatrix.push_back({ MatrixXd(_maxtimesteps, _mass_spring->get_spring_vec().size()),
                                                   MatrixXd(_learning_time, _mass_spring->get_spring_vec().size()),
-                                                  MatrixXd(_learning_time_test, _mass_spring->get_spring_vec().size()) });
+                                                  MatrixXd(_testing_time, _mass_spring->get_spring_vec().size()) });
 
         _Target.push_back({ MatrixXd(_maxtimesteps, data.order_of_equations),
                                           MatrixXd(_learning_time, data.order_of_equations),
-                                          MatrixXd(_learning_time_test, data.order_of_equations) });
+                                          MatrixXd(_testing_time, data.order_of_equations) });
 
-        _TestMatrix.push_back(MatrixXd(_learning_time_test, _mass_spring->get_spring_vec().size()));
+        _TestMatrix.push_back(MatrixXd(_testing_time, _mass_spring->get_spring_vec().size()));
 
     }
     
 
     _LearningMatrix_merged = { MatrixXd(_maxtimesteps * _number_of_equations,  _LearningMatrix[0][0].cols()),
                                MatrixXd(_learning_time * _number_of_equations,  _LearningMatrix[0][1].cols()),
-                               MatrixXd(_learning_time_test * _number_of_equations, _LearningMatrix[0][2].cols()) };
+                               MatrixXd(_testing_time * _number_of_equations, _LearningMatrix[0][2].cols()) };
 
 
     _mergedTargetSignal = MatrixXd(_Target[0][1].rows() * _number_of_equations, data.order_of_equations);
 
-    _Merged_Test_Matrix = MatrixXd(_learning_time_test * _number_of_equations, _mass_spring->get_spring_vec().size());
+    _Merged_Test_Matrix = MatrixXd(_testing_time * _number_of_equations, _mass_spring->get_spring_vec().size());
 
 
     _Output_Signal.resize(_Target_Signal.cols());
@@ -251,6 +251,37 @@ void Simulation::openLoop()
 }
 
 
+void Simulation::control_feedback() {
+
+    
+    int window_start = 35000;
+    int window_end = 5000;
+    int perturbation_constant= 0.5;
+
+    ArrayXd noise_array(window_end);
+
+    for (int i=0;i< window_end;i++)
+    {
+        noise_array(i)= Utility::White_Noise_Generator(_feedback_state, 10);
+    }
+
+        
+    //// If confused refer to https://gist.github.com/gocarlos/c91237b02c120c6319612e42fa196d77 for a quick eigen guide
+    ////For the thesis I hardcoded the window and value of the perturbation
+    for (int j = 0; j < 2; j++) {
+
+        _Test_Feedback.block(window_start, j, window_end, 1).array() = 0.5;
+    }
+
+    for (int j = 2; j < 4 ; j++) {
+
+        _Test_Feedback.block(window_start, j, window_end, 1).array() = noise_array;
+    }
+
+
+
+}
+
 void Simulation::closedLoop()
 {
     size_t  row_offset = 0;
@@ -268,8 +299,16 @@ void Simulation::closedLoop()
             stride = 0;
         }
 
+       //from the zeroth row go through each of the columns. 
+       //The output had the rows from each signal stacked so split it by the number of equations
+       //We then are only interested in one column hence the 1.
+
         _Test_Feedback.block(0, j, _Output.rows() / _number_of_equations, 1) = _Output.block(stride, (j % 2 == 0) ? 0 : 1, _Output.rows() / _number_of_equations, 1);
     }
+
+# if (PERTURBATION==1)
+    control_feedback();
+#endif
 
 
     for (unsigned int i = 0; i < _number_of_equations; i++)
@@ -290,7 +329,7 @@ void Simulation::closedLoop()
    
     //bias_learning
     _Merged_Test_Matrix.conservativeResize(_Merged_Test_Matrix.rows(), _Merged_Test_Matrix.cols() + 1);
-    _Merged_Test_Matrix.col(_LearningMatrix_merged[1].cols() - 1) = VectorXd::Ones(_learning_time_test);
+    _Merged_Test_Matrix.col(_LearningMatrix_merged[1].cols() - 1) = VectorXd::Ones(_testing_time);
     _Test_Output = _Merged_Test_Matrix * _learning_weights;
 
 
@@ -322,7 +361,7 @@ void Simulation::LearningMatrixCreation(unsigned int& index, int index_2,std::ar
         }
     }
 
-    _mass_spring->update_reset_system(index,index_2, _Input_Signal, _Target_Signal, _dt, _state, draw);
+    _mass_spring->update_reset_system(index,index_2, _Input_Signal, _Target_Signal, _dt, _state, true,draw);
 
 }
 
@@ -334,7 +373,7 @@ void Simulation::TestMatrixCreation(unsigned int& index, int index_2,MatrixXd& T
         TM(index, j) = _mass_spring->get_spring_vec()[j].get_length() ;
     }
 
-    _mass_spring->update_reset_system(index, index_2, _Input_Signal, _Test_Feedback, _dt, _state, draw);
+    _mass_spring->update_reset_system(index, index_2, _Input_Signal, _Test_Feedback, _dt, _state, false, draw);
 }
 
 
@@ -352,7 +391,7 @@ MatrixXd Simulation::training_phase(std::array<MatrixXd,3>& LearningMatrix, Matr
 
     //bias_learning
     LearningMatrix[2].conservativeResize(LearningMatrix[2].rows(),LearningMatrix[2].cols() + 1);
-    LearningMatrix[2].col(LearningMatrix[1].cols() - 1) = VectorXd::Ones(_learning_time_test);
+    LearningMatrix[2].col(LearningMatrix[1].cols() - 1) = VectorXd::Ones(_testing_time);
     
     return _LearningWeightsMatrix;
 }
@@ -391,7 +430,7 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
 
     unsigned int stride = 0;
     
-    if (_Output.size()< (_learning_time_test*_number_of_equations)) {
+    if (_Output.size()< (_testing_time *_number_of_equations)) {
         throw "Matrix is not filled";
     }
    
@@ -405,10 +444,10 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
 
                 if (_feedback_state) {
                     if (j >= 2 && j < 4) {
-                        stride = _learning_time_test;
+                        stride = _testing_time;
                     }
                     else if (j >= 4) {
-                        stride = _learning_time_test + _learning_time_test;
+                        stride = _testing_time + _testing_time;
                     }
                     else {
                         stride = 0;
@@ -419,7 +458,7 @@ std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSqu
                 } else {
 
                     _Output_Signal[j].push_back(_Output(i - _wash_out_time - _learning_time + stride));
-                    stride += _learning_time_test;
+                    stride += _testing_time;
 
                 }
 
@@ -523,10 +562,10 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
             for (int j = 0; j < _Test_Feedback.cols(); j++) {
 
                 if (j >= 2 && j < 4) {
-                    stride = _learning_time_test;
+                    stride = _testing_time;
                 }else if (j >= 4)
                 {
-                    stride = _learning_time_test + _learning_time_test;
+                    stride = _testing_time + _testing_time;
                 }else
                 {
                     stride = 0;
@@ -606,13 +645,13 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
     for (int i = 0; i < _Output_Signal.size(); i++)
     {
    
-        if (_Test_Output_Signal[i].size() < _learning_time_test)
+        if (_Test_Output_Signal[i].size() < _testing_time)
         {
             throw "Slicing has failed";
         }
 
-        subVecOutput[i] = slice(_Test_Output_Signal[i],_learning_time_test-15000, _learning_time_test);
-        subVecTarget[i] = slice(_Target_Signal_Vec[i], _learning_time_test-15000, _learning_time_test);
+        subVecOutput[i] = slice(_Test_Output_Signal[i], _testing_time -15000, _testing_time);
+        subVecTarget[i] = slice(_Target_Signal_Vec[i], _testing_time -15000, _testing_time);
 
     }
 
@@ -683,7 +722,7 @@ void Simulation::output_Output_Signal()
         }
 
 
-        for (unsigned int i = 0; i < _learning_time_test; i++)
+        for (unsigned int i = 0; i < _testing_time; i++)
         {
 
 
