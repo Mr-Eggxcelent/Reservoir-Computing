@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 #file you wish to preprocess
-file="input_2.csv"
+file="quad_3.csv"
 
 df= pandas.read_csv(file)
 scaler = preprocessing.StandardScaler().fit(df)
@@ -19,7 +19,7 @@ plt.figure(figsize=(6.8, 4.2))
 plt.plot(x_axis[0:5000], df.iloc[0:5000, 0],'b')
 plt.plot(x_axis_2[0:5000], X_scaled[0:5000],'g')
 
-##np.savetxt(file, X_scaled, fmt ="%s", delimiter=",")
+np.savetxt(file, X_scaled, fmt ="%s", delimiter=",")
 
 plt.show()
 

@@ -65,11 +65,23 @@ def ode_van_der_Pol_sd(x,epsilon,dt,u):
     
 
 def quad(x,t=0):
-    x_new_1=    x[0]+x[1]- 5*x[0]*(x[0]**2+x[1]**2)
+    x_new_1=    x[0]+x[1]- x[0]*(x[0]**2+x[1]**2)
     x_new_2= -2*x[0]+x[1]- x[1]*(x[0]**2+x[1]**2)
 
     return np.array((x_new_1,x_new_2))
     
+
+def quad_epsilon_5(x,t=0):
+    x_new_1=    x[0]+x[1]- 5*x[0]*(x[0]**2+x[1]**2)
+    x_new_2= -2*x[0]+x[1]- x[1]*(x[0]**2+x[1]**2)
+
+    return np.array((x_new_1,x_new_2))
+
+def quad_epsilon_02(x,t=0):
+    x_new_1=    x[0]+x[1]- 0.2*x[0]*(x[0]**2+x[1]**2)
+    x_new_2= -2*x[0]+x[1]- x[1]*(x[0]**2+x[1]**2)
+
+    return np.array((x_new_1,x_new_2))
 
 step_size = 0.001
 init_phase = 20
@@ -82,7 +94,7 @@ t = np.linspace(0,total_time,int(tot_timestep))
 
 #### Quad
 ##X0= np.array([-0.28,-0.539])
-##X_1, infodict = integrate.odeint(quad, X0, t, full_output=True)
+##X_1, infodict = integrate.odeint(quad_epsilon_5, X0, t, full_output=True)
 ##
 ####get rid of initial phase
 ##discard=init_phase/step_size+1
@@ -95,8 +107,8 @@ t = np.linspace(0,total_time,int(tot_timestep))
 ##plt.plot(t[int(init_phase/step_size+1):int(init_phase/step_size+1)+6000],X_trunc[:6000,1])
 ####plt.plot(X_trunc_1[:,0],X_trunc_1[:,1])
 ##plt.show()
-
-##np.savetxt("quad.csv", X_trunc, fmt ="%s", delimiter=",")
+##
+##np.savetxt("quad_epsilon_5.csv", X_trunc, fmt ="%s", delimiter=",")
 
 ##### Vanderpol
 ##X= np.zeros((2,t.size))
