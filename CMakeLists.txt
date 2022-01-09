@@ -84,6 +84,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${DELAUNATOR_DIR}/include")
 set(LIBS "-lg4tk" "glfw" "${GLFW_LIBRARIES}" "opengl32" "glad" "${CMAKE_DL_LIBS}" "${FREETYPE_LIBRARIES}" "freetype")
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
+#For Visual Studio
+set_property(TARGET "${PROJECT_NAME}" PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/MassSpringSystem/")
 
 # Define the link libraries
 # MIT License
