@@ -9,3 +9,5 @@ If you have not installed GNU plot, make sure to do that. An alternative is to j
 You can specify the number of simulations you want to carry out within the main.cpp file. If you are happy with the batch of simulations you have run, make sure to go to the Results folder and create a subfolder to store the output. Each time the code is run in this folder the output is overwritten and the old batch will be lost. A specialized save option has yet to be added.
 
 In the simulations.cpp folder there is an option to render the mass-spring system to the screen, switch this on to see the springs in motion. You can't collect data in this mode but it can be helpful if you wish to add some new movement mechanics to the system, and to confirm if their working as expected.
+
+Whatever C++ file or library that hasn't been written by me has the creators license attached or specified at the top of the file. 
