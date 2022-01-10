@@ -10,5 +10,5 @@ You can specify the number of simulations you want to carry out within the main.
 
 In the simulations.cpp folder there is an option to render the mass-spring system to the screen, switch this on to see the springs in motion. You can't collect data in this mode but it can be helpful if you wish to add some new movement mechanics to the system, and to confirm if their working as expected.
 
-Whatever C++ file or library that hasn't been written by me has the creators license attached or specified at the top of the file. I'd also like to credit Martin Garrad who I forgot to mention in my thesis for some of the code for the mass-spring system.
+Whatever C++ file or library that hasn't been written by me has the creators license attached or specified at the top of the file. I'd also like to thank and credit Martin Garrad who I forgot to mention in my thesis for a lot of the code for the mass-spring system. I also didn't mention Daniel Stahlke's library for piping commands from C++ to GNU plot, it was extremely helpful for quickly checking outputs.
 
