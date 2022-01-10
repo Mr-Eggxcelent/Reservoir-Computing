@@ -1,5 +1,6 @@
 # Reservoir-Computing
 This project should work for anyone running Visual Studio 2019 on a Windows machine. If not please build the project from the source using the CMake file provided.
+
 The outputs should appear as .csv files in the MassSpringSystem\src\Output\Results folder. There are python files within this folder to plot the output.
 Remember to point python to the correct folder when plotting.
 
