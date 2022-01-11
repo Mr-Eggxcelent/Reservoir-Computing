@@ -79,6 +79,7 @@ void no_feedback_generator()
         input_signal.file_read(column);
     };
 
+    // will change this once a multi threaded queue is added
     std::thread input_thread(read_lambda, "src/Data/input.csv", std::ref(input),0);
     std::thread volterra_thread(read_lambda, "src/Data/volterra.csv", std::ref(volterra),0);
     std::thread second_order_thread(read_lambda, "src/Data/2ndOrder.csv", std::ref(second_order),0);
@@ -363,6 +364,7 @@ void feedback_generator()
         input_signal.file_read(column);
     };
 
+    // will change this once a multi threaded queue is added
     std::thread input_thread(read_lambda, "src/Data/input.csv", std::ref(input));//uneeded in the feedback case but should be made optional
     input_thread.join();
 
@@ -476,14 +478,14 @@ void feedback_generator()
                 std::vector<double> function_output;
                 bool success = true;
 
-                /*  std::optional<std::vector<double>>opt_learning_matrix =  sim.output_LearningMatrix_and_MeanSquaredError();
-                 if (opt_learning_matrix)
-                 {*/
-
-                sim.output_LearningMatrix_and_MeanSquaredError(success);
-                 //}
 
                 try {
+                 /*  std::optional<std::vector<double>>opt_learning_matrix =  sim.output_LearningMatrix_and_MeanSquaredError();
+                 if (opt_learning_matrix)
+                {*/
+
+                    sim.output_LearningMatrix_and_MeanSquaredError(success);
+                    //}
                     function_output = std::move(sim.output_TestMatrix_and_MeanSquaredError());
                 }
                 catch (const char* msg) {

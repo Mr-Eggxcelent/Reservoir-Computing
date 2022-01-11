@@ -27,7 +27,7 @@
 #include<thread>
 
 #define DEBUG_DRAW 0
-#define PERTURBATION 1
+#define PERTURBATION 0
 void initGL();
 
 using namespace Eigen;
@@ -551,6 +551,8 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
     unsigned int stride = 0;
     std::vector<std::vector<double>>subVecOutput(_Test_Output_Signal.size());
     std::vector<std::vector<double>>subVecTarget(_Test_Output_Signal.size());
+
+    //The merged output for the feedback case
     std::ofstream merged_test_output("src/Output/Results/merged_test_output.csv");  merged_test_output.precision(15);
     std::ofstream feedback_signal("src/Output/Results/merged_feedback.csv");  feedback_signal.precision(15);
 
@@ -642,6 +644,7 @@ std::vector<double> Simulation::output_TestMatrix_and_MeanSquaredError()
 
     
     //Slicing is done just to ensure that we are not taking the MSE when there still might be some disturbance from the buckling
+    //Keep the test time above 50000 for best results
     for (int i = 0; i < _Output_Signal.size(); i++)
     {
    
@@ -678,25 +681,29 @@ void Simulation::output_Output_Signal()
 
     std::ofstream learningweights("src/Output/learningweights.csv"); learningweights.precision(15);
 
+    //The target for the feedback case means the Learned one
+    //In the non-feedback case it will be the original target signal
     std::ofstream targetsignal("src/Output/Results/targetsignal.csv");  targetsignal.precision(15);
     std::ofstream targetsignal_two("src/Output/Results/targetsignal_two.csv");  targetsignal_two.precision(15);
     std::ofstream targetsignal_three("src/Output/Results/targetsignal_three.csv");  targetsignal_three.precision(15);
 
+    //This applies to the feedback case. This is the target signal with the washout period removed
+    //Needed this to check to calculate the correct MSE
     std::ofstream targetsignal_washout("src/Output/Results/targetsignal_washout.csv");  targetsignal_washout.precision(15);
     std::ofstream targetsignal_two_washout("src/Output/Results/targetsignal_two_washout.csv");  targetsignal_two_washout.precision(15);
     std::ofstream targetsignal_three_washout("src/Output/Results/targetsignal_three_washout.csv");  targetsignal_three_washout.precision(15);
 
-    
+    //This is the Morphological Computations output
     std::ofstream outputsignal("src/Output/Results/outputsignal.csv");  outputsignal.precision(15);
     std::ofstream outputsignal_two("src/Output/Results/outputsignal_two.csv");  outputsignal_two.precision(15);
     std::ofstream outputsignal_three("src/Output/Results/outputsignal_three.csv");  outputsignal_three.precision(15);
 
-
+    // This is the Morphological Computations output with the washout removed
     std::ofstream outputsignal_washout("src/Output/Results/outputsignal_washout.csv");  outputsignal_washout.precision(15);
     std::ofstream outputsignal_two_washout("src/Output/Results/outputsignal_two_washout.csv");  outputsignal_two_washout.precision(15);
     std::ofstream outputsignal_three_washout("src/Output/Results/outputsignal_three_washout.csv");  outputsignal_three_washout.precision(15);
 
-
+    // The merged output for the non-feedback case
     std::ofstream merged_output("src/Output/Results/merged_output.csv");  merged_output.precision(15);
     std::ofstream merged_target("src/Output/Results/merged_target.csv");  merged_target.precision(15);
 
