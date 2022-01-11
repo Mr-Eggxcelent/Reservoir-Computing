@@ -63,14 +63,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)MassSpringSystem\vendor\glm;$(SolutionDir)MassSpringSystem\vendor\freetype\include;$(SolutionDir)MassSpringSystem\vendor\eigen;$(SolutionDir)MassSpringSystem\vendor\GLFW\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)MassSpringSystem\vendor\glm;$(SolutionDir)MassSpringSystem\vendor\freetype\include;$(SolutionDir)MassSpringSystem\vendor\eigen;$(SolutionDir)MassSpringSystem\vendor\GLFW\include;$(SolutionDir)MassSpringSystem\vendor\delaunator-cpp\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)MassSpringSystem\vendor\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)MassSpringSystem\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
