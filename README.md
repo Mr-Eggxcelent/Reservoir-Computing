@@ -16,3 +16,4 @@ Control the system parameters from the text file within the Data folder.
 
 Whatever C++ file or library that hasn't been written by me has the creators license attached or specified at the top of the file. I'd also like to thank and credit Martin Garrad who I forgot to mention in my thesis for a lot of the code for the mass-spring system. I also didn't mention Daniel Stahlke's library for piping commands from C++ to GNU plot, it was extremely helpful for quickly checking outputs.
 
+Code must be cleaned up, and functions refactored. Offloading calculations to GPU yet to be added.
