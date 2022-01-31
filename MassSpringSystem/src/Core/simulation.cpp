@@ -26,8 +26,7 @@
 #include <iomanip>
 #include<thread>
 
-#define DEBUG_DRAW 0
-#define PERTURBATION 0
+
 void initGL();
 
 using namespace Eigen;

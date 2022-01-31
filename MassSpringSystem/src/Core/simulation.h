@@ -12,8 +12,10 @@
 #include <optional>
 #include <functional>
 
-using namespace Eigen;
+#define DEBUG_DRAW 0
+#define PERTURBATION 0
 
+using namespace Eigen;
 
 class DataSet
 {

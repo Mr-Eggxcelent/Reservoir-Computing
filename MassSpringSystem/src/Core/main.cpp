@@ -12,6 +12,7 @@
 #include "filereader.h"
 #include<memory>
 #include "../Graphics/camera.h"
+#include "concurrency.h"
 
 //graphing
 #include "../Graphics/gnuplot-iostream.h"
@@ -48,8 +49,8 @@ int main(int argc, char** argv)
     auto begin = std::chrono::high_resolution_clock::now();
 
     //Uncomment the one you want to run
-    //no_feedback_generator();
-    feedback_generator();
+    no_feedback_generator();
+    //feedback_generator();
 
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
@@ -146,41 +147,42 @@ void no_feedback_generator()
 
     data.buckling_percentage = var_map["buckling_percentage"];
 
+    int number_of_simulations = 10;
+    bool valid_output = false;
+    bool error_thrown = false;
+
+    std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
+    Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
+    std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
+    std::mutex m;
+    thread_pool tp;
+
     double Mean_Sq = 2;
     double Mean_Sq_two = 2;
     double Mean_Sq_three = 2;
 
-    double MSE = 0;
-    double MSE_two = 0;
-    double MSE_three = 0;
+    std::atomic<double> MSE = 0;
+    std::atomic<double> MSE_two = 0;
+    std::atomic<double> MSE_three = 0;
 
-    double total_MSE = 0;
-    double total_MSE_two = 0;
-    double total_MSE_three = 0;
-
-
-    std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
-    std::vector<double> function_output;
-    int number_of_simulations = 10;
-    std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
-    std::mutex m;
+    std::atomic<double> total_MSE = 0;
+    std::atomic<double> total_MSE_two = 0;
+    std::atomic<double> total_MSE_three = 0;
+    
+    std::atomic_int ongoing_count(0);
+    std::atomic_int completed_count(0);
 
 
-
-    Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
-    bool valid_output = false;
-
-    //function has been written in this form to allow the addition of multithreading in the future
+    //terrible code that works somehow will have to fix later
     auto lambda_simulation = [&]() {
-        for (int i = 0; i < number_of_simulations; i++) {
+
+            ongoing_count++;
+
             Simulation sim(data, Input_Signals, Target_Signals, camera, false);
             {
-
-                std::cout << i << std::endl;
-                std::scoped_lock<std::mutex> lock(m);
-                
-                //Success does nothing for the non feedback case, since we dont need a closed loop phase
+                std::vector<double> function_output;
                 bool success = true;
+                //Success does nothing for the non feedback case, since we dont need a closed loop phase
                 /*std::optional<std::vector<double>>opt_learning_matrix = sim.output_LearningMatrix_and_MeanSquaredError();
                 if (opt_learning_matrix)
                 {*/
@@ -189,6 +191,7 @@ void no_feedback_generator()
                 }
                 catch (const char* msg) {
                     std::cerr << msg << std::endl;
+                    error_thrown = true;
                     return 0;
                 }
                 //  }
@@ -201,33 +204,56 @@ void no_feedback_generator()
                 total_MSE_two += MSE_two;
                 total_MSE_three += MSE_three;
 
-                for (int j = 0; j < function_output.size(); j++)
                 {
-                    MSE_storage[i][j] = function_output[j];
+                    // Not sure if the mutex is needed here
+                    std::scoped_lock<std::mutex> lock(m);
+                    for (int j = 0; j < function_output.size(); j++)
+                    {
+                        MSE_storage[completed_count][j] = function_output[j];
+                    }
+
+
+                    if (((Mean_Sq + Mean_Sq_two + Mean_Sq_three) / 3) > ((MSE + MSE_two + MSE_three) / 3))
+                    {
+                        Mean_Sq = MSE;
+                        std::cout <<"Thread "<<std::this_thread::get_id()<<":"<< "The best MSE at the moment is: " << Mean_Sq << "\n";
+                        Mean_Sq_two = MSE_two;
+                        std::cout <<"Thread "<< std::this_thread::get_id()<<":"<< "The best MSE at the moment is: " << Mean_Sq_two << "\n";
+                        Mean_Sq_three = MSE_three;
+                        std::cout << "Thread " << std::this_thread::get_id() << ":" << "The best MSE at the moment is: " << Mean_Sq_three << "\n";
+                        sim.output_Output_Signal();
+
+                        valid_output = true;
+                    }
                 }
 
-
-                if (((Mean_Sq+ Mean_Sq_two+ Mean_Sq_three)/3) > ((MSE+MSE_two+MSE_three)/3))
-                {
-                    Mean_Sq = MSE;
-                    std::cout << "The best MSE at the moment is: " << Mean_Sq << "\n";
-                    Mean_Sq_two = MSE_two;
-                    std::cout << "The best MSE at the moment is: " << Mean_Sq_two << "\n";
-                    Mean_Sq_three = MSE_three;
-                    std::cout << "The best MSE at the moment is: " << Mean_Sq_three << "\n";
-                    sim.output_Output_Signal();
-
-                    valid_output = true;
-                }
-
-
+                std::cout << function_output[0] <<" "<< std::this_thread::get_id()<< std::endl;
             }
-        }
+
+            completed_count++;
+            ongoing_count--;
     };
 
+    #if (DEBUG_DRAW==1)
+        number_of_simulations = 1;
+    #endif
 
-    std::thread test_thread(lambda_simulation);
-    test_thread.join();
+    for (uint64_t i(0); i < number_of_simulations; ++i)
+    {
+        tp.submit(lambda_simulation);
+    }
+
+    while (1)
+    {
+        std::cout << "ongoing: " << ongoing_count << ", completed: " << completed_count << " / " << number_of_simulations << std::endl;;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        if (completed_count == number_of_simulations || error_thrown==true)
+        {
+            break;
+        }
+
+    }
+
 
     total_MSE = total_MSE / number_of_simulations;
     std::cout << "The average MSE for Volterra: " << total_MSE << "\n";
