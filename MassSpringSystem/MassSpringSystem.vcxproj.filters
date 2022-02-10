@@ -27,9 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="vendor\delaunator-cpp\include\delaunator.hpp">
-      <Filter>Delauney</Filter>
-    </ClInclude>
     <ClInclude Include="src\Core\concurrency.h">
       <Filter>Header Files\ReservoirComputing</Filter>
     </ClInclude>
@@ -54,9 +51,6 @@
     <ClInclude Include="src\Core\utility.h">
       <Filter>Header Files\ReservoirComputing</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\camera.h">
-      <Filter>Header Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="src\Graphics\gnuplot-iostream.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
@@ -75,11 +69,14 @@
     <ClInclude Include="src\Graphics\window.h">
       <Filter>Header Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\delaunator-cpp\include\delaunator.hpp">
+      <Filter>Delauney</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\camera_ortho.h">
+      <Filter>Header Files\Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Core\node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -101,5 +98,34 @@
     <ClCompile Include="vendor\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Core\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Shader\billboard.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\billboard.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\line_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\line_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\sphere_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\sphere_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\text.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="src\Shader\text.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

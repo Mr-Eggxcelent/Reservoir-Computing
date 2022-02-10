@@ -104,7 +104,7 @@
     <ClInclude Include="src\Core\spring.h" />
     <ClInclude Include="src\Core\system.h" />
     <ClInclude Include="src\Core\utility.h" />
-    <ClInclude Include="src\Graphics\camera.h" />
+    <ClInclude Include="src\Graphics\camera_ortho.h" />
     <ClInclude Include="src\Graphics\gnuplot-iostream.h" />
     <ClInclude Include="src\Graphics\render_text.h" />
     <ClInclude Include="src\Graphics\shader.h" />
@@ -122,6 +122,16 @@
     <ClCompile Include="src\Core\utility.cpp" />
     <ClCompile Include="src\Graphics\sphere.cpp" />
     <ClCompile Include="vendor\glad.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Shader\billboard.fs" />
+    <None Include="src\Shader\billboard.vs" />
+    <None Include="src\Shader\line_shader.fs" />
+    <None Include="src\Shader\line_shader.vs" />
+    <None Include="src\Shader\sphere_shader.fs" />
+    <None Include="src\Shader\sphere_shader.vs" />
+    <None Include="src\Shader\text.fs" />
+    <None Include="src\Shader\text.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
