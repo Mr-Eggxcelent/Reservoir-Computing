@@ -9,7 +9,7 @@ link_directories("${CMAKE_BINARY_DIR}/MassSpringSystem/lib")
 
 math(EXPR PlatformArchitecture "8 * ${CMAKE_SIZEOF_VOID_P}")
 set(SOURCES
-	MassSpringSystem/src/Graphics/camera.h
+	MassSpringSystem/src/Graphics/camera_ortho.h
 	MassSpringSystem/src/Graphics/gnuplot-iostream.h
 	MassSpringSystem/src/Graphics/render_text.h
 	MassSpringSystem/src/Graphics/shader.h
