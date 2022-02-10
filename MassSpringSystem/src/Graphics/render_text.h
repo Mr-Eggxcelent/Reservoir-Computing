@@ -13,7 +13,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -22,7 +21,7 @@ class RenderText
 {
 
     unsigned int VAO, VBO;
-    unsigned int WIDTH, HEIGHT;
+    unsigned int _width, _height;
 
     /// Holds all state information relevant to a character as loaded using FreeType
     struct Character {
@@ -42,7 +41,7 @@ class RenderText
 
 public:
     RenderText(Camera& camera,unsigned int& Width,unsigned int& Height)
-        :WIDTH(Width),HEIGHT(Height),_camera(camera)
+        :_width(Width), _height(Height),_camera(camera)
     {
 
     }
@@ -145,7 +144,8 @@ public:
 //// -------------------
     void render_billboard(std::string text, float x, float y, float scale, glm::vec3 color)
     {    
-        glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+        glm::mat4 projection = _camera.getProjectionMatrix();
+        //glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
         _view = _camera.GetViewMatrix();
 
         _bill_shader->use();
@@ -200,7 +200,7 @@ public:
 
     void render_text(std::string text, float x, float y, float scale, glm::vec3 color)
     {
-        _projection = glm::ortho(0.0f, static_cast<float>(WIDTH), 0.0f, static_cast<float>(HEIGHT));
+        _projection = glm::ortho(0.0f, static_cast<float>(_width), 0.0f, static_cast<float>(_height));
         _shader->use();
         glUniformMatrix4fv(glGetUniformLocation(_shader->GetID(), "projection"), 1, GL_FALSE, glm::value_ptr(_projection));
         glUniform3f(glGetUniformLocation(_shader->GetID(), "textColor"), color.x, color.y, color.z);

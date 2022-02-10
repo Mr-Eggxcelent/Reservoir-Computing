@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader.h"
-#include "camera.h"
+#include "camera_ortho.h"
 
 #include<array>
 #include <iostream>

@@ -73,52 +73,9 @@ struct InitialDataValues
 class SpringSystem
 {
 
-
-private:
-    InitialDataValues _data;
-    unsigned int _N;          // Number of mass points
-    double _num_input_nodes;    // Number of input nodes
-    double _num_feedback_nodes; // Number of feedback nodes
-
-    std::vector<Spring> _s;      // List of all springs
-    std::vector<std::pair<double,double>> _EdgeList;   
-    std::pair<double,double> _NodeList;     
-    std::vector<double> _EdgeNodeList;
-
-    //use a modified disjoint set it will work better than a map
-    std::map<int, int>_assign_signal;
-    bool _feedback_state;
-
-    RenderText _render;
-    LineRender _test_line;
-
-    bool _input_node;
-    bool _feedback_node;
-
-    unsigned int _nodea = 0;
-    unsigned int _nodeb = 0;
-
-    Eigen::Vector3d _pos_a;
-    Eigen::Vector3d _pos_b;
-
-    double _vector_x = 0;
-    double _vector_y = 0;
-
-    Eigen::Vector3d _F;
-    double _Fx = 0;
-    double _Fy = 0;
-
-    std::vector<float>_varying_epsilon_S1;
-    std::vector<float>_varying_epsilon_S2;
-    std::vector<float>_varying_epsilon_S3;
-    int _offset = _data.testing_time * 0.70;
-
 public:
     std::vector<Node> _n;        // List of all nodes
-    //enum class _STATE {ORIGINAL=0,DOWN=1,UP=2,DEFAULT=3};
-    enum class _STATE { ORIGINAL=0, UP=1, DOWN=2, DEFAULT=3 };
-     //enum class _STATE { UP=0, ORIGINAL=1, DOWN=2, DEFAULT=3 };
-    _STATE _last_state;
+    enum class  _STATE { ORIGINAL = 0, UP = 1, DOWN = 2, DEFAULT = 3 };
 
 public:
 
@@ -143,13 +100,14 @@ public:
 
     void assign_fb_signal(int feedback_signal);
 
-    void buckle_system(std::vector<Node>::iterator::value_type& l, double& dt, _STATE& state, bool display);
+    void buckle_system(std::vector<Node>::iterator::value_type& l, double& dt, _STATE& state, bool& key_lock, bool display);
 
     void epsilon_input(const unsigned int& i, const int& i_2, std::vector<Node>::iterator::value_type& l, bool& learning);
+    
     //system
     /*template <typename Derived>
     const EigenBase<Derived>& feedback_signal*/
-    void update_reset_system(const unsigned int& i,const int& i_2, MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool learning,bool display = false);
+    void update_reset_system(const unsigned int& i,const int& i_2, MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool learning, bool& key_lock, bool display = false);
 
     //Init the buffers before drawing
     void init_draw();
@@ -187,7 +145,45 @@ public:
     //Return number of edges from the triangle.
     unsigned int Spring_List();
 
- 
+private:
+    InitialDataValues _data;
+    unsigned int _N;          // Number of mass points
+    double _num_input_nodes;    // Number of input nodes
+    double _num_feedback_nodes; // Number of feedback nodes
 
+    std::vector<Spring> _s;      // List of all springs
+    std::vector<std::pair<double, double>> _EdgeList;
+    std::pair<double, double> _NodeList;
+    std::vector<double> _EdgeNodeList;
+
+    //use a modified disjoint set it will work better than a map
+    std::map<int, int>_assign_signal;
+    bool _feedback_state;
+
+    RenderText _render;
+    LineRender _test_line;
+
+    bool _input_node;
+    bool _feedback_node;
+
+    unsigned int _nodea = 0;
+    unsigned int _nodeb = 0;
+
+    Eigen::Vector3d _pos_a;
+    Eigen::Vector3d _pos_b;
+
+    double _vector_x = 0;
+    double _vector_y = 0;
+
+    Eigen::Vector3d _F;
+    double _Fx = 0;
+    double _Fy = 0;
+
+    std::vector<float>_varying_epsilon_S1;
+    std::vector<float>_varying_epsilon_S2;
+    std::vector<float>_varying_epsilon_S3;
+    int _offset = _data.testing_time * 0.70;
+
+ 
 
 };

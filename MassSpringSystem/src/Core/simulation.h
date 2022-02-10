@@ -12,8 +12,11 @@
 #include <optional>
 #include <functional>
 
-#define DEBUG_DRAW 0
+#define DEBUG_DRAW 1
 #define PERTURBATION 0
+
+extern unsigned int WIDTH;
+extern unsigned int HEIGHT;
 
 using namespace Eigen;
 
@@ -133,10 +136,12 @@ private:
     std::vector<double> _MSE;
     int _number_of_equations;
 
+    bool _key_lock = false;
+
 public:
 
     //Default constructor
-    //Simulation(InitialDataValues& data, std::vector<double>& Input_Signal, std::vector<std::vector<double>>& Target_Signals, int wash_out_time, int learning_time, int learning_time_test,Camera& camera); 
+    //Wonder if passing by reference will cause problems while multithreading
     Simulation(InitialDataValues data, MatrixXd Input_Signal, MatrixXd Target_Signals, Camera camera, bool feedback);
     ~Simulation();
 
@@ -177,8 +182,6 @@ public:
     void processInput();
 
     void clearResources();
-
-  
 
    
 };

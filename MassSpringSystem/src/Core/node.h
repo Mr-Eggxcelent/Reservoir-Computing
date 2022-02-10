@@ -50,7 +50,7 @@ class Node
 	double _w_input = 0;
 	double _w_feedback = 0;
 
-	bool moving;
+	bool _moving = false;
 	//A bool check to determine whether a node has been updated or not.
 	bool _update_check = 0;
 	
@@ -76,7 +76,7 @@ public:
 	void apply_feedback_force(const Eigen::Vector3d& F);
 	void apply_buckling_force(const Eigen::Vector3d& F);
 
-	void buckle(double target_pos, double dt);
+	void buckle(double target_pos, double dt, bool& key_lock);
 	void update(double dt);
 
 	//Save original position in x and y of nodes.

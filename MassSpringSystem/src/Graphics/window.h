@@ -1,7 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "camera.h"
+#include "camera_ortho.h"
 #include <iostream>
 
 
@@ -18,7 +18,11 @@ class Window
         unsigned int _Width;
         unsigned int _Height;
 
+        unsigned int _viewport_width;
+        unsigned int _viewport_height;
+
         Camera& _camera;
+        //0,0 in world space is the middle of the screen
         float _lastX = (float)_Width / 2.0;
         float _lastY = (float)_Height / 2.0;
         bool _firstMouse = true;
@@ -27,7 +31,7 @@ class Window
 
 
         WindowData(Camera& camera, unsigned int Width, unsigned int Height)
-            :_camera(camera), _Width(Width),_Height(Height)
+            :_Width(Width), _Height(Height),_camera(camera)
         {
 
         }
@@ -35,6 +39,8 @@ class Window
         // ---------------------------------------------------------------------------------------------
         void framebuffer_size_callback(GLFWwindow* window, int width, int height)
         {
+            _viewport_width = width;
+            _viewport_height = height;
             // make sure the viewport matches the new window dimensions; note that width and 
             // height will be significantly larger than specified on retina displays.
             glViewport(0, 0, width, height);
@@ -56,15 +62,25 @@ class Window
 
             _lastX = xpos;
             _lastY = ypos;
+           
 
-            _camera.ProcessMouseMovement(xoffset, yoffset);
+             _camera.ProcessMouseMovement(_Width, _Height, xoffset, yoffset);
         }
 
         // glfw: whenever the mouse scroll wheel scrolls, this callback is called
         // ----------------------------------------------------------------------
         void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
         {
-            _camera.ProcessMouseScroll(yoffset);
+           
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
+    
+            _lastX = xpos;
+            _lastY = ypos;
+
+           
+            _camera.ProcessMouseScroll(xpos, ypos, yoffset);
+          
         }
 
     };
@@ -124,7 +140,7 @@ public:
         glfwSetScrollCallback(_window, scroll_func);
 
         // tell GLFW to capture our mouse
-        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
 
     }

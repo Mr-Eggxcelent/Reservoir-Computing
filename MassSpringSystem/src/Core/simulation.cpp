@@ -31,9 +31,9 @@ void initGL();
 
 using namespace Eigen;
 
-
 unsigned int WIDTH = 1000;
 unsigned int HEIGHT = 1000;
+
 
 //Aleksandar Haber
 //https://github.com/AleksandarHaber/Save-and-Load-Eigen-Cpp-Matrices-Arrays-to-and-from-CSV-files
@@ -145,6 +145,8 @@ void Simulation::execute(bool bias_learning)
 
    
     _state = SpringSystem::_STATE::ORIGINAL;
+
+
     while (i < _maxtimesteps && !glfwWindowShouldClose(_windowHandle.getHandle())) {
         // per-frame time logic
        // --------------------
@@ -153,15 +155,16 @@ void Simulation::execute(bool bias_learning)
         _lastFrame = currentFrame;
    
         processInput();
-   
-        glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), ((float)_windowHandle.getWidth()) / ((float)_windowHandle.getHeight()), 0.1f, 100.0f);
+        
+        glm::mat4 projection = _camera.getProjectionMatrix();
+       // glm::mat4 projection = glm::perspective(glm::radians(_camera.Zoom), ((float)_windowHandle.getWidth()) / ((float)_windowHandle.getHeight()), 0.1f, 100.0f);
+       
         glm::mat4 view = _camera.GetViewMatrix();
    
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         
         LearningMatrixCreation(i, 0, _Target[0], _LearningMatrix[0], true);
-   
    
         _mass_spring->render(projection, view);
    
@@ -207,7 +210,7 @@ void Simulation::openLoop()
             {
              //Change the node position, velocity and acceleration in response.
              l.update(_dt);
-             _mass_spring->buckle_system(l, _dt, _state, false);
+             _mass_spring->buckle_system(l, _dt, _state,_key_lock,false);
              l.reset_forces();
             }
         }
@@ -227,9 +230,9 @@ void Simulation::openLoop()
 
     ////Vertical Stacking by tangy
     ////https://stackoverflow.com/questions/21496157/eigen-how-to-concatenate-matrix-along-a-specific-dimension
-    for (size_t i = 0; i < _number_of_equations; ++i) {
+    for (unsigned int i = 0; i < _number_of_equations; ++i) {
 
-        for (size_t j = 0; j < 3; ++j) {
+        for (unsigned int j = 0; j < 3; ++j) {
             long cur_rows = _LearningMatrix[j][i].rows();//first index is the equation, second is which learning matrix of that specific equation
             _LearningMatrix_merged[i].middleRows(row_offset, cur_rows) = _LearningMatrix[j][i];
             row_offset += cur_rows;
@@ -288,7 +291,7 @@ void Simulation::closedLoop()
 
     _Test_Feedback = MatrixXd(_Output.rows() / _number_of_equations, _Target_Signal.cols());
 
-    for (int j = 0; j < _Target_Signal.cols(); j++) {
+    for (unsigned int j = 0; j < _Target_Signal.cols(); j++) {
 
         if (j >= 2 && j < 4) {
             stride = _Output.rows() / _number_of_equations;
@@ -360,7 +363,7 @@ void Simulation::LearningMatrixCreation(unsigned int& index, int index_2,std::ar
         }
     }
 
-    _mass_spring->update_reset_system(index,index_2, _Input_Signal, _Target_Signal, _dt, _state, true,draw);
+    _mass_spring->update_reset_system(index,index_2, _Input_Signal, _Target_Signal, _dt, _state, true,_key_lock,draw);
 
 }
 
@@ -372,7 +375,7 @@ void Simulation::TestMatrixCreation(unsigned int& index, int index_2,MatrixXd& T
         TM(index, j) = _mass_spring->get_spring_vec()[j].get_length() ;
     }
 
-    _mass_spring->update_reset_system(index, index_2, _Input_Signal, _Test_Feedback, _dt, _state, false, draw);
+    _mass_spring->update_reset_system(index, index_2, _Input_Signal, _Test_Feedback, _dt, _state, false, _key_lock, draw);
 }
 
 
@@ -416,10 +419,7 @@ void Simulation::Populate_Learning_Weights(VectorXd& L)
     }
 }
 
-// Also, writing data to hard disk during simualtion slow it down a lot.
-// Btw. any graphical output (even to the terminal) slows the process down a lot
-// However, you could have every 1000 points and update message to show the use the simualtion is still going
-// Btw. it is good to have a functionality to switch off any of these things by the user
+
 std::optional<std::vector<double>> Simulation::output_LearningMatrix_and_MeanSquaredError(bool& success)
 {
 
@@ -857,20 +857,32 @@ void Simulation::processInput()
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(_windowHandle.getHandle(), true);
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_W) == GLFW_PRESS)
-        _camera.ProcessKeyboard(FORWARD, _deltaTime);
+        _camera.ProcessKeyboard(UP, _deltaTime);
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_S) == GLFW_PRESS)
-        _camera.ProcessKeyboard(BACKWARD, _deltaTime);
+        _camera.ProcessKeyboard(DOWN,_deltaTime);
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_A) == GLFW_PRESS)
         _camera.ProcessKeyboard(LEFT, _deltaTime);
     if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_D) == GLFW_PRESS)
-        _camera.ProcessKeyboard(RIGHT, _deltaTime);     
+        _camera.ProcessKeyboard(RIGHT, _deltaTime);
 
-    if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_1) == GLFW_PRESS)
-        _state=SpringSystem::_STATE::ORIGINAL;
-    if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_2) == GLFW_PRESS)
-        _state=SpringSystem::_STATE::UP;
-    if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_3) == GLFW_PRESS)
-        _state=SpringSystem::_STATE::DOWN;
+    if (glfwGetMouseButton(_windowHandle.getHandle(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    {
+        _camera.mouse_held = true;
+
+    }
+    if (glfwGetMouseButton(_windowHandle.getHandle(), GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE) {
+
+        _camera.mouse_held = false;
+    }
+
+    if (!_key_lock) {
+        if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_1) == GLFW_PRESS)
+            _state = SpringSystem::_STATE::ORIGINAL;
+        if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_2) == GLFW_PRESS)
+            _state = SpringSystem::_STATE::UP;
+        if (glfwGetKey(_windowHandle.getHandle(), GLFW_KEY_3) == GLFW_PRESS)
+            _state = SpringSystem::_STATE::DOWN;
+    }
 
 }
 

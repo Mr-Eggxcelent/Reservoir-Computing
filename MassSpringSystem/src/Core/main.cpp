@@ -11,7 +11,7 @@
 #include <Eigen/QR>
 #include "filereader.h"
 #include<memory>
-#include "../Graphics/camera.h"
+#include "../Graphics/camera_ortho.h"
 #include "concurrency.h"
 
 //graphing
@@ -22,8 +22,7 @@ using namespace Eigen;
 
 void no_feedback_generator();
 void feedback_generator();
-void readParameter(std::map <std::string, double>&,std::string);
-
+void readParameter(std::string name, InitialDataValues& data, const int& target_cols);
 
 #ifdef _WIN32
 unsigned long long rdtsc() {
@@ -49,8 +48,8 @@ int main(int argc, char** argv)
     auto begin = std::chrono::high_resolution_clock::now();
 
     //Uncomment the one you want to run
-    no_feedback_generator();
-    //feedback_generator();
+    //no_feedback_generator();
+    feedback_generator();
 
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "The time it took for the programme to run in total in milliseconds: ";
@@ -100,59 +99,17 @@ void no_feedback_generator()
     Target_Signals.col(2)  = Eigen::Map<Eigen::VectorXd>(narma.data(), narma.size());
     Input_Signals .col(0)  = Eigen::Map<Eigen::VectorXd>(input.data(), input.size());
 
-    std::map <std::string, double>var_map;
-    readParameter(var_map, "src/Data/DataNoFeedback.txt");
 
+    readParameter("src/Data/DataNoFeedback.txt", data, Target_Signals.cols());
 
-    data.wash_out_time = var_map["wash_out_time"];
-    data.learning_time = var_map["learning_time"];
-    data.testing_time = var_map["testing_time"];
-
-    // Setting parameters for simulation
-    data.N = static_cast<int>(var_map["N"]);
-    data.ux = var_map["ux"];
-    data.uy = var_map["uy"];
-
-    data.number_of_signals = Target_Signals.cols();
-    data.number_of_equations = var_map["number_of_equations"];
-    data.order_of_equations = var_map["order_of_equations"];
-
-
-    data.input_connectivity_percentage = var_map["input_connectivity_percentage"];
-    data.feedback_connectivity_percentage = 0;
-
-    //data.w_in_initial = -1;
-    data.min_input_weight = var_map["min_input_weight"];
-    data.max_input_weight = var_map["max_input_weight"];
-
-
-    data.min_x_position = var_map["min_x_position"];
-    data.max_x_position = var_map["max_x_position"];
-    data.min_y_position = var_map["min_y_position"];
-    data.max_y_position = var_map["max_y_position"];
-
-    data.min_k3 = var_map["min_k3"];
-    data.max_k3 = var_map["max_k3"];
-    data.min_d3 = var_map["min_d3"];
-    data.max_d3 = var_map["max_d3"];
-
-    data.min_k1 = var_map["min_k1"];
-    data.max_k1 = var_map["max_k1"];
-    data.min_d1 = var_map["min_d1"];
-    data.max_d1 = var_map["max_d1"];
-
-    data.dt = var_map["dt"];
-    data.t0 = data.wash_out_time * data.dt;
-    data.tmax = (data.wash_out_time + data.learning_time + data.testing_time) * data.dt;
-
-    data.buckling_percentage = var_map["buckling_percentage"];
 
     int number_of_simulations = 10;
     bool valid_output = false;
     bool error_thrown = false;
 
+  
     std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
-    Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
+    Camera camera(0, data.max_x_position+1, 0, data.max_y_position+1, glm::vec3(0.0f, 0.0f, 0.0f));
     std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
     std::mutex m;
     thread_pool tp;
@@ -182,20 +139,20 @@ void no_feedback_generator()
             {
                 std::vector<double> function_output;
                 bool success = true;
+
                 //Success does nothing for the non feedback case, since we dont need a closed loop phase
-                /*std::optional<std::vector<double>>opt_learning_matrix = sim.output_LearningMatrix_and_MeanSquaredError();
-                if (opt_learning_matrix)
-                {*/
                 try {
-                    function_output = std::move(sim.output_LearningMatrix_and_MeanSquaredError(success).value());
+                    if (auto output_matrix = sim.output_LearningMatrix_and_MeanSquaredError(success))
+                    {
+                        function_output = std::move(output_matrix.value());
+                    }
                 }
                 catch (const char* msg) {
                     std::cerr << msg << std::endl;
                     error_thrown = true;
                     return 0;
                 }
-                //  }
-
+                
                 MSE = std::move(function_output[0]);
                 MSE_two = std::move(function_output[1]);
                 MSE_three = std::move(function_output[2]);
@@ -245,7 +202,8 @@ void no_feedback_generator()
 
     while (1)
     {
-        std::cout << "ongoing: " << ongoing_count << ", completed: " << completed_count << " / " << number_of_simulations << std::endl;;
+
+        std::cout <<"\n"<< "ongoing: " << ongoing_count << ", completed: " << completed_count << " / " << number_of_simulations << std::endl;;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         if (completed_count == number_of_simulations || error_thrown==true)
         {
@@ -424,134 +382,119 @@ void feedback_generator()
     Input_Signals.col(0) = Eigen::Map<Eigen::VectorXd>(input.data(), input.size());
 
 
-    std::map <std::string, double>var_map;
-    readParameter(var_map, "src/Data/DataFeedback.txt");
+    readParameter("src/Data/DataFeedback.txt", data, Target_Signals.cols());
 
-
-    data.wash_out_time = var_map["wash_out_time"];
-    data.learning_time = var_map["learning_time"];
-    data.testing_time = var_map["testing_time"];
-
-    // Setting parameters for simulation
-    data.N = static_cast<int>(var_map["N"]);
-    data.ux = var_map["ux"];
-    data.uy = var_map["uy"];
-
-    data.number_of_signals = Target_Signals.cols();
-    data.number_of_equations = var_map["number_of_equations"];
-    data.order_of_equations = var_map["order_of_equations"];
-    
-
-    data.input_connectivity_percentage = var_map["input_connectivity_percentage"];
-    data.feedback_connectivity_percentage = var_map["feedback_connectivity_percentage"];
-
-    //data.w_in_initial = -1;
-    data.min_input_weight = var_map["min_input_weight"];
-    data.max_input_weight = var_map["max_input_weight"];
-    data.min_feedback_weight = var_map["min_feedback_weight"];
-    data.max_feedback_weight = var_map["max_feedback_weight"];
-
-    data.min_x_position =var_map["min_x_position"];
-    data.max_x_position =var_map["max_x_position"];
-    data.min_y_position =var_map["min_y_position"];
-    data.max_y_position =var_map["max_y_position"];
-
-    data.min_k3 = var_map["min_k3"];
-    data.max_k3 = var_map["max_k3"];
-    data.min_d3 = var_map["min_d3"];
-    data.max_d3 = var_map["max_d3"];
-
-    data.min_k1 = var_map["min_k1"];
-    data.max_k1 = var_map["max_k1"];
-    data.min_d1 = var_map["min_d1"];
-    data.max_d1 = var_map["max_d1"];
-
-    data.dt = var_map["dt"];
-    data.t0 = data.wash_out_time * data.dt;
-    data.tmax = (data.wash_out_time + data.learning_time + data.testing_time) * data.dt;
-    data.buckling_percentage = var_map["buckling_percentage"];
-   
     double Mean_Sq = 1;
     double Mean_Sq_two = 1;
     double Mean_Sq_three = 1;
-    double MSE = 0;
-    double MSE_two = 0;
-    double MSE_three= 0;
-    double total_MSE = 0;
-    double total_MSE_two = 0;
-    double total_MSE_three = 0;
 
-    
-    std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
-    std::vector<double>function_output;
+
+    std::atomic<double> MSE = 0;
+    std::atomic<double> MSE_two = 0;
+    std::atomic<double> MSE_three= 0;
+
+    std::atomic<double> total_MSE = 0;
+    std::atomic<double> total_MSE_two = 0;
+    std::atomic<double> total_MSE_three = 0;
+
+
     int number_of_simulations = 10;
-    std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
-    std::mutex m;
-
-    Camera camera(glm::vec3(5.0f, 0.0f, 10.0f));
     bool valid_output = false;
+    bool error_thrown = false;
+
+    std::ofstream MSE_Results("src/Output/Results/MSE_Results.csv");  MSE_Results.precision(15);
+    Camera camera(0, 10.0f, 0, 10.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+    std::mutex m;
+    thread_pool tp;
+
+    std::vector<double>function_output;
+    std::vector<std::array<double, 6>>MSE_storage(number_of_simulations);
+
+    std::atomic_int ongoing_count(0);
+    std::atomic_int completed_count(0);
+
 
     //future make it multihreaded
     auto lambda_simulation = [&]() {
 
-        for (int i = 0; i < number_of_simulations; i++) {
+        ongoing_count++;
 
-            std::cout << "Simulation Number: "<<i << std::endl;
             Simulation sim(data, Input_Signals, Target_Signals, camera, true);
             {
 
-                std::scoped_lock<std::mutex> lock(m);
                 std::vector<double> function_output;
                 bool success = true;
 
 
                 try {
-                 /*  std::optional<std::vector<double>>opt_learning_matrix =  sim.output_LearningMatrix_and_MeanSquaredError();
-                 if (opt_learning_matrix)
-                {*/
 
                     sim.output_LearningMatrix_and_MeanSquaredError(success);
-                    //}
                     function_output = std::move(sim.output_TestMatrix_and_MeanSquaredError());
+
                 }
                 catch (const char* msg) {
                     std::cerr << msg << std::endl;
+                    error_thrown = true;
                     return 0;
                 }
-               
-                MSE = (function_output[0] + function_output[1])/2;
-                MSE_two = (function_output[2] + function_output[3])/2;
-                MSE_three = (function_output[4] + function_output[5])/2;
+
+                MSE = (function_output[0] + function_output[1]) / 2;
+                MSE_two = (function_output[2] + function_output[3]) / 2;
+                MSE_three = (function_output[4] + function_output[5]) / 2;
 
                 total_MSE += MSE;
                 total_MSE_two += MSE_two;
                 total_MSE_three += MSE_three;
-                
-                for (int j = 0; j < function_output.size(); j++)
+
                 {
-                    MSE_storage[i][j] = function_output[j];
+                    std::scoped_lock<std::mutex> lock(m);
+
+                    for (int j = 0; j < function_output.size(); j++)
+                    {
+                        MSE_storage[completed_count][j] = function_output[j];
+                    }
+
+                    if (((Mean_Sq + Mean_Sq_two + Mean_Sq_three) / 3) > ((MSE + MSE_two + MSE_three) / 3) && success)
+                    {
+                        Mean_Sq = MSE;
+                        std::cout << "Thread " << std::this_thread::get_id() << ":" << "The best MSE at the moment is: " << Mean_Sq << "\n";
+                        Mean_Sq_two = MSE_two;
+                        std::cout << "Thread " << std::this_thread::get_id() << ":" << "The best MSE at the moment is: " << Mean_Sq_two << "\n";
+                        Mean_Sq_three = MSE_three;
+                        std::cout << "Thread " << std::this_thread::get_id() << ":" << "The best MSE at the moment is: " << Mean_Sq_three << "\n";
+
+                        sim.output_Output_Signal();
+                        valid_output = true;
+                    }
+
                 }
-
-                if (((Mean_Sq+ Mean_Sq_two + Mean_Sq_three)/3)>((MSE + MSE_two + MSE_three) / 3) && success)
-                {
-                    Mean_Sq = MSE;
-                    std::cout << "The best MSE at the moment of Van der Pol is: " << Mean_Sq << "\n";
-                    Mean_Sq_two = MSE_two;
-                    std::cout << "The best MSE at the moment of Quad is: " << Mean_Sq_two << "\n";
-                    Mean_Sq_three = MSE_three;
-                    std::cout << "The best MSE at the moment of Lissajous is: " << Mean_Sq_three << "\n";
-
-                    sim.output_Output_Signal();
-                    valid_output = true;
-                }
-
             }
          
-        }
+         completed_count++;
+         ongoing_count--;
     };
 
-    std::thread test_thread(lambda_simulation);
-    test_thread.join();
+
+    #if (DEBUG_DRAW==1)
+        number_of_simulations = 1;
+    #endif
+
+    for (uint64_t i(0); i < number_of_simulations; ++i)
+    {
+        tp.submit(lambda_simulation);
+    }
+
+    while (1)
+    {
+
+        std::cout << "\n" << "ongoing: " << ongoing_count << ", completed: " << completed_count << " / " << number_of_simulations << std::endl;;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        if (completed_count == number_of_simulations || error_thrown == true)
+        {
+            break;
+        }
+
+    }
 
     total_MSE = total_MSE / number_of_simulations;
     std::cout << "The average MSE for Van der Pol: " << total_MSE << "\n";
@@ -700,7 +643,8 @@ void feedback_generator()
 }
 
 
-void readParameter(std::map <std::string, double>& var_map,std::string name)
+
+void readParameter(std::string name, InitialDataValues& data,const int& target_cols)
 {
     //David Peterson
       //https://stackoverflow.com/questions/27927714/reading-variables-from-a-text-file-c
@@ -709,6 +653,7 @@ void readParameter(std::map <std::string, double>& var_map,std::string name)
     double value;
     std::ifstream stream(name);
     std::stringstream splitter;
+    std::map <std::string, double>var_map;
 
     if (stream)
     {
@@ -725,5 +670,51 @@ void readParameter(std::map <std::string, double>& var_map,std::string name)
     else {
         std::cout << "Error Reading File" << std::endl;
     }
+
+
+
+    data.wash_out_time = var_map["wash_out_time"];
+    data.learning_time = var_map["learning_time"];
+    data.testing_time = var_map["testing_time"];
+
+    // Setting parameters for simulation
+    data.N = static_cast<int>(var_map["N"]);
+    data.ux = var_map["ux"];
+    data.uy = var_map["uy"];
+
+    data.number_of_signals = target_cols;
+    data.number_of_equations = var_map["number_of_equations"];
+    data.order_of_equations = var_map["order_of_equations"];
+
+
+    data.input_connectivity_percentage = var_map["input_connectivity_percentage"];
+    data.feedback_connectivity_percentage = var_map["feedback_connectivity_percentage"];
+
+    //data.w_in_initial = -1;
+    data.min_input_weight = var_map["min_input_weight"];
+    data.max_input_weight = var_map["max_input_weight"];
+    data.min_feedback_weight = var_map["min_feedback_weight"];
+    data.max_feedback_weight = var_map["max_feedback_weight"];
+
+    data.min_x_position = var_map["min_x_position"];
+    data.max_x_position = var_map["max_x_position"];
+    data.min_y_position = var_map["min_y_position"];
+    data.max_y_position = var_map["max_y_position"];
+
+    data.min_k3 = var_map["min_k3"];
+    data.max_k3 = var_map["max_k3"];
+    data.min_d3 = var_map["min_d3"];
+    data.max_d3 = var_map["max_d3"];
+
+    data.min_k1 = var_map["min_k1"];
+    data.max_k1 = var_map["max_k1"];
+    data.min_d1 = var_map["min_d1"];
+    data.max_d1 = var_map["max_d1"];
+
+    data.dt = var_map["dt"];
+    data.t0 = data.wash_out_time * data.dt;
+    data.tmax = (data.wash_out_time + data.learning_time + data.testing_time) * data.dt;
+    data.buckling_percentage = var_map["buckling_percentage"];
+
 
 }

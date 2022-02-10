@@ -100,7 +100,7 @@ void Node::apply_buckling_force(const Eigen::Vector3d& F)
 
 
 //Non-Physics based approach to buckling
-void Node::buckle(double target_pos, double dt)
+void Node::buckle(double target_pos, double dt, bool& key_lock)
 {
     // Your Variables
     double speed = 1000;
@@ -109,10 +109,11 @@ void Node::buckle(double target_pos, double dt)
     double distance = sqrt(pow(target_pos - _initial_position[1], 2));
     if (distance != 0) {
         double directionY = (target_pos - _initial_position[1]) / distance;
-        moving = true;
+        _moving = true;
+        key_lock = true;
 
         // On update
-        if (moving == true )
+        if (_moving == true)
         {
             _velocity[1] = directionY * speed * dt;
             _position[1] += dt * _velocity[1];
@@ -121,14 +122,16 @@ void Node::buckle(double target_pos, double dt)
                 _initial_position[1] = target_pos;
                 _position[1] = target_pos;
                 _velocity[1] = 0;
-                moving = false;
+                _moving = false;
+                key_lock = false;
             }
         }
-      
+
     }
 
 
 }
+
 
 
 void Node::update(double dt)

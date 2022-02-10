@@ -20,9 +20,10 @@ using namespace Eigen;
 //x=position[0]
 //y=position[1]
 SpringSystem::SpringSystem(InitialDataValues& data, Camera& camera,unsigned int& Width, unsigned int& Height,bool feedback_state)
-    :_data(data),_render(camera, Width, Height),_N(data.N),_feedback_state(feedback_state), _varying_epsilon_S1(_data.testing_time),
+    :_data(data),_N(data.N),_feedback_state(feedback_state),_render(camera, Width, Height), _varying_epsilon_S1(_data.testing_time),
     _varying_epsilon_S2(_data.testing_time), _varying_epsilon_S3(_data.testing_time)
 {
+   
     // read out all the data from the data structure
     _num_input_nodes = 0.01 * (_data.input_connectivity_percentage) * _N;
     _num_feedback_nodes = 0.01 * (_data.feedback_connectivity_percentage) * _N;
@@ -214,14 +215,11 @@ void SpringSystem::Delaunay_Triangulation_and_Spring_Creation()
 
     }
 
-
-
     std::cout << "The total number of input nodes is: " << num_of_input_nodes << "\n";
     std::cout << "The total number of feedback nodes is: " << num_of_feedback_nodes << "\n";
 
     //should not be here will move to when the input nodes are being assigned 
     assign_fb_signal(_data.number_of_signals/_data.order_of_equations);
-
     Get_Triangles(coords);
 
 }
@@ -245,14 +243,6 @@ void SpringSystem::Initialize_Springs()
     double y1;
     double wout;
 
-    double dist = 0;
-    double dist2 = 0;
-    double perp_dist_new = 0;
-    //maximum possible distance for the initial value as this is a minimisation problem
-    double perp_dist_old = _data.max_x_position + _data.max_y_position;
-
-    int connect_node;
-    int connect_node2;
 
     int arraysubscript1 = 0;
     int arraysubscript2 = 0;
@@ -263,9 +253,7 @@ void SpringSystem::Initialize_Springs()
     std::ofstream d3output("src/Output/d3output.csv");
     std::ofstream originallengthoutput("src/Output/originallengthoutput.csv");
 
-    //std::vector<int> node_list;
-    //std::vector<int> unconnected_nodes;
-
+    
 
     for (unsigned int i = 0; i < _EdgeList.size(); i++)
     {
@@ -384,22 +372,22 @@ void SpringSystem::assign_fb_signal(int feedback_signal)
 }
 
 
-void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,double& dt, _STATE& state, bool display)
+void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l, double& dt, _STATE& state, bool& key_lock, bool display)
 {
 
     if (display) {
 
         switch (state)
         {
-        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position/2), dt); l.set_fixed(); }
-                                            _render.render_text("ORIGINAL", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
-                                             break;
-        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)+ 2.0f, dt); l.set_fixed(); }
-                                       _render.render_text("UP", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
+        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2), dt, key_lock); l.set_fixed(); }
+                                           _render.render_text("ORIGINAL", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
+                                           break;
+        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2) + 2.0f, dt, key_lock); l.set_fixed(); }
+                                     _render.render_text("UP", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
+                                     break;
+        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2) - 2.0f, dt, key_lock); l.set_fixed(); }
+                                       _render.render_text("DOWN", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
                                        break;
-        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)-2.0f, dt); l.set_fixed(); }
-                                         _render.render_text("DOWN", 900.0f, 100.0f, 0.25f, glm::vec3(1.0, 1.0f, 1.0f));
-                                         break;
 
         }
 
@@ -408,17 +396,18 @@ void SpringSystem::buckle_system(std::vector<Node>::iterator::value_type& l ,dou
 
         switch (state)
         {
-        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2), dt); l.set_fixed(); }
-                                             break;
-        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)+2.0f, dt); l.set_fixed(); }
+        case SpringSystem::_STATE::ORIGINAL: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2), dt, key_lock); l.set_fixed(); }
+                                           break;
+        case SpringSystem::_STATE::UP: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2) + 2.0f, dt, key_lock); l.set_fixed(); }
+                                     break;
+        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2) - 2.0f, dt, key_lock); l.set_fixed(); }
                                        break;
-        case SpringSystem::_STATE::DOWN: if (l.is_buckling_node() == true) { l.buckle((_data.max_y_position / 2)-2.0f, dt); l.set_fixed(); }
-                                         break;
         }
 
     }
 
 }
+
 
 void SpringSystem::epsilon_input(const unsigned int& i, const int& i_2, std::vector<Node>::iterator::value_type& l,bool& learning)
 {
@@ -459,7 +448,7 @@ void SpringSystem::epsilon_input(const unsigned int& i, const int& i_2, std::vec
 }
 
 
-void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool learning, bool display)
+void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,MatrixXd& input_signal, const MatrixXd& feedback_signal, double& dt, _STATE& state, bool learning,bool& _key_lock, bool display)
 {
     for (auto& l : _n)
     {
@@ -484,7 +473,7 @@ void SpringSystem::update_reset_system(const unsigned int& i,const int& i_2,Matr
         //Change the node position, velocity and acceleration in response.
         l.update(dt);
 
-        buckle_system(l, dt, state, display);
+        buckle_system(l, dt, state, _key_lock, display);
 
         //At the end of the loop, each node has no force acting on it.
         l.reset_forces();
