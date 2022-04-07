@@ -343,25 +343,15 @@ void Simulation::LearningMatrixCreation(unsigned int& index, int index_2,std::ar
     if (index >= _wash_out_time && index < (_wash_out_time + _learning_time)) TS[1].row(index - _wash_out_time) = _Target_Signal.block(index, index_2, 1, _data.order_of_equations);
     if (index >= (_wash_out_time + _learning_time)) TS[2].row(index - _wash_out_time - _learning_time) = _Target_Signal.block(index, index_2, 1, _data.order_of_equations);
 
-    if (_feedback_state) {
-        for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
-        {
-            _mass_spring->calculate_forces(j, _dt);
+    for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
+    {
+        _mass_spring->calculate_forces(j, _dt);
 
-            LM[0](index, j) = _mass_spring->get_spring_vec()[j].get_length() + Utility::White_Noise_Generator(_feedback_state);  // Todo: update is not needed for target signal
-            if (index >= _wash_out_time && index < (_wash_out_time + _learning_time)) LM[1](index - _wash_out_time, j) = _mass_spring->get_spring_vec()[j].get_length() + Utility::White_Noise_Generator(_feedback_state);
-            if (index >= (_wash_out_time + _learning_time)) LM[2](index - _wash_out_time - _learning_time, j) = _mass_spring->get_spring_vec()[j].get_length() + Utility::White_Noise_Generator(_feedback_state);
-        }
-     }else {
-        for (unsigned int j = 0; j < _mass_spring->get_spring_vec().size(); j++)
-        {
-            _mass_spring->calculate_forces(j, _dt);
-
-            LM[0](index, j) = _mass_spring->get_spring_vec()[j].get_length();  // Todo: update is not needed for target signal
-            if (index >= _wash_out_time && index < (_wash_out_time + _learning_time)) LM[1](index - _wash_out_time, j) = _mass_spring->get_spring_vec()[j].get_length();
-            if (index >= (_wash_out_time + _learning_time)) LM[2](index - _wash_out_time - _learning_time, j) = _mass_spring->get_spring_vec()[j].get_length();
-        }
+        LM[0](index, j) = _mass_spring->get_spring_vec()[j].get_length() + Utility::White_Noise_Generator(_feedback_state);  // Todo: update is not needed for target signal
+        if (index >= _wash_out_time && index < (_wash_out_time + _learning_time)) LM[1](index - _wash_out_time, j) = _mass_spring->get_spring_vec()[j].get_length() + Utility::White_Noise_Generator(_feedback_state);
+        if (index >= (_wash_out_time + _learning_time)) LM[2](index - _wash_out_time - _learning_time, j) = _mass_spring->get_spring_vec()[j].get_length() + Utility::White_Noise_Generator(_feedback_state);
     }
+     
 
     _mass_spring->update_reset_system(index,index_2, _Input_Signal, _Target_Signal, _dt, _state, true,_key_lock,draw);
 
